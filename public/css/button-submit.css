@@ -1,0 +1,11 @@
+.btn-small {
+    width: auto; /* Menghapus lebar default agar bisa ditentukan */
+    padding: 0.25rem 0.5rem; /* Mengatur padding untuk memperkecil tombol */
+    font-size: 0.75rem; /* Mengatur ukuran font tombol */
+}
+
+.btn-flex {
+    display: inline-flex; /* Mengatur tombol sebagai elemen flex */
+    width: auto; /* Menghapus lebar default */
+    padding: 0.25rem 0.5rem; /* Mengatur padding untuk memperkecil tombol */
+}

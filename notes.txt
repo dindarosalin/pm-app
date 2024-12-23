@@ -1,0 +1,81 @@
+https://github.com/tauseedzaman/Laravel-livewire-SPA-CRUD/blob/main/resources/views/livewire/students.blade.php
+
+
+https://github.com/yelocode/livewire3-datatable/blob/main/app/Livewire/UsersTable.php
+
+https://www.youtube.com/watch?v=HOo2vtn37i0&t=626s
+
+
+https://medium.com/@laravelprotips/using-form-objects-and-modal-wire-elements-in-livewire-3-for-crud-operations-e76c51e0c6ab
+
+https://dev.to/mahmudulhsn/use-sweetalert2-with-laravel-livewire-49ij
+https://github.com/jantinnerezo/livewire-alert
+
+CREATE TABLE projects (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nama_proyek VARCHAR(255) NOT NULL,
+    deskripsi TEXT,
+    tanggal_mulai DATE,
+    tanggal_selesai DATE,
+    attachments INT,
+    FOREIGN KEY (attachments) REFERENCES project_files(id)
+);
+
+CREATE TABLE project_files (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nama_file VARCHAR(255) NOT NULL,
+    tipe_file VARCHAR(50),
+    ukuran_file INT,
+    path_file VARCHAR(255) NOT NULL
+    project_id = group
+);
+
+today = yesetrday
+this week = last week
+month
+custom period
+
+
+filter by keyword = title, pm, desc, client, team, completion, filter by 
+filter by status project
+filter by range budget & completion
+filter due date&start date
+
+status project => 
+new, -> baru
+in progress, -> ada assign 
+complete, -> complete
+cancel, -> by user
+hold -> by user
+
+
+27/9/24
+completion by auth
+
+jumlah done/ jumlah task assign-done = %
+
+flagging task(multiple) -> bugs, fitur, change request, arsitektur
+
+CRUD LABEL TASK
+
+
+release note dari task
+release note by category 
+category -> software
+sorting flag
+
+release note -> ambil task done -> create release note
+
+
+menampilkan total budget project, presentase pengeluaran budget
+plan & tracking tidak boleh melebihi budget project
+budget project = budget value
+
+
+https://tutsmake.com/laravel-10-cron-job-task-scheduling-tutorial/
+
+cron job digunakan untuk copas tasks kemaren yang belum done
+
+task yg di assign hari itu, akan masuk ke timecard dg activity date hari itu.
+cron job create timecard untuk besok dari task2 kemaren yang belum done
+timecard hanya menampilkan timecard di hari ini saja
