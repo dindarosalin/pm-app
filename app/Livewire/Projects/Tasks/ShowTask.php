@@ -49,6 +49,7 @@ class ShowTask extends Component
     public $search = '';
     public $sortColumn = null;
     public $sortDirection = 'asc';
+    public $filters = [];
 
     public function render()
     {
@@ -307,6 +308,15 @@ class ShowTask extends Component
         // Sorting
         if ($this->sortColumn) {
             $tasks = Project::scopeSorting($tasks, $this->sortColumn, $this->sortDirection);
+        }
+
+        // Filter berdasarkan kolom
+        if ($this->filters) {
+            foreach ($this->filters as $column => $value) {
+                if (!empty($value)) {
+                    $tasks = Project::scopeFilter($tasks, $column, $value);
+                }
+            }
         }
 
         return $tasks;
