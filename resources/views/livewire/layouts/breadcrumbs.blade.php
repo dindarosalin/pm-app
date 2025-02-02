@@ -1,7 +1,10 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb my-auto">
         <li class="breadcrumb-item">
-            <a href="{{ url('/') }}">Home</a>
+            <a href="{{ url('/') }}">
+                <i class="fa-solid fa-house"></i>
+                Home
+            </a>
         </li>
         @foreach ($breadcrumbs as $breadcrumb)
             @if (!$breadcrumb['active'])

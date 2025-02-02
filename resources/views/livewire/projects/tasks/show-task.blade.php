@@ -124,7 +124,6 @@
         </div>
     </div>
 
-
     <div wire:ignore.self class="offcanvas offcanvas-end w-50" tabindex="-1" id="viewOffCanvas"
         aria-labelledby="viewOffCanvasLabel">
         <div class="offcanvas-header">
@@ -255,11 +254,9 @@
                 </div>
             </div> --}}
             @endif
-            {{-- @livewire('projects.tasks.comment') --}}
             @livewire('projects.tasks.comments')
         </div>
     </div>
-
 
     <div class="row mb-2">
         <div class="col col-md-8">
@@ -275,7 +272,106 @@
                 <i class="fa-solid fa-box-archive"></i></a>
         </div>
     </div>
-    <div class="accordion accordion-flush">
+
+    <div class="card">
+        @livewire('projects.tasks.filter')
+        <div class="card-body table-responsive px-0">
+        @livewire('projects.tasks.priorities')
+            <table class="table table-sm table-bordered table-hover text-center" >
+                <thead>
+                    <tr>
+                        <th role="button" wire:click="sortBy('title')">Title
+                            <i class="fa-solid fa-arrows-up-down"></i>
+                        </th>
+                        <th role="button" wire:click="sortBy('start_date_estimation')">Start
+                            <i class="fa-solid fa-arrows-up-down"></i>
+                        </th>
+                        <th role="button" wire:click="sortBy('end_date_estimation')">End
+                            <i class="fa-solid fa-arrows-up-down"></i>
+                        </th>
+                        {{-- <th>Created By</th> --}}
+                        <th role="button" wire:click="sortBy('assign_to')">Assign To
+                            <i class="fa-solid fa-arrows-up-down"></i>
+                        </th>
+                        <th>Category</th>
+                        <th role="button" wire:click="sortBy('status_id')">Status
+                            <i class="fa-solid fa-arrows-up-down"></i>
+                        </th>
+                        <th>Flags</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($tasks as $task)
+                        <tr wire:key='{{ $task->id }}'>
+                            <td>{{ $task->title }}</td>
+                            <td>{{ date('d F Y', strtotime($task->start_date_estimation)) }}</td>
+                            <td>{{ date('d F Y', strtotime($task->end_date_estimation)) }}</td>
+                            {{-- <td>{{ $task->created_by_name }}</td> --}}
+                            <td>{{ $task->assign_to_name }}</td>
+                            <td>{{ $task->category_name }}</td>
+                            <td>
+                                <span class="badge
+                                    @switch($task->status_name)
+                                        @case('New')
+                                            text-bg-primary
+                                            @break
+                                        @case('Assign')
+                                            text-bg-info
+                                            @break
+                                        @case('On Progress')
+                                            text-bg-warning
+                                            @break
+                                        @case('Testing')
+                                            text-bg-warning
+                                            @break
+                                        @case('Done')
+                                            text-bg-success
+                                            @break
+                                        @case('Production')
+                                            text-bg-success
+                                            @break
+                                        @case('Hold')
+                                            text-bg-danger
+                                            @break
+                                        @case('Cancel')
+                                            text-bg-danger
+                                            @break
+                                    @endswitch ">{{ $task->status_name }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ $task->flag }}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2 justify-content-center align-items-center">
+                                    <!-- View icon -->
+                                    <btn wire:click="$dispatch('showById', {id: {{ $task->id }}})" class="text-primary m-0">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </btn>
+    
+                                    <!-- Edit icon -->
+                                    <btn role="button" wire:click="$dispatch('edit', {id: {{ $task->id }} })" class="text-warning m-0">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </btn>
+    
+                                    <!-- Delete icon -->
+                                    <btn role="button" wire:click="alertConfirm({{ $task->id }})"
+    
+                                    {{-- <p role="button" wire:click="$dispatch('alertConfirm', {id: {{ $task->id }}})"  --}}
+                                        class="text-danger m-0">
+                                        <i class="fa-solid fa-box-archive"></i>
+                                    </btn>
+                                </div>
+                            </td>
+    
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{-- <div class="accordion accordion-flush">
         @foreach ($statuses as $status)
             <div class="accordion-item" style="background: transparent;">
                 <button style="width: 100%; text-align: left; background: transparent; padding-left: 12px"
@@ -293,7 +389,7 @@
                 </div>
             </div>
         @endforeach
-    </div>
+    </div> --}}
 </div>
 
 @push('scripts')

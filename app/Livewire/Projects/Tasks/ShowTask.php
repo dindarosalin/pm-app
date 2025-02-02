@@ -32,6 +32,8 @@ class ShowTask extends Component
     public $selectedLabels = [];
     public $employees, $flags, $categories, $labels;
 
+    public $tasks;
+
     public $status = 1;
 
     public $statuses;
@@ -44,6 +46,10 @@ class ShowTask extends Component
     public $comment;
     public $countComment;
 
+    public $search = '';
+    public $sortColumn = null;
+    public $sortDirection = 'asc';
+
     public function render()
     {
         $this->auth = Auth::user()->user_id; // -> 1
@@ -54,6 +60,10 @@ class ShowTask extends Component
         $this->totalTask = Task::getAllProjectTasksByAuth($this->projectId, $this->auth)->count();
         $this->projectDetail = Project::getById($this->projectId);
         $this->employees = collect($this->getEmployeesTask());
+        $this->getAllTasks();
+        $this->tasks = $this->filter($this->tasks);
+
+        // dd($this->tasks);
         
         // if role admin
         // $user = User::select('user_id AS id', 'user_name AS name', 'user_email AS email')->get()->toArray();
@@ -66,6 +76,10 @@ class ShowTask extends Component
             'categories' => $this->categories,
             'labels' => $this->labels,
         ]);
+    }
+
+    public function getAllTasks(){
+        $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
     }
 
     #[On('updateTaskCount')]
@@ -102,8 +116,6 @@ class ShowTask extends Component
             $this->taskCounts[$status->id] = 0;
         }
     }
-
-
 
     public function save()
     {
@@ -282,6 +294,31 @@ class ShowTask extends Component
             }
 
             return $dataSemuaBawahan;
+        }
+    }
+
+    public function filter($tasks)
+    {
+        // Pencarian
+        if ($this->search) {
+            $tasks = Task::scopeSearch($tasks, $this->search);
+        }
+
+        // Sorting
+        if ($this->sortColumn) {
+            $tasks = Project::scopeSorting($tasks, $this->sortColumn, $this->sortDirection);
+        }
+
+        return $tasks;
+    }
+
+    public function sortBy($column)
+    {
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortColumn = $column;
+            $this->sortDirection = 'asc';
         }
     }
 
