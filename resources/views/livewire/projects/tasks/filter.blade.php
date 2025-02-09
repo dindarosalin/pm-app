@@ -71,8 +71,24 @@
         </select>
     </div>
     <div class="col">
+        <label for="" class="label-form">Filter by Category:</label>
+        <select wire:model.live.debounce="filters.category_id" class="form-select form-select-sm">
+            <option value="">Select Category</option>
+            @foreach ($categories as $status)
+                <option wire:key='{{ $status->id }}' value="{{ $status->id }}">
+                    {{ $status->category_name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col">
         <label for="" class="label-form">Search Title, Name, Flags </label>
         <input type="text" wire:model.live.debounce="search" class="form-control form-control-sm col"
             placeholder="Search..." />
+    </div>
+    <div class="col">
+        <button wire:click="resetFilter" class="btn btn-outline-success btn-sm col me-1">
+            <i class="fa-solid fa-rotate-left"></i> Reset Filter
+        </button>
     </div>
 </div>

@@ -402,8 +402,23 @@ class Task extends BaseModel
     // GET TASKS BY PROJECTS
     public static function getAllProjectTasksByAuth($projectId, $auth)
     {
+        $isAdmin = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', 20)->select('user_id')->first();
         $dataSemuaBawahan = Task::getHierarchyDown($auth);
-        if (!$dataSemuaBawahan) {
+        // $dataSemuaAtasan = Task::getHierarchyUp($auth);
+
+        if($auth == $isAdmin->user_id){
+            // Ambil ID dari data bawah dan atas
+
+            $allUser = DB::table('app_user')
+            ->select('user_id')
+            ->get()
+            ->map(function ($user) {
+                return (array) $user;
+            })
+            ->toArray();
+            // Gabungkan semua ID
+            $assignToIds = array_merge([$auth], $allUser);
+        }elseif (!$dataSemuaBawahan) {
             $assignToIds = [$auth];
         }else {
             $bawahanIds = array_column($dataSemuaBawahan, 'id');
@@ -578,7 +593,7 @@ class Task extends BaseModel
     {
         return $query->filter(function ($project) use ($searchTerm) {
             return stripos($project->title, $searchTerm) !== false ||
-                stripos($project->summary, $searchTerm) !== false ||
+                // stripos($project->summary, $searchTerm) !== false ||
                 stripos($project->created_by, $searchTerm) !== false ||
                 stripos($project->assign_to, $searchTerm) !== false;
         });

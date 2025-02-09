@@ -17,6 +17,9 @@ use App\Models\Projects\Master\TaskLabel;
 use App\Models\Employee\EmployeeHierarchy;
 use App\Models\Projects\Master\TaskCategory;
 use App\Models\Projects\Master\TaskStatuses;
+use App\Models\Settings\Role;
+use Illuminate\Support\Facades\DB;
+
 
 class ShowTask extends Component
 {
@@ -64,7 +67,7 @@ class ShowTask extends Component
         $this->getAllTasks();
         $this->tasks = $this->filter($this->tasks);
 
-        // dd($this->tasks);
+        // dd($this->employees);
         
         // if role admin
         // $user = User::select('user_id AS id', 'user_name AS name', 'user_email AS email')->get()->toArray();
@@ -80,7 +83,7 @@ class ShowTask extends Component
     }
 
     public function getAllTasks(){
-        $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
+        $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth)->sortBy('status_id');
     }
 
     #[On('updateTaskCount')]
@@ -259,6 +262,14 @@ class ShowTask extends Component
 
     public function getEmployeesTask()
     {
+        // $admin = find apakah $this->auth memiliki role id 20 di tabel app_role_user;
+        // $admin = Role::where('user_id', $this->auth)
+        //         ->where('role_id', 20)
+        //         ->exists();
+
+        $isAdmin = DB::table('app_role_user')->where('user_id', $this->auth)->where('role_id', 20)->select('user_id')->first();
+        // dd($isAdmin, $this->auth);
+
         $dataBawahanLangsung = [];
         // Get bawahan dari user login
         $employee = EmployeeHierarchy::where('user_id', $this->auth)->whereHas('child')->first();
@@ -295,6 +306,25 @@ class ShowTask extends Component
             }
 
             return $dataSemuaBawahan;
+
+            // manage assign_to untuk admin
+        } elseif ($this->auth == $isAdmin->user_id) { 
+            $allUser = DB::table('app_user')
+            ->select([
+                'user_id as id',
+                'user_name as name',
+                'user_email as email'
+            ])
+            ->get()
+            ->map(function ($user) {
+                return (array) $user;
+            })
+            ->toArray();
+
+            // $allUser = EmployeeHierarchy::getAllEmployees();
+
+            // dd($allUser);
+            return $allUser;
         }
     }
 
@@ -330,6 +360,15 @@ class ShowTask extends Component
             $this->sortColumn = $column;
             $this->sortDirection = 'asc';
         }
+    }
+
+    public function resetFilter()
+    {
+        // $this->reset();
+        $this->filters = [];
+        $this->search = '';
+        $this->timeFrame = [];
+        $this->sortColumn = null;
     }
 
     // public function sendComment()
