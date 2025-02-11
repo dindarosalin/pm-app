@@ -164,6 +164,75 @@
             </li>
         @endif
 
+{{-- MENU APPROVAL --}}
+ {{--coba  --}}
+            <div class="accordion-item">
+                <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#approvalCollapse"
+                    aria-expanded="true" aria-controls="approvalCollapse">
+                    <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
+                        <i class="fa-solid fa-person-circle-check"></i>
+                        Approval
+                    </p>
+                    <button class="btn btn-sm text-white ms-auto p-0 border-0 text-end" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                            class="bi bi-chevron-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
+                        </svg> {{--  chevron down --}}
+                    </button>
+                </li>
+
+                <div wire:ignore id="approvalCollapse"
+                    class="accordion-collapse collapse {{ Request::segment(1) == 'approval' ? 'show' : '' }}"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        @if (App\Models\Base\BaseModel::isAuthorize('115', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.form-approval') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white" href="{{ route('approval.form-approval') }}"
+                                    wire:navigate.defer.defer>
+                                    <i class="fa-solid fa-file"></i>
+                                    <span>Pengajuan Approval</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (App\Models\Base\BaseModel::isAuthorize('116', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.dashboard-request') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white" href="{{ route('approval.dashboard-request') }}"
+                                    wire:navigate.defer.defer>
+                                    <i class="fa-solid fa-check-to-slot"></i>
+                                    <span>Dashboard Pemohon</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (App\Models\Base\BaseModel::isAuthorize('117', 'R'))
+                                <li
+                                    class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.dashboard-approver') ? 'active' : '' }} ">
+                                    <a class=" text-decoration-none text-white" href="{{ route('approval.dashboard-approver') }}"
+                                        wire:navigate.defer.defer>
+                                        <i class="fa-solid fa-check-to-slot"></i>
+                                        <span>Dashboard Approver</span>
+                                    </a>
+                                </li>
+                        @endif
+                    </div>
+
+            </div>
+{{-- end coba --}}
+        {{-- @if (App\Models\Base\BaseModel::isAuthorize('114', 'R'))
+            <li class="sidebar-menu {{ request()->routeIs('approval.*') ? 'active' : '' }}"> 
+                <a href="{{ route('approval.show') }}" 
+                    class="sidebar-menu text-decoration-none text-white" wire:navigate.defer>
+                    <i class="fa-solid fa-person-circle-check"></i>
+                    <span>Approval</span>
+                </a>
+            </li>    
+        @endif --}}
+{{-- END MENU APPROVAL --}}
+
         <div class="accordion-item">
             <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#masterCollapse"
                 aria-expanded="true" aria-controls="masterCollapse">

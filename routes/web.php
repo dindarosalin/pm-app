@@ -14,6 +14,9 @@ use App\Http\Controllers\Settings\UserProfileController;
 use App\Http\Controllers\Settings\{MenuController, AccountsController, HierarchyController};
 // use App\Http\Controllers\Settings\{MenuController, AccountsController};
 use App\Http\Livewire\UpdateComponent;
+use App\Livewire\Approved\Approval;
+use App\Livewire\Approved\DashApprover;
+use App\Livewire\Approved\ShowForm;
 use App\Livewire\Availability\AvailabilityTracking;
 use App\Livewire\Availability\Performa;
 use App\Livewire\AvailabilityTracking\TryChart;
@@ -135,6 +138,17 @@ Route::middleware(['auth'])->group(function () {
         //route report
         Route::get('/', ShowReport::class)->name('show.report');
     });
+
+    // APPROVAL
+    Route::prefix('approval')->name('approval.')->group(function () {
+        // route dashboard pemohon
+        Route::get('dashboard-request', Approval::class)->name('dashboard-request');
+        // route pengajuan approval
+        Route::get('form-approval', ShowForm::class)->name('form-approval');
+        // route dashboard approver
+        Route::get('dashboard-approver', DashApprover::class)->name('dashboard-approver'); 
+    });
+    // END APPROVAL
     
     Route::prefix('master')->name('master.')->group(function () {
         Route::get('/project-status', ShowProjectStatus::class)->name('project-status');
