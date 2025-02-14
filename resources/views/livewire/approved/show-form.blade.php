@@ -20,7 +20,7 @@
                             </button>
                         </td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-success m-2" type="button">Form Cuti</button>
+                        <button class="btn btn-sm btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#cutioffcanvasRight" aria-controls="offcanvasRight">Form Cuti</button>
                     </td>
                 </tr>
                 <tr>
@@ -30,7 +30,7 @@
                         </button>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-success m-2" type="button">Form Izin Tidak Terencana</button>
+                      <button class="btn btn-sm btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#izinoffcanvasRight" aria-controls="offcanvasRight">Form Izin Tidak Terencana</button>
                     </td>
                 </tr>
                 <tr>
@@ -40,7 +40,7 @@
                         </button>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-success m-2" type="button">Form Rencana Anggaran Belanja</button>
+                      <button class="btn btn-sm btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#raboffcanvasRight" aria-controls="offcanvasRight">Form Rencana Anggaran Belanja</button>
                     </td>
                 </tr>
                 <tr>
@@ -50,7 +50,7 @@
                         </button>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-success m-2" type="button">Form Reimburse</button>
+                      <button class="btn btn-sm btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#reimburseoffcanvasRight" aria-controls="offcanvasRight">Form Reimburse</button>
                     </td>
                 </tr>
                 <tr>
@@ -60,13 +60,13 @@
                         </button>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-success m-2" type="button">Form Pengadaan Proyek</button>
+                      <button class="btn btn-sm btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#proyekoffcanvasRight" aria-controls="offcanvasRight">Form Pengadaan Proyek</button>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        {{-- MODAL --}}
+<!---------------------------------------------------------------------MODAL---------------------------------------------------------------------------------------------------------------------->
         {{-- cuti --}}
         <div class="modal fade" id="cutiBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -88,80 +88,154 @@
 
           {{-- izin tidak terencana --}}
         <div class="modal fade" id="izinBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Ketentuan Pengajuan Izin Tidak Terencana</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Ketentuan Pengajuan Izin Tidak Terencana</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
                   ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                  <button type="button" class="btn btn-sm btn-outline-success">Simpan</button>
-                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-sm btn-outline-success">Simpan</button>
               </div>
             </div>
           </div>
+        </div>
 
           {{-- RAB --}}
         <div class="modal fade" id="rabBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Ketentuan Pengajuan Rencana Anggaran Belanja</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                  <button type="button" class="btn btn-sm btn-outline-success">Simpan</button>
-                </div>
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Ketentuan Pengajuan Rencana Anggaran Belanja</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-sm btn-outline-success">Simpan</button>
               </div>
             </div>
-          </div>
+          </div> 
+        </div>
 
           {{-- Reimburse --}}
         <div class="modal fade" id="reimburseBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Ketentuan Pengajuan Reimburse</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                  <button type="button" class="btn btn-sm btn-outline-success">Simpan</button>
-                </div>
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Ketentuan Pengajuan Reimburse</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-sm btn-outline-success">Simpan</button>
               </div>
             </div>
-          </div>
+          </div>    
+        </div>
 
           {{-- pengadaan proyek --}}
         <div class="modal fade" id="proyekBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Ketentuan Pengajuan Pengadaan Proyek</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                  <button type="button" class="btn btn-sm btn-outline-success">Simpan</button>
-                </div>
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Ketentuan Pengajuan Pengadaan Proyek</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-sm btn-outline-success">Simpan</button>
               </div>
             </div>
+          </div>    
+        </div>
+        <!---------------------------------------------------------------------END MODAL---------------------------------------------------------------------------------------------------------------------->
+
+        <!---------------------------------------------------------------------OFFCANVAS---------------------------------------------------------------------------------------------------------------------->
+        {{-- cuti --}}
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="cutioffcanvasRight" aria-labelledby="offcanvasRightLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Form Pengajuan Cuti</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
+          <div class="offcanvas-body">
+            ...
+          </div>
+          <div class="offcanvas-footer">
+            <button type="submit" class="btn btn-primary m-4">Save</button>
+          </div>
+        </div>
+
+        {{-- izin tidak terencana --}}
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="izinoffcanvasRight" aria-labelledby="offcanvasRightLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Form Pengajuan Izin Tidak Terencana</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            ...
+          </div>
+          <div class="offcanvas-footer">
+            <button type="submit" class="btn btn-primary m-4">Save</button>
+          </div>
+        </div>
+
+        {{-- RAB --}}
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="raboffcanvasRight" aria-labelledby="offcanvasRightLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Form Pengajuan Rencana Anggaran Belanja</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            ...
+          </div>
+          <div class="offcanvas-footer">
+            <button type="submit" class="btn btn-primary m-4">Save</button>
+          </div>
+        </div>
+
+        {{-- Reimburse --}}
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="reimburseoffcanvasRight" aria-labelledby="offcanvasRightLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Form Pengajuan Reimburse</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            ...
+          </div>
+          <div class="offcanvas-footer">
+            <button type="submit" class="btn btn-primary m-4">Save</button>
+          </div>
+        </div>
+
+        {{-- pengadaan proyek --}}
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="proyekoffcanvasRight" aria-labelledby="offcanvasRightLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Form Pengajuan Pengadaan Proyek</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            ...
+          </div>
+          <div class="offcanvas-footer">
+            <button type="submit" class="btn btn-primary m-4">Save</button>
+          </div>
+        </div>
+        <!---------------------------------------------------------------------END OFFCANVAS---------------------------------------------------------------------------------------------------------------------->
+      
     </div>
-        {{-- END MODAL --}}
+
 </div>
 
