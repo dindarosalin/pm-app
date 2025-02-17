@@ -49,10 +49,20 @@ class ShowTask extends Component
     public $comment;
     public $countComment;
 
+    // FILTER VAR
     public $search = '';
     public $sortColumn = null;
     public $sortDirection = 'asc';
     public $filters = [];
+
+    public $timeFrame = [];
+    public $fromToDate;
+
+    public $fromDate = [];
+    public $toDate = [];
+
+    public $fromNumber = [];
+    public $toNumber = [];
 
     public function render()
     {
@@ -349,6 +359,22 @@ class ShowTask extends Component
                     $tasks = Project::scopeFilter($tasks, $column, $value);
                 }
             }
+        }
+
+        // Filter berdasarkan time frame dan date range
+        if ($this->timeFrame) {
+            foreach ($this->timeFrame as $column => $this->fromToDate) {
+                if ($this->fromToDate === 'custom-start-date' || $this->fromToDate === 'custom-start' || $this->fromToDate === 'custom-end') {
+                    $tasks = Task::scopeFilterByDateRange($tasks, $this->fromDate, $this->toDate, $column);
+                } else {
+                    $tasks = Task::scopeFilterByTimeFrame($tasks, $column, $this->fromToDate);
+                }
+            }
+        }
+
+        foreach ($this->fromNumber as $column => $fromValue) {
+            $toValue = $this->toNumber[$column] ?? null;
+            $tasks = Task::scopeFilterByNumberRange($tasks, $column, $fromValue, $toValue);
         }
 
         return $tasks;
