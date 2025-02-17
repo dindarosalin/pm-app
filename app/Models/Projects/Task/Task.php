@@ -402,12 +402,14 @@ class Task extends BaseModel
     // GET TASKS BY PROJECTS
     public static function getAllProjectTasksByAuth($projectId, $auth)
     {
-        $isAdmin = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', 20)->select('user_id')->first();
+        $isAdmin = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', 20)->value('user_id');
         $dataSemuaBawahan = Task::getHierarchyDown($auth);
         // $dataSemuaAtasan = Task::getHierarchyUp($auth);
 
-        if($auth == $isAdmin->user_id){
-            // Ambil ID dari data bawah dan atas
+        // dd($isAdmin, $auth);
+
+        if($auth == $isAdmin){
+            // Ambil ID dari seluruh pengguna
 
             $allUser = DB::table('app_user')
             ->select('user_id')

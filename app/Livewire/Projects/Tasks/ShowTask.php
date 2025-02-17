@@ -267,7 +267,9 @@ class ShowTask extends Component
         //         ->where('role_id', 20)
         //         ->exists();
 
-        $isAdmin = DB::table('app_role_user')->where('user_id', $this->auth)->where('role_id', 20)->select('user_id')->first();
+        // $isAdmin = DB::table('app_role_user')->where('user_id', $this->auth)->where('role_id', 20)->select('user_id')->first();
+        $isAdmin = DB::table('app_role_user')->where('user_id', $this->auth)->where('role_id', 20)->value('user_id');
+
         // dd($isAdmin, $this->auth);
 
         $dataBawahanLangsung = [];
@@ -308,7 +310,7 @@ class ShowTask extends Component
             return $dataSemuaBawahan;
 
             // manage assign_to untuk admin
-        } elseif ($this->auth == $isAdmin->user_id) { 
+        } elseif ($this->auth == $isAdmin) { 
             $allUser = DB::table('app_user')
             ->select([
                 'user_id as id',
