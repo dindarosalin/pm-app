@@ -82,11 +82,27 @@
         </select>
     </div>
     <div class="col">
-        <label for="" class="label-form">Search Title, Name, Flags </label>
+        <label for="" class="label-form">Filter by Assign To:</label>
+        <select wire:model.live.debounce="filters.assign_to" class="form-select form-select-sm">
+            <option value="">Select Employee</option>
+            @if ($employees->count() >= 1)
+                <option value="{{ $auth }}" selected>Me</option>
+                @foreach ($employees as $employee)
+                    <option wire:key='{{ $employee['id'] }}' value="{{ $employee['id'] }}">
+                        {{ $employee['name'] }}
+                    </option>
+                @endforeach
+            @else
+                <option value="{{ $auth }}" selected>{{ $auth }}</option>
+            @endif
+        </select>
+    </div>
+    <div class="col">
+        <label for="" class="label-form">Search Title:</label>
         <input type="text" wire:model.live.debounce="search" class="form-control form-control-sm col"
             placeholder="Search..." />
     </div>
-    <div class="col">
+    <div class="col d-flex align-items-end">
         <button wire:click="resetFilter" class="btn btn-outline-success btn-sm col me-1">
             <i class="fa-solid fa-rotate-left"></i> Reset Filter
         </button>

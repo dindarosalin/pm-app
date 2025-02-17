@@ -104,7 +104,6 @@
                         @else
                             <option value="{{ $auth }}" selected>{{ $auth }}</option>
                         @endif
-
                     </select>
                 </div>
                 <div class="mb-3">
@@ -303,6 +302,8 @@
                             <i class="fa-solid fa-arrows-up-down"></i>
                         </th>
                         <th>Flags</th>
+                        <th>Holiday</th>
+                        <th>Weekend</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -350,6 +351,20 @@
                                 {{ $task->flag }}
                             </td>
                             <td>
+                                @if ($task->use_holiday == 1)
+                                    <i class="fa-solid fa-square-check text-success"></i>
+                                @else
+                                    <i class="fa-solid fa-square-xmark text-danger"></i>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($task->use_weekend == 1)
+                                    <i class="fa-solid fa-square-check text-success"></i>
+                                @else
+                                    <i class="fa-solid fa-square-xmark text-danger"></i>
+                                @endif
+                            </td>
+                            <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <!-- View icon -->
                                     <btn wire:click="$dispatch('showById', {id: {{ $task->id }}})" class="text-primary m-0">
@@ -370,7 +385,6 @@
                                     </btn>
                                 </div>
                             </td>
-    
                         </tr>
                     @endforeach
                 </tbody>
