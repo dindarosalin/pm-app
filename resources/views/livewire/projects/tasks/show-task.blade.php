@@ -261,7 +261,6 @@
         <div class="col col-md-8">
             <p>Nama Project: {{ $projectDetail->title }}, Jumlah Task: {{ $totalTask }}, Completion:
                 {{ $projectDetail->completion }}%, Status Project: {{ $projectDetail->status }}</p>
-
         </div>
         <div class="col text-end">
             <button wire:click="$dispatch('show-create-offcanvas')" class="btn btn-success btn-sm col"><i
@@ -273,9 +272,8 @@
     </div>
 
     <div class="card">
-        {{-- @livewire('projects.tasks.filter' :$tasks) --}}
-        {{-- <livewire:projects.tasks.filter :$tasks /> --}}
         @include('livewire.projects.tasks.filter')
+        
         <div class="card-body table-responsive px-0">
             <livewire:projects.tasks.priorities />
             <table class="table table-sm table-bordered table-hover text-center" >

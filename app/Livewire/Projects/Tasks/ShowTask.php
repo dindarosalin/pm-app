@@ -66,23 +66,16 @@ class ShowTask extends Component
 
     public function render()
     {
-        $this->auth = Auth::user()->user_id; // -> 1
-        // $this->auth = '16825598905258'; // -> 2
-        // $this->auth = '16838855416673'; // -> 3
-        // $this->auth = '1672385124827'; // -> 4
+        $this->auth = Auth::user()->user_id;
 
         $this->totalTask = Task::getAllProjectTasksByAuth($this->projectId, $this->auth)->count();
         $this->projectDetail = Project::getById($this->projectId);
         $this->employees = collect($this->getEmployeesTask());
         $this->getAllTasks();
+
+        // $this->filter($this->tasks);
         $this->tasks = $this->filter($this->tasks);
-
-        // dd($this->employees);
-        
-        // if role admin
-        // $user = User::select('user_id AS id', 'user_name AS name', 'user_email AS email')->get()->toArray();
-        // $this->employees = collect($user);
-
+        // dd($this->tasks);
         return view('livewire.projects.tasks.show-task', [
             'totalTask' => $this->totalTask,
             'employees' => $this->employees,
@@ -272,12 +265,6 @@ class ShowTask extends Component
 
     public function getEmployeesTask()
     {
-        // $admin = find apakah $this->auth memiliki role id 20 di tabel app_role_user;
-        // $admin = Role::where('user_id', $this->auth)
-        //         ->where('role_id', 20)
-        //         ->exists();
-
-        // $isAdmin = DB::table('app_role_user')->where('user_id', $this->auth)->where('role_id', 20)->select('user_id')->first();
         $isAdmin = DB::table('app_role_user')->where('user_id', $this->auth)->where('role_id', 20)->value('user_id');
 
         // dd($isAdmin, $this->auth);
@@ -342,6 +329,7 @@ class ShowTask extends Component
 
     public function filter($tasks)
     {
+        // dd('kefilter');
         // Pencarian
         if ($this->search) {
             $tasks = Task::scopeSearch($tasks, $this->search);
