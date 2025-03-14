@@ -10,4 +10,6 @@ class Priorities extends Component
     {
         return view('livewire.projects.tasks.priorities');
     }
+
+    
 }
