@@ -42,6 +42,16 @@
             @endif
         @endforeach --}}
         <div class="accordion-item">
+            @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
+        <li class=" {{ request()->routeIs('report.show.report') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}" class="sidebar-menu text-decoration-none text-white"
+                wire:navigate.defer>
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+    @endif
+
             @if (App\Models\Base\BaseModel::isAuthorize('90', 'R'))
                 <li
                     class="sidebar-menu d-flex justifty-content-between {{ request()->routeIs('projects.show.project') ? 'active' : '' }}">
@@ -72,7 +82,7 @@
                                 <a class=" text-decoration-none text-white"
                                     href="{{ route('projects.dashboard.task', $projectId) }}" wire:navigate.defer.defer>
                                     <i class="fa-solid fa-chart-simple"></i>
-                                    <span>Dashboard</span>
+                                    <span>Dashboard Project</span>
                                 </a>
                             </li>
                         @endif
@@ -164,6 +174,27 @@
             </li>
         @endif
 
+        @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
+            <li class=" {{ request()->routeIs('work-from-home.show') ? 'active' : '' }}">
+                <a href="{{ route('work-from-home.show') }}" class="sidebar-menu text-decoration-none text-white"
+                    wire:navigate.defer>
+                    <i class="fa-solid fa-house-laptop"></i>
+                    <span>Work From Home</span>
+                </a>
+            </li>
+        @endif
+        @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
+            <li class=" {{ request()->routeIs('work-from-home.show') ? 'active' : '' }}">
+                <a href="{{ route('work-from-home.show') }}" class="sidebar-menu text-decoration-none text-white"
+                    wire:navigate.defer>
+                    <i class="fa-solid fa-house-laptop"></i>
+                    <span>Monitoring WFH</span>
+                </a>
+            </li>
+        @endif
+
+        
+
         <div class="accordion-item">
             <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#masterCollapse"
                 aria-expanded="true" aria-controls="masterCollapse">
@@ -184,6 +215,17 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'master' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.status-wfh') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.status-wfh') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Status WFH</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.project-status') ? 'active' : '' }} ">

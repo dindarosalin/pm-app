@@ -1,11 +1,11 @@
 <div>
     @section('title')
-        Dashboard
+        Dashboard Project
     @endsection
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="row">
             <div class="card card-title">
-                <h5>Dashboard</h5>
+                <h5>Dashboard Project</h5>
             </div>
             <!-- Detail Project -->
             <div class="col-md-12 col-xl-12 col-sm-12">
@@ -158,6 +158,7 @@
             <!-- Time End -->
 
             <!-- Progress -->
+            {{-- @dd($percentagesProgress) --}}
             <div class="col-md-8 col-xl-8 col-sm-12">
                 <div class="card card-switch p-3" style="min-height: 40vh;">
                     <h5>Progress</h5>

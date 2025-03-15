@@ -21,12 +21,14 @@ use App\Livewire\Budget\Index as BudgetIndex;
 use App\Livewire\Budget\Plan\Plan as BudgetPlan;
 use App\Livewire\Budget\Track\Track as BudgetTrack;
 use App\Livewire\Dashboard\Dashboard as Dashboard;
+use App\Livewire\Dashboard\DashboardAll;
 use App\Livewire\Master\BudgetCategory\ShowBudgetCategory;
 use App\Livewire\Master\BudgetCategory\ShowBudgetSubCategory;
 use App\Livewire\Master\Helper;
 //PROJECTS
 use App\Livewire\Master\Holiday\ShowHoliday;
 use App\Livewire\Master\ProjectStatus\ShowProjectStatus;
+use App\Livewire\Master\StatusWfh\ShowStatusWfh;
 use App\Livewire\Master\TaskCategory\ShowTaskCategory;
 //TASK
 use App\Livewire\Master\TaskFlag\ShowTaskFlag;
@@ -59,8 +61,10 @@ use App\Livewire\Report\ShowReport;
 use App\Livewire\StartWork;
 use App\Livewire\TableTrial;
 use App\Livewire\TimeCard\ShowTimeCard;
+use App\Livewire\WFH\WorkFromHome;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
+
 
 
 
@@ -85,6 +89,7 @@ Route::get('/trial', TableTrial::class)->name('table-trial');
 Route::middleware(['auth'])->group(function () {
     Route::get('/', StartWork::class)->name('start');
     Route::get('/logout', [LogoutController::class, 'logout']);
+    Route::get('/dashboard', DashboardAll::class)->name('dashboard');
 
     Route::prefix('projects')->name('projects.')->group(function () {
 
@@ -135,8 +140,15 @@ Route::middleware(['auth'])->group(function () {
         //route report
         Route::get('/', ShowReport::class)->name('show.report');
     });
+
+    Route::prefix('work-from-home')->name('work-from-home.')->group(function(){
+        Route::get('/', WorkFromHome::class)->name('show');
+        
+    });
+
     
     Route::prefix('master')->name('master.')->group(function () {
+        Route::get('/status-wfh', ShowStatusWfh::class)->name('status-wfh');
         Route::get('/project-status', ShowProjectStatus::class)->name('project-status');
         Route::get('/task-status', ShowTaskStatus::class)->name('task-status');
         Route::get('/task-flag', ShowTaskFlag::class)->name('task-flag');

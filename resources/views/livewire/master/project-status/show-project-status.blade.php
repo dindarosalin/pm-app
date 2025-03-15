@@ -2,8 +2,8 @@
 <div>
     <div class="offcanvas offcanvas-end"  data-bs-scroll="true" tabindex="-1" id="offCanvasFormProject" aria-labelledby="offCanvasFormProjectLabel">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offCanvasFormProjectLabel">Form Project Statuses</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 class="offcanvas-title" id="offCanvasFormProjectLabel">Form Project Statuses</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <form wire:submit='save'>
