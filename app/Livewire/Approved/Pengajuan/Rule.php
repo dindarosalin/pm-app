@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use function session;
 
 class Rule extends Component
 {
@@ -15,9 +16,6 @@ class Rule extends Component
 
     public $attachments = [], $existingAttachments = []; //simpan path file
     public $ruleId;
-    // public $file; //upload file
-    // public $fileName;
-    // public $existingFiles;
     public $title;
     
    
@@ -29,18 +27,6 @@ class Rule extends Component
     }
 
     // CREATE DAN UPDATE
-    // public function store()
-    // {
-    //     $this->validate([
-    //         'newFileRule' => 'required|mimes:pdf|max:2048', // Hanya file PDF dengan max size 2MB
-    //     ]);
-
-    //     $filePath = $this->newFileRule->store('uploads', 'public');
-    //     $this->filePath = $filePath;
-
-    //     session()->flash('message', 'File berhasil diunggah.');
-    // }
-
     public function store()
     {
         $attachmentsPaths = $this->existingAttachments  ?? [];
@@ -72,6 +58,10 @@ class Rule extends Component
                 ]);
                 session()->flash('success', 'Project Created Successfully!!');
             }
+
+            // dispatch load otomatis
+            $this->dispatch('ruleUpdated');
+            
             $this->dispatch('swal:modal', [
                 'type' => 'success',
                 'message' => 'Data saved',
@@ -80,7 +70,54 @@ class Rule extends Component
         }  catch (\Throwable $th) {
             session()->flash('error', $th);
         }
-        
+    }
+
+    public function removeFile($type, $key)
+    {
+        if ($type === 'new') {
+            unset($this->attachments[$key]);
+        } else {
+            Storage::disk('public')->delete($this->existingAttachments[$key]['path']);
+            unset($this->existingAttachments[$key]);
+        }
+    }
+
+    public function render()
+    {
+        // return view('livewire.approved.pengajuan.rule', [
+        //     'title' => $this->title, //kirim ke view blade 
+        // ]);
+        return view('livewire.approved.pengajuan.rule');
+
+    }
+}
+
+// Update File
+    // public function updateFile()
+    // {
+    //     $this->validate([
+    //         'file' => 'file|max:2048|mimes:jpg,jpeg,png,pdf', //max 2mb
+    //     ]);
+
+    //     $this->filePath = $this->file->temporaryUrl();
+    //     $this->fileName = $this->file->getClientOriginalName();
+    // }
+
+    // public $file; //upload file
+    // public $fileName;
+    // public $existingFiles;
+
+    // public function store()
+    // {
+    //     $this->validate([
+    //         'newFileRule' => 'required|mimes:pdf|max:2048', // Hanya file PDF dengan max size 2MB
+    //     ]);
+
+    //     $filePath = $this->newFileRule->store('uploads', 'public');
+    //     $this->filePath = $filePath;
+
+    //     session()->flash('message', 'File berhasil diunggah.');
+    // }
 
         // validate
         // $this->validate([
@@ -116,19 +153,8 @@ class Rule extends Component
         //     throw $th;
         //     $this->js("alert('unsaved')");
         // }
-    }
 
-    public function removeFile($type, $key)
-    {
-        if ($type === 'new') {
-            unset($this->attachments[$key]);
-        } else {
-            Storage::disk('public')->delete($this->existingAttachments[$key]['path']);
-            unset($this->existingAttachments[$key]);
-        }
-    }
-
-    // public function mount($title = "Form Approval")
+         // public function mount($title = "Form Approval")
     // {
     //     $this->title = $title;
     //     $this->existingFiles = Ketentuan::getAll(); //get all file pada database
@@ -210,25 +236,4 @@ class Rule extends Component
 
     //         session()->flash('message', 'file berhasil dihapus');
     //     }
-    // }
-
-    public function render()
-    {
-        // return view('livewire.approved.pengajuan.rule', [
-        //     'title' => $this->title, //kirim ke view blade 
-        // ]);
-        return view('livewire.approved.pengajuan.rule');
-
-    }
-}
-
-// Update File
-    // public function updateFile()
-    // {
-    //     $this->validate([
-    //         'file' => 'file|max:2048|mimes:jpg,jpeg,png,pdf', //max 2mb
-    //     ]);
-
-    //     $this->filePath = $this->file->temporaryUrl();
-    //     $this->fileName = $this->file->getClientOriginalName();
     // }

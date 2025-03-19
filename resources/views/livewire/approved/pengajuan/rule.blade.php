@@ -45,68 +45,28 @@
                         @endforeach
                     </div>
                 @endif
-                {{-- <div class="mb-3">
-                    <label for="newFileRule" class="form-label">Upload File Ketentuan</label>
-                    <input wire:model="newFileRule" type="file" accept="application/pdf" class="form-control" id="newFileRule">
-                </div> --}}
-                
-                {{-- @error('newFileRule')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror --}}
+               
                 <button type="submit" class="btn btn-primary">Upload</button>
               </form>
-
-              {{-- <form wire:submit.prevent="store">
-                <!--Session upload -->
-                @if (session('role') === 'HR')
-                    <div class="mb-3">
-                        <label for="file" class="form-label">Pilih File</label>
-                        <input type="file" class="form-control" wire:model="file">
-                        @error('file')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                @else
-                <p class="text-danger">Anda tidak memiliki izin untuk mengunggah file</p>
-                @endif
-
-                <!--PREVIEW-->
-                @if ($file)
-                    <p>Preview: {{ $file->getClientOriginalName() }}</p>
-                    @if (in_array($file->extension(), ['jpg', 'jpeg', 'png']))
-                        <img src="{{ $file->temporaryUrl() }}" class="img-thumbnail" width="100">
-                    @elseif ($file->extension() === 'pdf')
-                        <iframe src="{{ $file->temporaryUrl() }}" width="100%" height="200"></iframe>
-                    @endif
-                @endif
-              </form> --}}
             </div> 
-            <div class="modal-footer">
-                {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                @if (session('role') === 'HR')
-                <button type="submit" class="btn btn-primary">Upload</button>
-                @endif --}}
-                
-              </div>
             </div>
         </div>
     </div>
 </div>
 
-<!--ALERT SUCCESS-->
-{{-- @if (session()->has('message'))
-    <div class="alert alert-success mt-3">
-        {{ session('message') }}
-    </div>
-@elseif (session()->has('error'))
-    <div class="alert alert-danger mt-3">
-        {{ session('error') }}
-    </div>
-@endif --}}
+
 
 <!===============================================================JS====================================>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+    // tutup modal setelah data tersimpan
+    Livewire.on('ruleUpdated', () => {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('dynamicModal'));
+        if (modal) {
+            modal.hide();
+        }
+    });
+    // buka modal
     document.querySelectorAll(".open-modal").forEach(button => {
         button.addEventListener("click", function () {
             let title = this.getAttribute("data-title");
@@ -132,3 +92,53 @@
         });
     });
 </script> --}}
+
+ {{-- <div class="mb-3">
+                    <label for="newFileRule" class="form-label">Upload File Ketentuan</label>
+                    <input wire:model="newFileRule" type="file" accept="application/pdf" class="form-control" id="newFileRule">
+                </div> --}}
+ {{-- @error('newFileRule')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror --}}
+
+{{-- <form wire:submit.prevent="store">
+    <!--ALERT SUCCESS-->
+{{-- @if (session()->has('message'))
+    <div class="alert alert-success mt-3">
+        {{ session('message') }}
+    </div>
+@elseif (session()->has('error'))
+    <div class="alert alert-danger mt-3">
+        {{ session('error') }}
+    </div>
+@endif --}}
+                <!--Session upload -->
+                {{-- @if (session('role') === 'HR')
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Pilih File</label>
+                        <input type="file" class="form-control" wire:model="file">
+                        @error('file')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                @else
+                <p class="text-danger">Anda tidak memiliki izin untuk mengunggah file</p>
+                @endif
+
+                <!--PREVIEW-->
+                @if ($file)
+                    <p>Preview: {{ $file->getClientOriginalName() }}</p>
+                    @if (in_array($file->extension(), ['jpg', 'jpeg', 'png']))
+                        <img src="{{ $file->temporaryUrl() }}" class="img-thumbnail" width="100">
+                    @elseif ($file->extension() === 'pdf')
+                        <iframe src="{{ $file->temporaryUrl() }}" width="100%" height="200"></iframe>
+                    @endif
+                @endif
+              </form>  --}}
+              {{-- <div class="modal-footer"> --}}
+                {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                @if (session('role') === 'HR')
+                <button type="submit" class="btn btn-primary">Upload</button>
+                @endif --}}
+                
+              {{-- </div> --}}

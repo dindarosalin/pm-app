@@ -197,6 +197,17 @@
                             </li>
                         @endif
 
+                        @if (App\Models\Base\BaseModel::isAuthorize('118', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.upload-rule') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white" href="{{ route('approval.upload-rule') }}"
+                                    wire:navigate.defer.defer>
+                                    <i class="fa-solid fa-upload"></i>
+                                    <span>Upload Ketentuan</span>
+                                </a>
+                            </li>
+                        @endif
+
                         @if (App\Models\Base\BaseModel::isAuthorize('116', 'R'))
                             <li
                                 class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.dashboard-request') ? 'active' : '' }} ">
