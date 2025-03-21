@@ -2,18 +2,25 @@
     <div wire:key="dynamicModal" wire:ignore.self class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
+            
             <div class="modal-header">
                 <h5 class="modal-title" id="modalTitle">Ketentuan Pengajuan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
 
+            <div class="modal-body">
               <!--UPLOAD-->
               <form wire:submit.prevent="store">
-                <!--input upload-->
+                <!--input jenis ketentuan (otomatis)-->
                 <div class="mb-3">
-                    <label class="form-label">Upload File Ketentuan</label>
-                    <input type="file" wire:model="attachments" class="form-control form-control-sm" multiple>
+                    <label for="jenis" class="form-label">Jenis Ketentuan</label>
+                    <input type="text" wire:model='jenis' class="form-control" id="jenis">
+                </div>
+
+                <!--input file-->
+                <div class="mb-3">
+                    <label for="attachemnts" class="form-label">Upload File</label>
+                    <input type="file" wire:model="attachments" class="form-control" id="attachments">
                     <div wire:loading wire:target="attachments">Uploading...</div>
                 </div>
 
@@ -30,6 +37,18 @@
                     </div>  
                 @endif
 
+                {{-- @if ($attachments)
+                    <div>
+                        @foreach ($attachments as $key => $attachment)
+                            <div class="flex">
+                                <p>{{ $attachment->getClientOriginalName() }}</p>
+                                <p wire:click="removeFile('new', {{ $key }})"
+                                    class="text-danger btn btn-sm">Hapus</p> 
+                            </div>
+                        @endforeach
+                    </div>  
+                @endif --}}
+
                 <!--Preview dari database-->
                 @if ($existingAttachments)
                     <div>
@@ -45,11 +64,28 @@
                         @endforeach
                     </div>
                 @endif
+
+                {{-- @if ($existingAttachments)
+                    <div>
+                        @foreach ($existingAttachments as $key => $attachment)
+                            <div class="flex">
+                                <a href="{{ asset('storage/' . $attachment['file_path']) }}" target="_blank">
+                                    {{ $attachment['file_name'] }}
+                                </a>
+
+                                <p wire:click="removeFile('existing', {{ $key }})"
+                                    class="text-danger btn btn-sm">Hapus</p>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif --}}
                
                 <button type="submit" class="btn btn-primary">Upload</button>
               </form>
+
+              
             </div> 
-            </div>
+        </div>
         </div>
     </div>
 </div>
@@ -58,6 +94,29 @@
 
 <!===============================================================JS====================================>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // tutup modal setelah data tersimpan
+        Livewire.on('ruleUpdated', () => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('dynamicModal'));
+            if (modal) {
+                modal.hide();
+            }
+        });
+        // buka modal dan kirim data jenis ke Livewire
+        document.querySelectorAll(".open-modal").forEach(button => {
+            button.addEventListener("click", function () {
+                let title = this.getAttribute("data-title");
+                let jenis = this.getAttribute("data-jenis"); // Ambil jenis ketentuan dari atribut data-jenis
+                document.getElementById("modalTitle").textContent = title;
+                
+                // Kirim jenis ketentuan ke Livewire component
+                Livewire.emit('setJenis', jenis);
+            });
+        });
+    });
+</script>
+
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function () {
     // tutup modal setelah data tersimpan
     Livewire.on('ruleUpdated', () => {
@@ -75,7 +134,7 @@
     });
 });
 
-</script>
+</script> --}}
 
 
 {{-- <script>

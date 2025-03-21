@@ -20,6 +20,7 @@ class Ketentuan extends BaseModel
     {
         // dd($storeData);
         return DB::table('ketentuans')->insert([
+            'jenis' => $storeData['jenis'],
             'file_name' => $storeData['file_name'],
             'file_path' => $storeData['file_path'],
             'created_at' => now(),
@@ -32,6 +33,7 @@ class Ketentuan extends BaseModel
         return DB::table('ketentuans')
                 ->where('id', $id)
                 ->update([
+                    'jenis' => $storeData['jenis'],
                     'file_name' => $storeData['file_name'],
                     'file_path' => $storeData['file_path'],
                     'updated_at' => now(),
@@ -68,12 +70,12 @@ class Ketentuan extends BaseModel
                 ->where('id', $id)
                 ->first();
     }
+}
 
-    // get role
+// get role
     // public function getRole($role_id)
     // {
     //     return DB::table('app_role')
     //             ->where('role_id', $role_id)
     //             ->first();
     // }
-}
