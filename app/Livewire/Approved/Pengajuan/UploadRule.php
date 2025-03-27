@@ -7,15 +7,15 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 
 class UploadRule extends Component
+
+// =================================CREATE MODAL DI RULE BERHASIL==========================================================
 {
     public $rules;
 
-    public function render()
+    public function mount()
     {
         $this->getKetentuan();
-        return view('livewire.approved.pengajuan.upload-rule');
     }
-
 // ============================GET ALL===========================================================================
     // event listener for reload otomatis
     #[On('ruleUpdated')]
@@ -25,8 +25,33 @@ class UploadRule extends Component
         $this->rules = Ketentuan::getAll();
     }
   
-}
+// ==================================DELETE===============================================================================
+    public function deleteRule($id)
+    {
+        try {
+            Ketentuan::delete($id);
+            $this->dispatch('ruleUpdated');
+            $this->dispatch('alert', [
+                'type' => 'success', 
+                'message' => 'Data berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Gagal menghapus data: '.$e->getMessage()
+            ]);
+        }
+    }
 
+// ================================RENDER==================================================================
+    public function render()
+    {
+        // $this->getKetentuan();
+        return view('livewire.approved.pengajuan.upload-rule');
+    }
+
+}
+// ====================================================================================================
 
 
 // {
