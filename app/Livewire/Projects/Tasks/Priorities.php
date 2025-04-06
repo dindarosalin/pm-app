@@ -14,7 +14,7 @@ class Priorities extends Component
 
     public function render()
     {
-        $this->fc();
+        // $this->fc();
         return view('livewire.projects.tasks.priorities');
     }
 
@@ -48,6 +48,10 @@ class Priorities extends Component
         $a = $flagsPerTask;
     
         dd($this->tasks, $a, $this->criterias);
+    }
+
+    public function dataCounter(){
+        
     }
     
 }
