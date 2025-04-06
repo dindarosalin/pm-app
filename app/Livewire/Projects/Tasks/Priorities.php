@@ -17,6 +17,7 @@ class Priorities extends Component
     public function render()
     {
         $this->loadData();
+        // dd($this->tasks);
         $this->calculateScores(); 
         return view('livewire.projects.tasks.priorities');
     }
@@ -28,7 +29,11 @@ class Priorities extends Component
 
     public function loadData() 
     {
-        $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
+        // $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
+        // $this->tasks->filter(function ($task) {
+        //     return $task->status_id <= 4;
+        // });
+
         $this->criterias = TaskCriterias::getAll();
     }
 
@@ -179,13 +184,14 @@ class Priorities extends Component
 
             $finalScores->push((object)[
                 'task_id' => $row['task_id'],
-                'task_name' => Task::getById($row['task_id'])->title,
+                'task' => Task::getById($row['task_id']),
                 'score' => round($score, 4),
             ]);
         }
 
         // hasilnya atau urutkan
         $this->taskScored = $finalScores->sortByDesc('score')->values();
+        $this->dispatch('update-task-score', $this->taskScored);
         // dd($this->taskScored);
     }
 
