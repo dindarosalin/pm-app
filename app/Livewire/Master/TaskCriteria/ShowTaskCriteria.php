@@ -3,6 +3,7 @@
 namespace App\Livewire\Master\TaskCriteria;
 
 use App\Models\Projects\Master\TaskCriterias;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ShowTaskCriteria extends Component
