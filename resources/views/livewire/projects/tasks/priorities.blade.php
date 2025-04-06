@@ -1,5 +1,5 @@
 <div>
     <div class="card">
-        prioritas tugas
+        rekomendasi tugas
     </div>
 </div>

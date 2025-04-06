@@ -48,7 +48,33 @@ class TaskCriterias extends BaseModel
         ->delete();
     }
 
-    public static function getColumnNames(){
-        return Schema::getColumnListing('tasks');
+    public static function getAllTaskColumnNames()
+    {
+        return [
+            'id',
+            'project_id',
+            'title',
+            'summary',
+            'start_date_estimation',
+            'end_date_estimation',
+            'attachment',
+            'created_by',
+            'assign_to',
+            'completion_time',
+            'created_at',
+            'updated_at',
+            'status_id',
+            'category_id',
+            'use_holiday',
+            'use_weekend',
+            'deleted_at',
+            'status_name',
+            'project_title',
+            'created_by_name',
+            'assign_to_name',
+            'category_name',
+            'flag',
+            'label'
+        ];
     }
 }

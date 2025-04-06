@@ -16,7 +16,7 @@ class ShowTaskCriteria extends Component
     public function render()
     {
         $this->taskCriterias = TaskCriterias::getAll();
-        $this->cNameList = TaskCriterias::getColumnNames();
+        $this->cNameList = TaskCriterias::getAllTaskColumnNames();
         // dd($this->cNameList);
 
         return view('livewire.master.task-criteria.show-task-criteria');

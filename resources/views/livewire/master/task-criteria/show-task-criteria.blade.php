@@ -18,16 +18,14 @@
                     </select>
                 </div> --}}
                 <div class="mb-3">
-                    <label class="form-label"><span class="text-danger">*</span>Name: ( <b>pilih salah satu</b> select/input)</label>
-                    <select wire:model.live="cName" class="form-select form-control-sm mb-3" aria-label="Select Column Name"
+                    <label class="form-label"><span class="text-danger">*</span>Name:</label>
+                    <select wire:model="cName" class="form-select form-control-sm mb-3" aria-label="Select Column Name"
                         required>
                         <option value="" disabled selected>Pilih kolom</option>
                         @foreach ($cNameList as $a)
                             <option value="{{ $a }}">{{ ucfirst(str_replace('_', ' ', $a)) }}</option>
                         @endforeach
                     </select>
-                    <input type="text" wire:model="cName" class="form-control form-control-sm"
-                    placeholder="Masukkan nama kolom">
                 </div>
 
                 <div class="mb-3">

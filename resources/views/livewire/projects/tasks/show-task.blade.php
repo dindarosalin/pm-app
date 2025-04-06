@@ -275,7 +275,7 @@
         @include('livewire.projects.tasks.filter')
         
         <div class="card-body table-responsive px-0">
-            <livewire:projects.tasks.priorities />
+            <livewire:projects.tasks.priorities :projectId="$projectId" :auth="$auth" />
             <table class="table table-sm table-bordered table-hover text-center" >
                 <thead>
                     <tr>

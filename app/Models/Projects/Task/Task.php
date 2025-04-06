@@ -14,7 +14,59 @@ class Task extends BaseModel
     // GET ALL TASKS DI TABLE TASK
     public static function getAllTask()
     {
-        return DB::table('tasks')->get();
+        // return DB::table('tasks')->get();
+        return DB::table('tasks')
+            ->whereNull('tasks.deleted_at')
+            ->join('task_statuses', 'tasks.status_id', '=', 'task_statuses.id')
+            ->join('projects', 'tasks.project_id', '=', 'projects.id')
+            ->join('app_user as creators', 'tasks.created_by', '=', 'creators.user_id')
+            ->leftJoin('app_user as assignees', 'tasks.assign_to', '=', 'assignees.user_id')
+            ->leftJoin('task_flagging', 'tasks.id', '=', 'task_flagging.task_id')
+            ->leftJoin('task_flags', 'task_flagging.flag_id', '=', 'task_flags.id')
+            ->leftJoin('task_labeling', 'tasks.id', '=', 'task_labeling.task_id')
+            ->leftJoin('task_labels', 'task_labeling.label_id', '=', 'task_labels.id')
+            ->leftJoin('task_categories', 'tasks.category_id', '=', 'task_categories.id')
+            ->where(function($query) use ($assignToIds) {
+                $query->whereIn('tasks.assign_to', $assignToIds)
+                    ->orWhere('tasks.status_id', 1);
+            })
+            ->select(
+                'tasks.*',
+                'task_statuses.task_status as status_name',
+                'projects.title as project_title',
+                'creators.user_name as created_by_name',
+                'assignees.user_name as assign_to_name',
+                'task_categories.category_name as category_name',
+                DB::raw('GROUP_CONCAT(task_flags.flag_name SEPARATOR ", ") as flag'),
+                DB::raw('GROUP_CONCAT(task_labels.label_name SEPARATOR ", ") as label')
+            )
+            ->groupBy(
+                'tasks.id',
+                'tasks.project_id',
+                'tasks.title',
+                'tasks.summary',
+                'tasks.start_date_estimation',
+                'tasks.end_date_estimation',
+                'tasks.attachment',
+                'tasks.created_by',
+                'tasks.assign_to',
+                'tasks.completion_time',
+                'tasks.created_at',
+                'tasks.updated_at',
+                'tasks.status_id',
+                'tasks.category_id',
+                'tasks.use_holiday',
+                'tasks.use_weekend',
+                'tasks.deleted_at',
+                'category_name',
+                'status_name',
+                'project_title',
+                'created_by_name',
+                'assign_to_name',
+                // 'task_flags.flag_name',
+                'creators.user_name',
+                'assignees.user_name')
+            ->get();
     }
 
     // ========================================================================POV: STAFF========================================================================
@@ -35,7 +87,7 @@ class Task extends BaseModel
             ->get();
     }
 
-    //Get project done for generate release notes
+    // Get project done for generate release notes
     // GET PROJECT DONE FOR GENERATE RELEASE NOTES
     public static function getDoneProjectTasks($projectId, array $status)
     {
@@ -338,7 +390,8 @@ class Task extends BaseModel
 
     // ========================================================================POV: STAFF========================================================================
 
-    private static function getHierarchyUp($auth){
+    private static function getHierarchyUp($auth)
+    {
         $parent = EmployeeHierarchy::where('user_id', $auth)->first();
         // dd($parent);
         $current = $parent->parent;
@@ -357,7 +410,8 @@ class Task extends BaseModel
         return $atasan;
     }
 
-    private static function getHierarchyDown($auth) {
+    private static function getHierarchyDown($auth) 
+    {
         $dataBawahanLangsung = [];
         // Get bawahan dari user login
         $employee = EmployeeHierarchy::where('user_id', $auth)->whereHas('child')->first();
@@ -712,7 +766,6 @@ class Task extends BaseModel
 
     // DASHBOARD - PROGRESS
     public static function allGroupTasks($projectId)
-
     {
         return DB::table('tasks as t')
             ->whereNull('t.deleted_at')
@@ -801,4 +854,5 @@ class Task extends BaseModel
 
     }
 
+    // =============================== SISTEM PENDUKUNG KEPUTUSAN ======================================
 }
