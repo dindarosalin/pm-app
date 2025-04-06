@@ -11,10 +11,13 @@ class ShowTaskCriteria extends Component
     public $taskCriterias;
     public $criteriaId;
     public $cName, $cAttribute, $cValue, $cDescription;
+    public $cNameList;
 
     public function render()
     {
         $this->taskCriterias = TaskCriterias::getAll();
+        $this->cNameList = TaskCriterias::getColumnNames();
+        // dd($this->cNameList);
 
         return view('livewire.master.task-criteria.show-task-criteria');
     }

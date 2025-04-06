@@ -4,6 +4,7 @@ namespace App\Models\Projects\Master;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Base\BaseModel;
+use Illuminate\Support\Facades\Schema;
 
 class TaskCriterias extends BaseModel
 {
@@ -45,5 +46,9 @@ class TaskCriterias extends BaseModel
         return DB::table('task_criterias')
         ->where('id', $id)
         ->delete();
+    }
+
+    public static function getColumnNames(){
+        return Schema::getColumnListing('tasks');
     }
 }

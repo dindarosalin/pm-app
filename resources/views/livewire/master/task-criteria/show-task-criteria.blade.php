@@ -8,11 +8,28 @@
         </div>
         <div class="offcanvas-body">
             <form wire:submit='save'>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label class="form-label"><span class="text-danger">*</span>Name: </label>
-                    <input wire:model='cName' class="form-control form-control-sm" type="text"
-                        placeholder="Criteria Name" required>
+                    <select wire:model='cName' class="form-select form-control-sm" aria-label="Select Column Name"
+                        required>
+                        @foreach ($cNameList as $a)
+                            <option value="{{ $a }}">{{ ucfirst(str_replace('_', ' ', $a)) }}</option>
+                        @endforeach
+                    </select>
+                </div> --}}
+                <div class="mb-3">
+                    <label class="form-label"><span class="text-danger">*</span>Name: ( <b>pilih salah satu</b> select/input)</label>
+                    <select wire:model.live="cName" class="form-select form-control-sm mb-3" aria-label="Select Column Name"
+                        required>
+                        <option value="" disabled selected>Pilih kolom</option>
+                        @foreach ($cNameList as $a)
+                            <option value="{{ $a }}">{{ ucfirst(str_replace('_', ' ', $a)) }}</option>
+                        @endforeach
+                    </select>
+                    <input type="text" wire:model="cName" class="form-control form-control-sm"
+                    placeholder="Masukkan nama kolom">
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label"><span class="text-danger">*</span>Value:</label>
                     <input wire:model='cValue' class="form-control form-control-sm" type="number"
