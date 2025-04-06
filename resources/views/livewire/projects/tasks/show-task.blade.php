@@ -273,13 +273,13 @@
 
     <div class="card">
         @include('livewire.projects.tasks.filter')
-        
+
         <div class="card-body table-responsive px-0">
-            <livewire:projects.tasks.priorities />
+            <livewire:projects.tasks.priorities :projectId="$projectId" :auth="$auth" :tasks="$tasks" />
             <table class="table table-sm table-bordered table-hover text-center" >
                 <thead>
                     <tr>
-                        <th>Priority
+                        <th role="button" wire:click="sortBy('score')">Priority
                             <i class="fa-solid fa-arrows-up-down"></i>
                         </th>
                         <th role="button" wire:click="sortBy('title')">Title
@@ -308,7 +308,7 @@
                 <tbody>
                     @foreach ($tasks as $task)
                         <tr wire:key='{{ $task->id }}'>
-                            <td>1</td>
+                            <td>{{ $task->score }}</td>
                             <td>{{ $task->title }}</td>
                             <td>{{ date('d F Y', strtotime($task->start_date_estimation)) }}</td>
                             <td>{{ date('d F Y', strtotime($task->end_date_estimation)) }}</td>

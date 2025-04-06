@@ -4,6 +4,7 @@ namespace App\Livewire\Master\TaskLabel;
 
 use Livewire\Component;
 use App\Models\Projects\Master\TaskLabel;
+use Livewire\Attributes\On;
 
 class ShowTaskLabel extends Component
 {

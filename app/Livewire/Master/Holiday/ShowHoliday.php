@@ -4,6 +4,7 @@ namespace App\Livewire\Master\Holiday;
 
 use Livewire\Component;
 use App\Models\Master\Holiday;
+use Livewire\Attributes\On;
 
 class ShowHoliday extends Component
 {

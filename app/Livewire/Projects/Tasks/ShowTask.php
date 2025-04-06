@@ -64,6 +64,8 @@ class ShowTask extends Component
     public $fromNumber = [];
     public $toNumber = [];
 
+    public $scores;
+
     public function render()
     {
         $this->auth = Auth::user()->user_id;
@@ -74,7 +76,7 @@ class ShowTask extends Component
         $this->getAllTasks();
 
         // $this->filter($this->tasks);
-        $this->tasks = $this->filter($this->tasks);
+        $this->tasks = $this->filter($this->tasks)->sortBy('status_id');
         // dd($this->tasks);
         return view('livewire.projects.tasks.show-task', [
             'totalTask' => $this->totalTask,
@@ -86,7 +88,16 @@ class ShowTask extends Component
     }
 
     public function getAllTasks(){
-        $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth)->sortBy('status_id');
+        // $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
+        $t = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
+        $ranking = collect($this->scores);
+        // dd($this->scores);
+
+        $this->tasks = $t->map(function ($task) use ($ranking) {
+            $score = optional($ranking->firstWhere('task_id', $task->id))['score'] ?? null;
+            $task->score = $score;
+            return $task;
+        });
     }
 
     #[On('updateTaskCount')]
@@ -385,6 +396,19 @@ class ShowTask extends Component
         $this->search = '';
         $this->timeFrame = [];
         $this->sortColumn = null;
+    }
+
+    #[On('update-task-score')]
+    public function applyRanking($scoresData)
+    {
+        $this->scores = collect($scoresData);
+        
+        // dd($this->scores);
+    }
+
+    public function updatedScores()
+    {
+        $this->getAllTasks();
     }
 
     // public function sendComment()
