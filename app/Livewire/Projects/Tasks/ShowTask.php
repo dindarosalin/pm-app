@@ -364,7 +364,7 @@ class ShowTask extends Component
         if ($this->timeFrame) {
             foreach ($this->timeFrame as $column => $this->fromToDate) {
                 if ($this->fromToDate === 'custom-start-date' || $this->fromToDate === 'custom-start' || $this->fromToDate === 'custom-end') {
-                    $tasks = Task::scopeFilterByDateRange($tasks, $this->fromDate, $this->toDate, $column);
+                    $tasks = Project::scopeFilterByDateRange($tasks, $this->fromDate, $this->toDate, $column);
                 } else {
                     $tasks = Task::scopeFilterByTimeFrame($tasks, $column, $this->fromToDate);
                 }
