@@ -8,13 +8,6 @@ use Illuminate\Support\Facades\DB;
 class Ketentuan extends BaseModel
 {
 // ============================================CREATE, UPDATE, EDIT, DELETE==================================================================
-    // public static function getKetentuan($id)
-    // {
-    //     return DB::table('ketentuans')
-    //             ->where('id', $id)
-    //             ->first();
-    // }    
-
 // simpan data tabel ketentuan ke dalam database
     public static function create(array $storeData)
     {
@@ -44,6 +37,7 @@ class Ketentuan extends BaseModel
     {
         return DB::table('ketentuans')
                 ->where('id', $id)
+                ->select('ketentuans.*')
                 ->first();
     }
 
@@ -79,3 +73,10 @@ class Ketentuan extends BaseModel
     //             ->where('role_id', $role_id)
     //             ->first();
     // }
+
+    // public static function getKetentuan($id)
+    // {
+    //     return DB::table('ketentuans')
+    //             ->where('id', $id)
+    //             ->first();
+    // }    

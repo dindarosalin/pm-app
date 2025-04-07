@@ -7,14 +7,16 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 
 class UploadRule extends Component
-
-// =================================CREATE MODAL DI RULE BERHASIL==========================================================
 {
+    
+// =================================CREATE MODAL DI RULE BERHASIL==========================================================
+
     public $rules;
 
     public function mount()
     {
         $this->getKetentuan();
+       
     }
 // ============================GET ALL===========================================================================
     // event listener for reload otomatis
@@ -48,6 +50,12 @@ class UploadRule extends Component
     {
         // $this->getKetentuan();
         return view('livewire.approved.pengajuan.upload-rule');
+    }
+
+// ============================================HANDLE OFFCANVAS CREATE=====================================
+    public function btnRule_Clicked()
+    {
+        $this->dispatch('show-create-offcanvas');
     }
 
 }

@@ -3,19 +3,26 @@
         Upload Ketentuan
     @endsection
 
+    <!--BUTTON NAVIGASI-->
+    <div class="d-flex justify-content-end">
+        <button wire:click='btnRule_Clicked' class="btn btn-sm btn-success mb-3 mx-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#createRule" aria-controls="createRule">
+            Buat Ketentuan
+        </button>
+    </div>
+
     <!--KONEKSI-->
-    <livewire:approved.pengajuan.rule :title="'Upload Ketentuan'" />
+    <livewire:approved.pengajuan.form-rule :title="'Upload Ketentuan'" />
+    {{-- <livewire:approved.pengajuan.rule :title="'Upload Ketentuan'" /> --}}
 
     <!--BUTTON NAVIGASI MODAL-->
-    <div class="d-flex justify-content-end mb-3">
+    {{-- <div class="d-flex justify-content-end mb-3">
         <button type="button" 
             class="btn btn-outline-success btn-sm" 
             data-bs-toggle="modal" 
             data-bs-target="#dynamicModal">
-            {{-- wire:click="setJenis('ketentuan umum')"> --}}
             Upload Ketentuan Approval
         </button>
-    </div>
+    </div> --}}
 
     <div class="card p-1 table-responsive">
         <table class="table table-hover" style="width: 100%">
@@ -69,7 +76,15 @@
         </table>
     </div>
 </div>
-
+<!------------------------------------JS--------------------------------------------------------->
+@push('scripts')
+    <script>
+        window.addEventListener('show-create-offcanvas', event => {
+            const offcanvas = new bootstrap.Offcanvas('#ruleForm');
+            offcanvas.show();
+        });
+    </script>
+@endpush
 
 
 
