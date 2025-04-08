@@ -57,15 +57,18 @@
                             <div class="d-flex gap-2 justify-content-center align-items-center">
 
                                 <!--EDIT-->
-                                <button type="button" class="btn btn-outline-warning btn-sm"
+                                {{-- <button type="button" class="btn btn-outline-warning btn-sm"
                                         wire:click="$dispatch('editRule', {id: {{ $rule->id }}})"
                                         data-bs-toggle="modal"
                                         data-bs-target="#dynamicModal">
                                     <i class="fa-regular fa-pen-to-square"></i>
+                                </button> --}}
+                                <button wire:click="$dispatch('edit', {id: {{ $rule->id }} })" class="btn btn-outline-warning btn-sm">
+                                    <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
 
                                 <!--DELETE-->
-                                <button type="button" class="btn btn-outline-danger btn-sm">
+                                <button wire:confirm="Apakah kamu yakin ingin menghapus file ini?" wire:click="deleteRule({{ $rule->id }})" type="button" class="btn btn-outline-danger btn-sm">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -80,6 +83,11 @@
 @push('scripts')
     <script>
         window.addEventListener('show-create-offcanvas', event => {
+            const offcanvas = new bootstrap.Offcanvas('#ruleForm');
+            offcanvas.show();
+        });
+
+        window.addEventListener('show-edit-offcanvas', event => {
             const offcanvas = new bootstrap.Offcanvas('#ruleForm');
             offcanvas.show();
         });
