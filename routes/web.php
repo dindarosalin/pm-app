@@ -16,6 +16,7 @@ use App\Http\Controllers\Settings\{MenuController, AccountsController, Hierarchy
 use App\Http\Livewire\UpdateComponent;
 use App\Livewire\Approved\Approval;
 use App\Livewire\Approved\DashApprover;
+use App\Livewire\Approved\FormPengajuan\ShowApproval;
 use App\Livewire\Approved\Pengajuan\ShowSubmit;
 use App\Livewire\Approved\Pengajuan\UploadRule;
 use App\Livewire\Approved\ShowForm;
@@ -146,7 +147,10 @@ Route::middleware(['auth'])->group(function () {
         // route dashboard pemohon
         Route::get('dashboard-request', Approval::class)->name('dashboard-request');
         // route pengajuan approval
-        Route::get('form-approval', ShowSubmit::class)->name('form-approval');
+        // Route::get('form-approval', ShowSubmit::class)->name('form-approval');
+        Route::get('form-approval', ShowApproval::class)->name('form-approval');
+            
+        // });
         // route upload ketentuan for HR
         Route::get('upload-rule', UploadRule::class)->name('upload-rule'); 
         // route dashboard approver
