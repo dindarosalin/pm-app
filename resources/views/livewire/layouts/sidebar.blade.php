@@ -362,6 +362,19 @@
                             </a>
                         </li>
                     @endif
+
+                    <!--MENU for APPROVAL-->
+                    {{-- taruh untuk create jobdesk --}}
+                    @if (App\Models\Base\BaseModel::isAuthorize('108', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.jobdesk') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.jobdesk') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Jabatan</span>
+                            </a>
+                        </li>
+                    @endif
                 </div>
             </div>
         </div>

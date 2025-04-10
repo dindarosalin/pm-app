@@ -27,6 +27,8 @@ use App\Livewire\Budget\Index as BudgetIndex;
 use App\Livewire\Budget\Plan\Plan as BudgetPlan;
 use App\Livewire\Budget\Track\Track as BudgetTrack;
 use App\Livewire\Dashboard\Dashboard as Dashboard;
+use App\Livewire\Master\Approved\Jabatan;
+use App\Livewire\Master\Approved\Jobdesk;
 use App\Livewire\Master\BudgetCategory\ShowBudgetCategory;
 use App\Livewire\Master\BudgetCategory\ShowBudgetSubCategory;
 use App\Livewire\Master\Helper;
@@ -168,6 +170,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/budget-subcategory', ShowBudgetSubCategory::class)->name('budget-subcategory');
         Route::get('/holidays', ShowHoliday::class)->name('holidays');
         Route::get('/uom', Measure::class)->name('uom');
+        Route::get('/jobdesk', Jabatan::class)->name('jobdesk');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {
