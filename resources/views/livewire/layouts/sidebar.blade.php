@@ -375,6 +375,18 @@
                             </a>
                         </li>
                     @endif
+
+                    {{-- taruh create atasan --}}
+                    @if (App\Models\Base\BaseModel::isAuthorize('109', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.atasan') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.atasan') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Atasan</span>
+                            </a>
+                        </li>
+                    @endif
                 </div>
             </div>
         </div>
