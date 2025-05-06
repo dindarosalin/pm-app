@@ -5,6 +5,7 @@ namespace App\Models\Projects;
 use App\Models\Base\BaseModel;
 use App\Models\Projects\Task\Task;
 use Carbon\Carbon;
+use FontLib\TrueType\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Project extends BaseModel
@@ -70,11 +71,12 @@ class Project extends BaseModel
         }
     }
 
-    public static function editHelper($id){
+    public static function editHelper($id)
+    {
         $teamIds = DB::table('project_team')
-        ->where('project_id', $id)
-        ->pluck('department_id')
-        ->toArray();
+            ->where('project_id', $id)
+            ->pluck('department_id')
+            ->toArray();
 
         return DB::table('master_department')
             ->whereIn('id', $teamIds)
@@ -125,8 +127,8 @@ class Project extends BaseModel
                 DB::raw('GROUP_CONCAT(master_department.name SEPARATOR ", ") as team_names')
             )
             ->groupBy(
-                'projects.id', 
-                'app_user.user_name', 
+                'projects.id',
+                'app_user.user_name',
                 'projects.title',
                 'projects.description',
                 'projects.client',
@@ -164,7 +166,7 @@ class Project extends BaseModel
                 DB::raw('GROUP_CONCAT(master_department.name SEPARATOR ", ") as team_names')
             )
             ->groupBy(
-                'projects.id', 
+                'projects.id',
                 'app_user.user_name',
                 'projects.title',
                 'projects.description',
@@ -182,7 +184,7 @@ class Project extends BaseModel
                 'projects.status_id',
                 'status',
                 'deleted_at'
-                )
+            )
             ->orderBy('projects.created_at', 'desc')
             ->first();
     }
@@ -203,7 +205,8 @@ class Project extends BaseModel
         return DB::table('projects')->whereNotNull('deleted_at')->get();
     }
 
-    public static function softDelete($id){
+    public static function softDelete($id)
+    {
         DB::table('tasks')->where('project_id', $id)->update(['deleted_at' => now()]);
         DB::table('projects')->where('id', $id)->update(['deleted_at' => now()]);
     }
@@ -227,25 +230,25 @@ class Project extends BaseModel
     public static function getForBudget()
     {
         return DB::table('projects')
-                ->select('id','title', 'budget', 'due_date_estimation')
-                ->get();
+            ->select('id', 'title', 'budget', 'due_date_estimation')
+            ->get();
     }
 
     public static function getTitle($projectId)
     {
         return DB::table('projects')
-                ->where('id', $projectId)
-                ->value('title');
+            ->where('id', $projectId)
+            ->value('title');
     }
 
     public static function getTitleProject($title)
     {
         return DB::table('projects')
-                ->where('title', $title)
-                ->first();
+            ->where('title', $title)
+            ->first();
     }
 
-// ======================================== FILTER ========================================
+    // ======================================== FILTER ========================================
 
     //SEARCH BY KEYWORD
     public static function scopeSearch($query, $searchTerm)
@@ -278,7 +281,7 @@ class Project extends BaseModel
     public static function scopeFilterByTimeFrame($query, $column, $timeFrame)
     {
         $currentDate = Carbon::now();
-        
+
         $query->each(function ($item) {
             $item->start_date = Carbon::parse($item->start_date);
             $item->due_date_estimation = Carbon::parse($item->due_date_estimation);
@@ -338,9 +341,9 @@ class Project extends BaseModel
     {
         if ($fromDate !== null && $toDate !== null) {
             return $query->whereBetween($column, [$fromDate, $toDate]);
-        } elseif($fromDate !== null) {
+        } elseif ($fromDate !== null) {
             return $query->where($column, '>=', $fromDate);
-        } elseif($toDate !== null) {
+        } elseif ($toDate !== null) {
             return $query->where($column, '<=', $toDate);
         }
 
@@ -365,13 +368,14 @@ class Project extends BaseModel
     public static function cost($projectId)
     {
         return DB::table('cost')
-        ->where('cost.id', $projectId)
-        ->select ('cost.*')
-        ->get();
+            ->where('cost.id', $projectId)
+            ->select('cost.*')
+            ->get();
     }
 
     // public $taskCount;
-    public static function calculateCompletion($projectId){
+    public static function calculateCompletion($projectId)
+    {
         $taskAll = Task::getAllProjectTasks($projectId)->count();
 
         $count = DB::table('tasks')
@@ -385,7 +389,67 @@ class Project extends BaseModel
         if ($taskCount == 100) {
             // dd('masuk ga');
             $projectStatus = 3;
-            Project::updateProjectStatus( $projectId, $projectStatus);
+            Project::updateProjectStatus($projectId, $projectStatus);
         }
+    }
+
+    //======================================================================DASHBOARD ALL======================================================================
+    public static function getAllProjectsDashboard()
+    {
+        $now = Carbon::now()->format('Y-m-d');
+
+        $trackSub = DB::table('tracks')
+            ->select('id_project', DB::raw('SUM(total_per_item) as ac'))
+            ->groupBy('id_project');
+
+        return DB::table('tasks')
+            ->join('projects', 'tasks.project_id', '=', 'projects.id')
+            ->leftJoinSub($trackSub, 'track_summary', function ($join) {
+                $join->on('tasks.project_id', '=', 'track_summary.id_project');
+            })
+            ->select(
+                'tasks.project_id',
+                'projects.budget as bac',
+                // 'tracks.id as tracks_id',
+                // DB::raw('SUM(tracks.total_per_item) as ac'),
+                DB::raw('COUNT(*) as total_task'),
+                DB::raw("SUM(CASE WHEN end_date_estimation <= '$now' THEN 1 ELSE 0 END) as planned_done_task"),
+                DB::raw("SUM(CASE WHEN tasks.status_id = 5 THEN 1 ELSE 0 END) as actual_done_task"),
+                'track_summary.ac'
+                // DB::raw("SUM(CASE WHEN tracks.id_project = tasks.project_id THEN tracks.total_per_item ELSE 0 END) as ac"),
+            )
+            ->groupBy('tasks.project_id', 'projects.budget', 'track_summary.ac')
+            ->get();
+            // ->groupBy('project_id')
+            // ->map(function ($item) {
+            //     // $ac = 0;
+            //     // $bac = $item->total_task; // Anggap BAC = jumlah task
+            //     $planned_percent = $item->total_task > 0
+            //         ? $item->planned_done_task / $item->total_task
+            //         : 0;
+
+            //     $ev_percent = $item->total_task > 0
+            //         ? $item->actual_done_task / $item->total_task
+            //         : 0;
+
+            //     $pv = $planned_percent * $item->bac;
+            //     $ev = $ev_percent * $item->bac;
+
+            //     return [
+            //         'project_id' => $item->project_id,
+            //         'total_task' => $item->total_task,
+            //         'planned_done_task' => $item->planned_done_task,
+            //         'actual_done_task' => $item->actual_done_task,
+            //         'planned_percent' => round($planned_percent * 100, 2) . '%',
+            //         'earned_percent' => round($ev_percent * 100, 2) . '%',
+            //         'planned_value' => round($pv, 2),
+            //         'earned_value' => round($ev, 2),
+            //         // 'id' => $item->tracks_id,
+            //         'actual_cost' => $item->ac,
+            //         'actual_cost' => round($item->ac, 2),
+            //         'spi' => $ev_percent > 0 ? round($ev / $pv, 2) : 0,
+            //         // 'cpi' => $ev_percent > 0 ? round($ev / $item->, 2) : 0,
+            //     ];
+            // });
     }
 }

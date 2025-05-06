@@ -74,6 +74,7 @@ class Dashboard extends Component
         return task::getAllProjectTasks($this->projectId);
     }
 
+
     public function totalTasks()
     {
         try {

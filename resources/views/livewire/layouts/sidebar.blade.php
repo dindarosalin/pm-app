@@ -174,16 +174,54 @@
             </li>
         @endif
 
-        @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
-            <li class=" {{ request()->routeIs('work-from-home.show') ? 'active' : '' }}">
-                <a href="{{ route('work-from-home.show') }}" class="sidebar-menu text-decoration-none text-white"
-                    wire:navigate.defer>
+        <div class="accordion-item">
+            <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#wfhCollapse"
+                aria-expanded="true" aria-controls="wfhCollapse">
+                <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
                     <i class="fa-solid fa-house-laptop"></i>
-                    <span>Work From Home</span>
-                </a>
+                    Work From Home
+                </p>
+                <button class="btn btn-sm text-white ms-auto p-0 border-0 text-end" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                        class="bi bi-chevron-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
+                    </svg> {{--  chevron down --}}
+                </button>
             </li>
-        @endif
-        @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
+
+            <div wire:ignore id="wfhCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'master' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('work-from-home.show') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('work-from-home.show') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-house-laptop"></i>
+                                <span>Work</span>
+                            </a>
+                        </li>
+                    @endif
+                    
+                    @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('work-from-home.show') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('work-from-home.show') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-house-laptop"></i>
+                                <span>Monitoring WFH</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    
+                </div>
+            </div>
+        </div>
+
+        {{-- @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
             <li class=" {{ request()->routeIs('work-from-home.show') ? 'active' : '' }}">
                 <a href="{{ route('work-from-home.show') }}" class="sidebar-menu text-decoration-none text-white"
                     wire:navigate.defer>
@@ -191,7 +229,7 @@
                     <span>Monitoring WFH</span>
                 </a>
             </li>
-        @endif
+        @endif --}}
 
         
 
