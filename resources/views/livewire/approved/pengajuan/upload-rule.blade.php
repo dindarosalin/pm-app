@@ -1,3 +1,4 @@
+{{-- KODE FIKS UNTUK FITUR UPLOAD RULE --}}
 <div>
     @section('title')
         Upload Ketentuan

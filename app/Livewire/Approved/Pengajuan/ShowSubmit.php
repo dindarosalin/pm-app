@@ -1,5 +1,5 @@
 <?php
-
+// KODE FIKS DIPAKE UNTUK FITUR UPLOAD RULE
 namespace App\Livewire\Approved\Pengajuan;
 
 use App\Models\Approval\Ketentuan;

@@ -194,8 +194,44 @@
                                     <i class="fa-solid fa-file"></i>
                                     <span>Pengajuan Approval</span>
                                 </a>
+
+                                <ul class="sidebar-menu list-unstyled ms-3 mt-2">
+                                    <li class="sidebar-menu">
+                                        <button wire:click='btnCuti_Clicked' type="button" class="btn btn-sm btn-outline-primary w-100 border-0 text-center text-white">
+                                           <span>Cuti</span>
+                                        </button>
+                                    </li>
+
+                                    <li class="sidebar-menu">
+                                        <button wire:click='btnIzin_Clicked' type="button" class="btn btn-sm btn-outline-primary w-100 border-0 text-center text-white"
+                                           <span>Izin Tidak Terencana</span>
+                                        </button>
+                                    </li>
+
+                                    <li class="sidebar-menu">
+                                        <button wire:click='btnRab_Clicked' type="button" class="btn btn-sm btn-outline-primary w-100 border-0 text-center text-white">
+                                           <span>Rencana Anggaran Belanja</span>
+                                        </button>
+                                    </li>
+
+                                    <li class="sidebar-menu">
+                                        <button wire:click='btnReimburse_Clicked' type="button" class="btn btn-sm btn-outline-primary w-100 border-0 text-center text-white">
+                                           <span>Reimburse</span>
+                                        </button>
+                                    </li>
+
+                                    <li class="sidebar-menu">
+                                        <button wire:click='btnPengadaan_Clicked' type="button" class="btn btn-sm btn-outline-primary w-100 border-0 text-center text-white">
+                                           <span>Pengadaan Proyek</span>
+                                        </button>
+                                    </li>
+
+                                </ul>
+                              
                             </li>
                         @endif
+
+                        </div>
 
                         @if (App\Models\Base\BaseModel::isAuthorize('118', 'R'))
                             <li
@@ -231,7 +267,7 @@
                         @endif
                     </div>
 
-            </div>
+                </div>
 {{-- end coba --}}
         {{-- @if (App\Models\Base\BaseModel::isAuthorize('114', 'R'))
             <li class="sidebar-menu {{ request()->routeIs('approval.*') ? 'active' : '' }}"> 
@@ -384,6 +420,17 @@
                                 wire:navigate.defer.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Atasan</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('109', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.jenis-approval') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.jenis-approval') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Jenis Approval</span>
                             </a>
                         </li>
                     @endif

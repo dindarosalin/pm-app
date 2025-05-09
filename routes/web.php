@@ -16,6 +16,8 @@ use App\Http\Controllers\Settings\{MenuController, AccountsController, Hierarchy
 use App\Http\Livewire\UpdateComponent;
 use App\Livewire\Approved\Approval;
 use App\Livewire\Approved\DashApprover;
+use App\Livewire\Approved\FormPengajuan\FormCuti;
+use App\Livewire\Approved\FormPengajuan\FormIzin;
 use App\Livewire\Approved\FormPengajuan\ShowApproval;
 use App\Livewire\Approved\Pengajuan\ShowSubmit;
 use App\Livewire\Approved\Pengajuan\UploadRule;
@@ -173,6 +175,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/uom', Measure::class)->name('uom');
         Route::get('/jobdesk', Jabatan::class)->name('jobdesk');
         Route::get('/atasan', Atasan::class)->name('atasan');
+        Route::get('/jenis-approval', Approval::class)->name('jenis-approval');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {

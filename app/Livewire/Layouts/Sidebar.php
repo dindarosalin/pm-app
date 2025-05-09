@@ -20,4 +20,5 @@ class Sidebar extends Component
             'projectId' => $this->projectId
         ]);
     }
+
 }

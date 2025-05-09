@@ -1,0 +1,327 @@
+<?php
+
+namespace App\Livewire\Approved\FormPengajuan;
+
+use App\Models\Approval\Cuti;
+use App\Models\Approval\Izin;
+use App\Models\Projects\Master\Head;
+use App\Models\Projects\Master\Jobdesk;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+
+class FormIzin extends Component
+{
+    use WithFileUploads;
+
+    public $izinId;
+    public $jobdesk_id, $head_id, $name, $email, $telepon, $jenis_izin, $detail_izin,
+           $tgl_mulai, $tgl_akhir, $tgl_ajuan, 
+           $nama_darurat, $telp_darurat, $relasi_darurat, $alamat,
+           $nama_delegasi, $detail_delegasi;
+    public $permissions = [];
+    public $atasan =[], $jabatan = [];
+    public $selectJobdesk, $selectHead;
+    public $akumulasi = 0;
+
+    // #[Rule('nullable|file|max:10240')]
+    #[Rule('required|mimes:pdf|max:2048',
+    onUpdate: 'sometimes|mimes:pdf|max:2048')]
+    public $newAttachment;
+    public $file_izin;
+
+
+    public function render()
+    {
+        return view('livewire.approved.form-pengajuan.form-izin');
+    }
+
+    public function mount()
+    {
+        $this->jabatan = Jobdesk::getAllJob();
+        $this->tgl_ajuan = now()->format('Y-m-d');
+        $this->atasan = Head::getHeadByJobdesk($this->selectJobdesk);
+    }
+
+    // =====================================STORE===============================================
+    public function store()
+    {
+        // $this->validate([
+        //     'selectJobdesk' =>'required',
+        //     'selectHead' => 'required',
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|email|max:50',
+        //     'telepon' => 'required|string|regex:/^[0-9]+$/|max:15',
+        //     'jenis_izin' => 'required|string|max:50',
+        //     'detail_izin' => 'nullable|string|max:1000',
+        //     'tgl_mulai' => 'required|date|before_or_equal:tgl_akhir',
+        //     'tgl_akhir' => 'required|date|after_or_equal:tgl_mulai',
+        //     'tgl_ajuan' => 'required|date',
+        //     'nama_darurat' => 'nullable|string|max:50',
+        //     'telp_darurat' => 'nullable|string|regex:/^[0-9]+$/|max:15',
+        //     'relasi_darurat' => 'nullable|string|max:50',
+        //     'alamat' => 'required|string',
+        //     'nama_delegasi' => 'nullable|string|max:50',
+        //     'detail_delegasi' => 'nullable|string|max:1000',
+        //     // 'newAttachment' => 'nullable|file|max:10240', // 10MB max
+        //     'newAttachment' => 'nullable|image|max:2048',
+        // ]);
+
+        try {
+            $filePath = $this->file_izin;
+
+            if ($this->newAttachment) {
+                if ($this->izinId && $this->file_izin) {
+                    Storage::delete($this->file_izin);
+                }
+                $filePath = $this->newAttachment->store('izin', 'public');
+            }
+            if ($this->izinId) {
+
+                // if ($this->newAttachment) {
+                //     Storage::delete($this->file_izin, 'public');
+                //     $this->newAttachment = $this->newAttachment->store('izin', 'public');
+                // }
+                DB::table('izins')
+                    ->where('id', $this->izinId)
+                    ->update([
+                        'name' => $this->name,
+                        'jobdesk_id' => $this->selectJobdesk,
+                        'head_id' => $this->selectHead,
+                        'email' => $this->email,
+                        'telepon' => $this->telepon,
+                        'jenis_izin' => $this->jenis_izin,
+                        'detail_izin' => $this->detail_izin,
+                        'tgl_mulai' => $this->tgl_mulai,
+                        'tgl_akhir' => $this->tgl_akhir,
+                        'akumulasi' => $this->akumulasi,
+                        'tgl_ajuan' => $this->tgl_ajuan,
+                        'nama_darurat' => $this->nama_darurat,
+                        'telp_darurat' => $this->telp_darurat,
+                        'relasi_darurat' => $this->relasi_darurat,
+                        'alamat' => $this->alamat,
+                        'nama_delegasi' => $this->nama_delegasi,
+                        'detail_delegasi' => $this->detail_delegasi,
+                        'file_izin' => $filePath,
+                        'updated_at' => now()
+                ]);
+                $this->js("alert('Data Approval Izin Tidak Terencana Berhasil Diupdate!')");
+            } else {
+                // if ($this->newAttachment) {
+                //     $this->newAttachment = $this->newAttachment->store('izin', 'public');
+                // }
+                // Izin::create([
+                DB::table('izins')->insert([
+                    'name' => $this->name,
+                    'jobdesk_id' => $this->selectJobdesk,
+                    'head_id' => $this->selectHead,
+                    'email' => $this->email,
+                    'telepon' => $this->telepon,
+                    'jenis_izin' => $this->jenis_izin,
+                    'detail_izin' => $this->detail_izin,
+                    'tgl_mulai' => $this->tgl_mulai,
+                    'tgl_akhir' => $this->tgl_akhir,
+                    'akumulasi' => $this->akumulasi,
+                    'tgl_ajuan' => $this->tgl_ajuan,
+                    'nama_darurat' => $this->nama_darurat,
+                    'telp_darurat' => $this->telp_darurat,
+                    'relasi_darurat' => $this->relasi_darurat,
+                    'alamat' => $this->alamat,
+                    'nama_delegasi' => $this->nama_delegasi,
+                    'detail_delegasi' => $this->detail_delegasi,
+                    'file_izin' => $filePath,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                // $this->js("alert('Data Approval Izin Tidak Terencana Berhasil Dibuat!')");
+            }
+            $this->dispatch('close-offcanvas');
+            // $this->dispatch('izinUpdated');
+            $this->resetForm();
+        } catch (\Throwable $th) {
+            throw $th;
+            $this->js("alert('Tidak Tersimpan')");
+        }
+
+            // $filePath = null;
+            // if ($this->newAttachment) {
+            //     $filePath = $this->newAttachment->store('izin', 'public');
+            // }
+
+            // $filePath = null;
+            // if (isset($storeData['file_izin'])) {
+            //     $file = $storeData['file_izin'];
+            //     $filePath = $file->store('izin','public');
+            // }
+
+            // if ($this->izinId) {
+
+            //     if ($filePath) {
+            //         Storage::disk('public')->delete($this->file_izin);
+            //     }
+
+                // if ($this->newAttachment) {
+                //     // Storage::delete($this->file_izin, 'public');
+                //     Storage::disk('public')->delete($this->file_izin);
+                //     $filePath = $this->newAttachment->store('izin', 'public');
+                // }
+
+            //     DB::table('izins')->where('id', $this->izinId)->update([
+            //         'name' => $this->name,
+            //         'jobdesk_id' => $this->selectJobdesk,
+            //         'head_id' => $this->selectHead,
+            //         'email' => $this->email,
+            //         'telepon' => $this->telepon,
+            //         'jenis_izin' => $this->jenis_izin,
+            //         'detail_izin' => $this->detail_izin,
+            //         'tgl_mulai' => $this->tgl_mulai,
+            //         'tgl_akhir' => $this->tgl_akhir,
+            //         'akumulasi' => $this->akumulasi,
+            //         'tgl_ajuan' => $this->tgl_ajuan,
+            //         'nama_darurat' => $this->nama_darurat,
+            //         'telp_darurat' => $this->telp_darurat,
+            //         'relasi_darurat' => $this->relasi_darurat,
+            //         'alamat' => $this->alamat,
+            //         'nama_delegasi' => $this->nama_delegasi,
+            //         'detail_delegasi' => $this->detail_delegasi,
+            //         // 'file_izin' => $this->newAttachment ?? $this->file_izin,
+            //         'file_izin' => $filePath ?? $this->file_izin,
+            //     ]);
+            //     $this->js("alert('Data Izin Tidak Terencana Berhasil Diupdate!')");
+            // } else {
+
+                // if ($filePath) {
+                //     $filePath = $this->newAttachment->store('izin', 'public');
+                // }
+            //     Izin::create([
+            //         'name' => $this->name,
+            //         'jobdesk_id' => $this->selectJobdesk,
+            //         'head_id' => $this->selectHead,
+            //         'email' => $this->email,
+            //         'telepon' => $this->telepon,
+            //         'jenis_izin' => $this->jenis_izin,
+            //         'detail_izin' => $this->detail_izin,
+            //         'tgl_mulai' => $this->tgl_mulai,
+            //         'tgl_akhir' => $this->tgl_akhir,
+            //         'akumulasi' => $this->akumulasi,
+            //         'tgl_ajuan' => $this->tgl_ajuan,
+            //         'nama_darurat' => $this->nama_darurat,
+            //         'telp_darurat' => $this->telp_darurat,
+            //         'relasi_darurat' => $this->relasi_darurat,
+            //         'alamat' => $this->alamat,
+            //         'nama_delegasi' => $this->nama_delegasi,
+            //         'detail_delegasi' => $this->detail_delegasi,
+            //         // 'file_izin' => $this->newAttachment,
+            //         'file_izin' => $filePath,
+            //     ]);
+            //     $this->js("alert('Data Izin Tidak Terencana Berhasil Dibuat!')");
+            // }
+            // $this->dispatch('close-offcanvas');
+            // $this->dispatch('izinUpdated');
+        //     $this->resetForm();
+        // } catch (\Throwable $th) {
+            // throw $th;
+            // $this->js("alert('Tidak Tersimpan')");
+        //     $this->js("alert('Gagal menyimpan izin: " . $th->getMessage() . "')");
+        // }
+    }
+
+    #[On('edit')]
+    public function edit($id)
+    {
+        $izin = Izin::getIzinById($id);
+
+        $this->name = $izin->name;
+        $this->selectJobdesk = $izin->jobdesk_id;
+        $this->selectHead = $izin->head_id;
+        $this->email = $izin->email;
+        $this->telepon = $izin->telepon;
+        $this->jenis_izin = $izin->jenis_izin;
+        $this->detail_izin = $izin->detail_izin;
+        $this->tgl_mulai = $izin->tgl_mulai;
+        $this->tgl_akhir = $izin->tgl_akhir;
+        $this->tgl_ajuan = $izin->tgl_ajuan;
+        $this->nama_darurat = $izin->nama_darurat;
+        $this->telp_darurat = $izin->telp_darurat;
+        $this->relasi_darurat = $izin->relasi_darurat;
+        $this->alamat = $izin->alamat;
+        $this->nama_delegasi = $izin->nama_delegasi;
+        $this->detail_delegasi = $izin->detail_delegasi;
+        $this->file_izin = $izin->file_izin;
+
+        $this->dispatch('show-edit-offcanvas-cuti');
+    }
+
+    // =====================================DEPENDENT DROPDOWN=================================================
+    public function loadHead()
+    {
+        if ($this->selectJobdesk) {
+            $this->atasan = Head::getHeadByJobdesk($this->selectJobdesk);
+        }
+    }
+
+    // =======================================CALCULATE AKUMULASI==============================================
+    public function calculateIzins()
+    {
+        if ($this->tgl_mulai && $this->tgl_akhir) {
+            $this->akumulasi = Izin::calculateIzin(
+                $this->tgl_mulai,
+                $this->tgl_akhir
+            );
+        } else {
+            $this->akumulasi = 0;
+        }
+    }
+
+    public function updatedTglMulai()
+    {
+        $this->calculateIzins();
+    }
+    public function updatedTglAkhir()
+    {
+        $this->calculateIzins();
+    }
+
+    // =================================================HANDLE OFF CANVAS==================================================
+    public function btnCloseOffcanvas()
+    {
+        $this->resetForm();
+        $this->dispatch('close_offcanvas');
+    }
+    // ======================================================RESET=========================================================
+    #[On('reset')]
+    public function resetForm()
+    {
+        $this->reset([
+            'izinId', 'name', 'selectJobdesk', 'selectHead', 'email', 'telepon',
+            'jenis_izin', 'detail_izin', 'tgl_mulai', 'tgl_akhir', 'tgl_ajuan',
+            'nama_darurat', 'telp_darurat', 'relasi_darurat', 'alamat',
+            'nama_delegasi', 'detail_delegasi', 'newAttachment', 'file_izin'
+        ]);
+        $this->akumulasi = 0;
+        $this->atasan = [];
+        $this->resetValidation();
+    }
+        // $this->name = '';
+        // $this->selectJobdesk = '';
+        // $this->selectHead = '';
+        // $this->email = '';
+        // $this->telepon = '';
+        // $this->jenis_izin = '';
+        // $this->detail_izin = '';
+        // $this->tgl_mulai = '';
+        // $this->tgl_akhir = '';
+        // $this->tgl_ajuan = '';
+        // $this->nama_darurat = '';
+        // $this->telp_darurat = '';
+        // $this->relasi_darurat = '';
+        // $this->alamat = '';
+        // $this->nama_delegasi = '';
+        // $this->detail_delegasi = '';
+        // $this->file_izin = '';
+        // $this->izinId = '';
+    // }
+}

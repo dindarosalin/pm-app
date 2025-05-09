@@ -1,4 +1,4 @@
-<div>
+{{-- <div>
     <!--FORM OFFCANVAS-->
     <div wire:ignore.self class="offcanvas offcanvas-end" tabindex="-1" id="ruleForm" aria-labelledby="ruleFormLabel" data-bs-scroll="true" data-bs-backdrop="false">
         
@@ -64,7 +64,7 @@
             </form>
         </div>
     </div>
-</div>
+</div> --}}
 
 
 

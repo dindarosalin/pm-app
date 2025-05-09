@@ -1,3 +1,4 @@
+{{-- KODE FIKS DIPAKE UNTUK FITUR UPLOAD RULE --}}
 <div>
     <!--OFF CANVAS-->
     <div wire:ignore.self class="offcanvas offcanvas-end" tabindex="-1" id="ruleForm" aria-labelledby="ruleFormLabel" data-bs-scroll="true" data-bs-bacdrop="false">

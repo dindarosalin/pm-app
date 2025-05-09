@@ -4,17 +4,15 @@
     @endsection
 
     <!--KONEKSI-->
-    {{-- <livewire:approved.pengajuan.upload-rule /> --}}
+    <livewire:approved.form-pengajuan.form-cuti :title="'Form Approval'" />
+    <livewire:approved.form-pengajuan.form-izin :title="'Form Approval'" />
+    <livewire:approved.form-pengajuan.form-rab :title="'Form Approval'" />
+    <livewire:approved.form-pengajuan.form-reimburse :title="'Form Approval'" />
+    <livewire:approved.form-pengajuan.form-pengadaan :title="'Form Approval'" />
 
     <!--BUTTON CREATE PENGAJUAN APPROVAL DAN TABEL KETENTUAN-->
     <div class="card p-1 table-responsive">
-        <div class="card-header row row-cols-2 row-cols-md-4 row-cols-md-5 g-2 d-flex justify-content-start">
-            <button class="btn btn-sm btn-primary mb-3 mx-2" type="button">Form Cuti</button>
-            <button class="btn btn-sm btn-primary mb-3 mx-2" type="button">Form Izin Tidak Terencana</button>
-            <button class="btn btn-sm btn-primary mb-3 mx-2" type="button">Form Rencana Anggaran Belanja</button>
-            <button class="btn btn-sm btn-primary mb-3 mx-2" type="button">Form Reimburse</button>
-            <button class="btn btn-sm btn-primary mb-3 mx-2" type="button">Form Pengadaan Proyek</button>
-        </div>
+        
 
         <table id="rule-table" class="table table-hover" style="width: 100%">
         
@@ -28,7 +26,7 @@
             <tbody>
                 @foreach ($rules as $rule)
                     <tr>
-                        <td class="text-center">{{ $rule->jenis }}</td>
+                        <td class="text-success text-center fw-bold">{{ $rule->jenis }}</td>
 
                         <td class="text-center">
                             <a href="{{ asset('storage/' . $rule->file_path) }}" target="_blank" class="btn btn-outline-success btn-sm" title="lihat file">
@@ -90,7 +88,82 @@
                 </tr>
             </thead>
 
-            <tbody></tbody>
+            <tbody>
+                {{-- @foreach ($permissions as $item)
+                    <tr wire:key='{{ $item->id }}'>
+                        <td class="text-center">{{ $item->name }}</td>
+                        <td class="text-center">{{ $item->tgl_ajuan }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-outline-success btn-sm">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2 justify-content-center align-items-center">
+                                <button class="btn btn-outline-warning btn-sm">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+    
+                                <button class="btn btn-outline-danger btn-sm">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach --}}
+                <tr>
+                    <td class="text-center">1</td>
+                    <td class="text-center">Cuti</td>
+                    <td class="text-center">24 April 2025</td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-success btn-sm">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2 justify-content-center align-items-center">
+                            <button class="btn btn-outline-warning btn-sm">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+
+                            <button class="btn btn-outline-danger btn-sm">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>
+
+<!-------------------------------JS---------------------------------------------------------------->
+@push('scripts')
+    <script>
+        window.addEventListener('show-create-offcanvas-cuti', event => {
+            const offcanvas = new bootstrap.Offcanvas('#cutiForm');
+            offcanvas.show();
+        });
+
+
+        window.addEventListener('show-create-offcanvas-izin', event => {
+            const offcanvas = new bootstrap.Offcanvas('#izinForm');
+            offcanvas.show();
+        });
+
+        window.addEventListener('show-create-offcanvas-rab', event => {
+            const offcanvas = new bootstrap.Offcanvas('#rabForm');
+            offcanvas.show();
+        });
+
+        window.addEventListener('show-create-offcanvas-reimburse', event => {
+            const offcanvas = new bootstrap.Offcanvas('#reimburseForm');
+            offcanvas.show();
+        });
+
+        window.addEventListener('show-create-offcanvas-proyek', event => {
+            const offcanvas = new bootstrap.Offcanvas('#pengadaanForm');
+            offcanvas.show();
+        });
+    </script>
+@endpush

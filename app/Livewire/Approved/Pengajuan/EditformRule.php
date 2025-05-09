@@ -1,115 +1,115 @@
 <?php
 
-namespace App\Livewire\Approved\Pengajuan;
+// namespace App\Livewire\Approved\Pengajuan;
 
-use App\Models\Approval\Ketentuan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Rule;
-use Livewire\Component;
-use Livewire\WithFileUploads;
+// use App\Models\Approval\Ketentuan;
+// use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\Storage;
+// use Livewire\Attributes\On;
+// use Livewire\Attributes\Rule;
+// use Livewire\Component;
+// use Livewire\WithFileUploads;
 
-class EditformRule extends Component
-{
-    use WithFileUploads;
+// class EditformRule extends Component
+// {
+//     use WithFileUploads;
 
-    public $ruleId;
-    public $jenis;
-    public $file_name;
-    public $title;
+//     public $ruleId;
+//     public $jenis;
+//     public $file_name;
+//     public $title;
 
-    #[Rule('required|sometimes|file|max:2048')]
-    public $newFile; //simpan file baru
-    public $file_path; //simpan path file
+//     #[Rule('required|sometimes|file|max:2048')]
+//     public $newFile; //simpan file baru
+//     public $file_path; //simpan path file
 
-// =================================MOUNT================================================= 
-    // Koneksi
-    public function mount($title)
-    {
-        $this->title = $title;
-    }
+// // =================================MOUNT================================================= 
+//     // Koneksi
+//     public function mount($title)
+//     {
+//         $this->title = $title;
+//     }
 
-// =================================STORE (CREATE & UPDATE), EDIT================================================= 
-    // Create  & Update
-    public function store()
-    {
-        $this->validate([
-            'jenis' => 'required|string|max:255',
-            'file_name' => 'required|string|max:255',
-            'newFile' => 'nullable|file|max:2048',
-        ]);
+// // =================================STORE (CREATE & UPDATE), EDIT================================================= 
+//     // Create  & Update
+//     public function store()
+//     {
+//         $this->validate([
+//             'jenis' => 'required|string|max:255',
+//             'file_name' => 'required|string|max:255',
+//             'newFile' => 'nullable|file|max:2048',
+//         ]);
 
-        try {
-            if ($this->ruleId) {
+//         try {
+//             if ($this->ruleId) {
                 
-                if ($this->newFile) {
-                    Storage::delete($this->file_path, 'public');
-                    $this->newFile = $this->newFile->store('rules', 'public');
-                }
+//                 if ($this->newFile) {
+//                     Storage::delete($this->file_path, 'public');
+//                     $this->newFile = $this->newFile->store('rules', 'public');
+//                 }
 
-                DB::table('ketentuans')->where('id', $this->ruleId)->update([
-                    'jenis' => $this->jenis, 
-                    'file_name' => $this->file_name,
-                    'file_path' => $this->newFile ?? $this->file_path,
-                ]);
-                $this->js("alert('Ketentuan berhasil diperbarui!')"); 
-            } else {
-                if ($this->newFile) {
-                    $this->newFile = $this->newFile->store('rules', 'public');
-                }
-                Ketentuan::create([
-                    'jenis' => $this->jenis,
-                    'file_name' => $this->file_name,
-                    'file_path' => $this->newFile,
-                ]);
-                $this->js("alert('Ketentuan berhasil dibuat!')");
-            }
-            $this->dispatch('close-offcanvas');
-            $this->dispatch('ruleUpdated');
-            $this->resetForm();
-        } catch (\Throwable $th) {
-            throw $th;
-            $this->js("alert('Unsaved')");
-        }
-    }
+//                 DB::table('ketentuans')->where('id', $this->ruleId)->update([
+//                     'jenis' => $this->jenis, 
+//                     'file_name' => $this->file_name,
+//                     'file_path' => $this->newFile ?? $this->file_path,
+//                 ]);
+//                 $this->js("alert('Ketentuan berhasil diperbarui!')"); 
+//             } else {
+//                 if ($this->newFile) {
+//                     $this->newFile = $this->newFile->store('rules', 'public');
+//                 }
+//                 Ketentuan::create([
+//                     'jenis' => $this->jenis,
+//                     'file_name' => $this->file_name,
+//                     'file_path' => $this->newFile,
+//                 ]);
+//                 $this->js("alert('Ketentuan berhasil dibuat!')");
+//             }
+//             $this->dispatch('close-offcanvas');
+//             $this->dispatch('ruleUpdated');
+//             $this->resetForm();
+//         } catch (\Throwable $th) {
+//             throw $th;
+//             $this->js("alert('Unsaved')");
+//         }
+//     }
 
-    #[On('edit')]
-    public function edit($id)
-    {
-        $rule = Ketentuan::getById($id);
+//     #[On('edit')]
+//     public function edit($id)
+//     {
+//         $rule = Ketentuan::getById($id);
 
-        $this->ruleId = $rule->id;
-        $this->file_name = $rule->file_name;
-        $this->file_path = $rule->file_path;
+//         $this->ruleId = $rule->id;
+//         $this->file_name = $rule->file_name;
+//         $this->file_path = $rule->file_path;
 
-        $this->dispatch('show-edit-offcanvas');
-    }
+//         $this->dispatch('show-edit-offcanvas');
+//     }
 
-// =================================HANDLE CLOSE=================================================
-    // HANDLE CLOSE
-    public function btnClose_Offcanvas()
-    {
-        $this->resetForm();
-        $this->dispatch('close_offcanvas');
-    }
+// // =================================HANDLE CLOSE=================================================
+//     // HANDLE CLOSE
+//     public function btnClose_Offcanvas()
+//     {
+//         $this->resetForm();
+//         $this->dispatch('close_offcanvas');
+//     }
 
-// =================================RESET FORM=================================================
-    #[On('reset')]
-    public function resetForm()
-    {
-        $this->jenis = '';
-        $this->file_name = '';
-        $this->file_path = '';
-        $this->ruleId = '';
-    }
+// // =================================RESET FORM=================================================
+//     #[On('reset')]
+//     public function resetForm()
+//     {
+//         $this->jenis = '';
+//         $this->file_name = '';
+//         $this->file_path = '';
+//         $this->ruleId = '';
+//     }
 
-// =================================RENDER=================================================
-    public function render()
-    {
-        return view('livewire.approved.pengajuan.editform-rule');
-    }
-}
+// // =================================RENDER=================================================
+//     public function render()
+//     {
+//         return view('livewire.approved.pengajuan.editform-rule');
+//     }
+// }
 
 
 

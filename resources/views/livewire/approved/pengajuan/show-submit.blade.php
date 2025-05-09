@@ -1,5 +1,17 @@
 <div>
     @section('title')
+        Upload Approval
+    @endsection
+
+    <!--KONEKSI-->
+    {{-- <livewire:approved.pengajuan.upload-rule :title="'Upload Approval'" /> --}}
+
+
+</div>
+
+
+<div>
+    @section('title')
         FormApproval
     @endsection
 
@@ -13,7 +25,7 @@
             
             <thead class="text-success fw-medium">
                 <tr>
-                    <th class="fw-medium text-center fs-5" rowspan="2">Ketentuan</th>
+                    {{-- <th class="fw-medium text-center fs-5" rowspan="2">Ketentuan</th> --}}
                     <th class="fw-medium text-center fs-5" rowspan="2">Form Approval</th>
                 </tr>
             </thead>
