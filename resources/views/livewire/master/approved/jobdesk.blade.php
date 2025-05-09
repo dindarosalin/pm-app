@@ -1,4 +1,4 @@
-{{-- <div>
+<div>
     <div class="d-flex justify-content-end">
         <button wire:click='btnJob_Clicked' class="btn btn-sm btn-outline-success mb-3 mx-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#createJobdesk" aria-controls="createJobdesk">
             Buat Jabatan
@@ -57,4 +57,4 @@
             </tbody>
         </table>
     </div>
-</div> --}}
+</div>

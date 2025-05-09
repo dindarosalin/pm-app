@@ -3,11 +3,12 @@
 namespace App\Models\Projects\Master;
 
 use App\Models\Base\BaseModel;
-use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Support\Facades\DB;
 
 class Approval extends BaseModel
 {
+    protected $table = 'jenis_approve';
     // =================================CREATE, UPDATE, EDIT, DELETE======================================================
     public static function create(array $storeData)
     {

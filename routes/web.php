@@ -29,8 +29,10 @@ use App\Livewire\Budget\Index as BudgetIndex;
 use App\Livewire\Budget\Plan\Plan as BudgetPlan;
 use App\Livewire\Budget\Track\Track as BudgetTrack;
 use App\Livewire\Dashboard\Dashboard as Dashboard;
+use App\Livewire\Master\Approved\Approval as ApprovedApproval;
 use App\Livewire\Master\Approved\Atasan;
 use App\Livewire\Master\Approved\Jabatan;
+use App\Livewire\Master\Approved\JenisApproval;
 use App\Livewire\Master\Approved\Jobdesk;
 use App\Livewire\Master\BudgetCategory\ShowBudgetCategory;
 use App\Livewire\Master\BudgetCategory\ShowBudgetSubCategory;
@@ -175,7 +177,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/uom', Measure::class)->name('uom');
         Route::get('/jobdesk', Jabatan::class)->name('jobdesk');
         Route::get('/atasan', Atasan::class)->name('atasan');
-        Route::get('/jenis-approval', Approval::class)->name('jenis-approval');
+        Route::get('/jenis-approval', JenisApproval::class)->name('jenis-approval');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {
