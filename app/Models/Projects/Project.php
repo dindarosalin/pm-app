@@ -409,6 +409,7 @@ class Project extends BaseModel
             })
             ->select(
                 'tasks.project_id',
+                'projects.title as project_title',
                 'projects.budget as bac',
                 // 'tracks.id as tracks_id',
                 // DB::raw('SUM(tracks.total_per_item) as ac'),
@@ -418,7 +419,7 @@ class Project extends BaseModel
                 'track_summary.ac'
                 // DB::raw("SUM(CASE WHEN tracks.id_project = tasks.project_id THEN tracks.total_per_item ELSE 0 END) as ac"),
             )
-            ->groupBy('tasks.project_id', 'projects.budget', 'track_summary.ac')
+            ->groupBy('tasks.project_id', 'projects.budget', 'project_title', 'track_summary.ac')
             ->get();
             // ->groupBy('project_id')
             // ->map(function ($item) {

@@ -63,21 +63,16 @@
                         <!-- Label End -->
 
                         <!-- Project Health-->
-                        <span>Asta project</span>
-                        <span class="text-success">
-                            <i class="bi bi-circle-fill" data-bs-toggle="tooltip" title="Under Budget"></i>
-                        </span>
-                        <span class="text-warning">
-                            <i class="bi bi-circle-fill" data-bs-toggle="tooltip" title="On Schedule"></i>
-                        </span>
-
-                        <span>Asta flet</span>
-                        <span class="text-danger">
-                            <i class="bi bi-circle-fill" data-bs-toggle="tooltip" title="Over Budget"></i>
-                        </span>
-                        <span class="text-danger">
-                            <i class="bi bi-circle-fill" data-bs-toggle="tooltip" title="Overdue"></i>
-                        </span>
+                        @foreach($evmData as $data)
+                        {{-- @dd($data['cpi']) --}}
+                            <span>{{ $data['project_title'] }}</span>
+                            <span class="{{ $data['cpi'] == 1 ? 'text-primary' : ($data['cpi'] > 1 ? 'text-success' : 'text-danger') }}">
+                                <i class="bi bi-circle-fill" data-bs-toggle="tooltip" title="{{ $data['cpi'] == 1 ? 'Proyek sesuai anggaran' : ($data['cpi'] > 1 ? 'Di bawah rencana anggaran' : 'Biaya melebihi perencanaan') }}"></i>
+                            </span>
+                            <span class="{{ $data['spi'] == 1 ? 'text-primary' : ($data['spi'] > 1 ? 'text-success' : 'text-danger') }}">
+                                <i class="bi bi-circle-fill" data-bs-toggle="tooltip" title="{{ $data['spi'] == 1 ? 'Proyek sesuai rencana' : ($data['spi'] > 1 ? 'Proyek lebih cepat' : 'Proyek terlambat') }}"></i>
+                            </span>
+                        @endforeach
 
                         <!-- Project Health End -->
                     </div>

@@ -20,6 +20,7 @@ class EvmService
 
         return [
             'project_id' => $project->project_id,
+            'project_title' => $project->project_title,
             'total_task' => $project->total_task,
             'budget_at_complated' => $project->bac,
             'planned_done_task' => $project->planned_done_task,

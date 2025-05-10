@@ -13,6 +13,7 @@ class DashboardAll extends Component
 {
     public $percentagesProgress;
     public $time;
+    public $evmData;
 
     public function getDataOnsite()
     {
@@ -128,10 +129,12 @@ class DashboardAll extends Component
     {
         $projects = Project::getAllProjectsDashboard();
 
-        $evmData = $projects->map(function ($project) {
+        $this->evmData = $projects->map(function ($project) {
             return EvmService::calculateEVM($project);
         });
-        dd($evmData);
+
+        
+        // dd($this);
         // dd($this->plannedValue());
         $this->percentagesProgress = $this->projectProgress();
         $this->time();
