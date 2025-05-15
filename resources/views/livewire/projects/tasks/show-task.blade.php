@@ -123,7 +123,7 @@
         </div>
     </div>
 
-    <div wire:ignore.self class="offcanvas offcanvas-end w-50" tabindex="-1" id="viewOffCanvas"
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="viewOffCanvas"
         aria-labelledby="viewOffCanvasLabel">
         <div class="offcanvas-header">
             <h5 id="viewOffCanvasLabel">View Task</h5>
@@ -253,7 +253,7 @@
                 </div>
             </div> --}}
             @endif
-            @livewire('projects.tasks.comments')
+            {{-- @livewire('projects.tasks.comments') --}}
         </div>
     </div>
 
@@ -365,7 +365,7 @@
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <!-- View icon -->
-                                    <btn wire:click="$dispatch('showById', {id: {{ $task->id }}})" class="text-primary m-0">
+                                    <btn role="button" wire:click="$dispatch('showById', {id: {{ $task->id }}})" class="text-primary m-0">
                                         <i class="fa-regular fa-eye"></i>
                                     </btn>
     

@@ -66,7 +66,7 @@
                 <div wire:ignore id="projectsCollapse" class="accordion-collapse collapse show"
                     data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        @if (App\Models\Base\BaseModel::isAuthorize('110', 'R'))
+                        {{-- @if (App\Models\Base\BaseModel::isAuthorize('110', 'R'))
                             <li
                                 class="sidebar-accordition sidebar-menu {{ request()->routeIs('projects.dashboard.task') ? 'active' : '' }} ">
                                 <a class=" text-decoration-none text-white"
@@ -75,7 +75,7 @@
                                     <span>Dashboard</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (App\Models\Base\BaseModel::isAuthorize('109', 'R'))
                             <li
                                 class="sidebar-accordition sidebar-menu {{ request()->routeIs('projects.tasks.*') ? 'active' : '' }}">

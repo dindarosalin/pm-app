@@ -20,7 +20,6 @@ use App\Models\Projects\Master\TaskStatuses;
 use App\Models\Settings\Role;
 use Illuminate\Support\Facades\DB;
 
-
 class ShowTask extends Component
 {
     public $totalTask, $projectDetail;
@@ -87,7 +86,8 @@ class ShowTask extends Component
         ]);
     }
 
-    public function getAllTasks(){
+    public function getAllTasks()
+    {
         // $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
         $t = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
         $ranking = collect($this->scores);
@@ -177,10 +177,15 @@ class ShowTask extends Component
             $this->dispatch('swal:modal', [
                 'type' => 'success',
                 'message' => 'Data Saved',
-                'text' => 'It will list on the table soon.'
+                'text' => 'It will list on the table soon.',
             ]);
         } catch (\Throwable $th) {
             session()->flash('error', $th);
+            // $this->dispatch('swal:modal', [
+            //     'type' => 'error',
+            //     'message' => 'Error',
+            //     'text' => 'It not list on the table.'
+            // ]);
             $th->getMessage();
         }
     }
@@ -289,7 +294,7 @@ class ShowTask extends Component
                 $param = [
                     'id' => $e->user_id,
                     'name' => $e->getEmploye()->user_name,
-                    'email' => $e->getEmploye()->user_email
+                    'email' => $e->getEmploye()->user_email,
                 ];
 
                 $dataBawahanLangsung[] = $param;
@@ -306,7 +311,7 @@ class ShowTask extends Component
                     $param = [
                         'id' => $c->user_id,
                         'name' => $c->getEmploye()->user_name,
-                        'email' => $c->getEmploye()->user_email
+                        'email' => $c->getEmploye()->user_email,
                     ];
                     array_push($dataSemuaBawahan, $param);
                     $nextUsr = array_merge($nextUsr, $c->child->all());
@@ -318,18 +323,14 @@ class ShowTask extends Component
             return $dataSemuaBawahan;
 
             // manage assign_to untuk admin
-        } elseif ($this->auth == $isAdmin) { 
+        } elseif ($this->auth == $isAdmin) {
             $allUser = DB::table('app_user')
-            ->select([
-                'user_id as id',
-                'user_name as name',
-                'user_email as email'
-            ])
-            ->get()
-            ->map(function ($user) {
-                return (array) $user;
-            })
-            ->toArray();
+                ->select(['user_id as id', 'user_name as name', 'user_email as email'])
+                ->get()
+                ->map(function ($user) {
+                    return (array) $user;
+                })
+                ->toArray();
 
             // $allUser = EmployeeHierarchy::getAllEmployees();
 
@@ -398,11 +399,33 @@ class ShowTask extends Component
         $this->sortColumn = null;
     }
 
+    public function alertConfirm($id)
+    {
+        $this->dispatch('swal:confirm', [
+            'type' => 'warning',
+            'message' => 'Are you sure?',
+            'text' => 'This will archive task',
+            'id' => $id,
+            'dispatch' => 'archive-task',
+        ]);
+    }
+
+    #[On('archive-task')]
+    public function archive($id)
+    {
+        Task::softDelete($id);
+        $this->dispatch('swal:modal', [
+            'type' => 'success',
+            'message' => 'Data Archived',
+            'text' => 'It will not list on the table.',
+        ]);
+    }
+
     #[On('update-task-score')]
     public function applyRanking($scoresData)
     {
         $this->scores = collect($scoresData);
-        
+
         // dd($this->scores);
     }
 
@@ -442,6 +465,5 @@ class ShowTask extends Component
     {
         // dd($this->taskShow->id);
         return Comment::countByTask($this->taskShow->id);
-
     }
 }
