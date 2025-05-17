@@ -19,6 +19,7 @@ use App\Models\Projects\Master\TaskCategory;
 use App\Models\Projects\Master\TaskStatuses;
 use App\Models\Settings\Role;
 use Illuminate\Support\Facades\DB;
+use App\Livewire\Projects\Tasks\Priorities;
 
 class ShowTask extends Component
 {
@@ -249,7 +250,7 @@ class ShowTask extends Component
         $flags = $data['flags'];
         $labels = $data['labels'];
         $this->dispatch('load-summary', summary: $task->summary);
-        // dd($task->summary);
+        // dd($task);
         $this->taskId = $task->id;
         $this->selectedFlags = $flags->pluck('id')->toArray();
         $this->selectedLabels = $labels->pluck('id')->toArray();
@@ -261,8 +262,8 @@ class ShowTask extends Component
         $this->created_by = $task->created_by;
         $this->assign_to = $task->assign_to;
         $this->status = $task->status_id;
-        $this->use_holiday = $task->use_holiday;
-        $this->use_weekend = $task->use_weekend;
+        $this->use_holiday = (bool) $task->use_holiday;
+        $this->use_weekend = (bool) $task->use_weekend;
 
         $this->dispatch('show-edit-offcanvas');
     }

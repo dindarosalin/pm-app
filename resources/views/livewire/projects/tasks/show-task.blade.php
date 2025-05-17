@@ -92,9 +92,9 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Assign To</label>
-                    <select wire:model='assign_to' id="assign_to" class="form-select form-select-sm">
+                    {{-- <select wire:model='assign_to' id="assign_to" class="form-select form-select-sm">
                         @if ($employees->count() >= 1)
-                            <option value="" selected>Lihat Nanti</option>
+                            <option value="" selected>None</option>
                             <option value="{{ $auth }}" selected>{{ Auth::user()->user_name }}</option>
                             @foreach ($employees as $employee)
                                 <option wire:key='{{ $employee['id'] }}' value="{{ $employee['id'] }}">
@@ -102,8 +102,19 @@
                                 </option>
                             @endforeach
                         @else
-                            <option value="{{ $auth }}" selected>{{ $auth }}</option>
+                            <option value="{{ $auth }}" selected>{{ Auth::user()->user_name }}</option>
                         @endif
+                    </select> --}}
+                    <select wire:model="assign_to" id="assign_to" class="form-select form-select-sm">
+                        <option value="">None</option>
+                        <option value="{{ $auth}}">
+                            {{ Auth::user()->user_name }}
+                        </option>
+                        @foreach ($employees as $employee)
+                            <option wire:key="{{ $employee['id'] }}" value="{{ $employee['id'] }}">
+                                {{ $employee['name'] }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="mb-3">
@@ -123,8 +134,7 @@
         </div>
     </div>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="viewOffCanvas"
-        aria-labelledby="viewOffCanvasLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="viewOffCanvas" aria-labelledby="viewOffCanvasLabel">
         <div class="offcanvas-header">
             <h5 id="viewOffCanvasLabel">View Task</h5>
             <button type="button" class="btn-close text-reset" wire:click='btnClose_Offcanvas'
@@ -231,8 +241,8 @@
                         </tbody>
                     </table>
                 </div>
-            
-            {{-- <div class="p-3">
+
+                {{-- <div class="p-3">
                 <form>
                     @csrf
                     <p class="fw-bold">Comments ({{ $countComment > 0 ? $countComment : 0 }})</p>
@@ -266,7 +276,8 @@
             <button wire:click="$dispatch('show-create-offcanvas')" class="btn btn-success btn-sm col"><i
                     class="fa-solid fa-plus"></i></button>
             {{-- @dd($projectId); --}}
-            <a href="{{ route('projects.tasks.archived', $projectId) }}" role="button" class="btn btn-danger btn-sm col text-white" wire:navigate> 
+            <a href="{{ route('projects.tasks.archived', $projectId) }}" role="button"
+                class="btn btn-danger btn-sm col text-white" wire:navigate>
                 <i class="fa-solid fa-box-archive"></i></a>
         </div>
     </div>
@@ -276,7 +287,7 @@
 
         <div class="card-body table-responsive px-0">
             <livewire:projects.tasks.priorities :projectId="$projectId" :auth="$auth" :tasks="$tasks" />
-            <table class="table table-sm table-bordered table-hover text-center" >
+            <table class="table table-sm table-bordered table-hover text-center">
                 <thead>
                     <tr>
                         <th role="button" wire:click="sortBy('score')">Priority
@@ -316,7 +327,8 @@
                             <td>{{ $task->assign_to_name }}</td>
                             <td>{{ $task->category_name }}</td>
                             <td>
-                                <span class="badge
+                                <span
+                                    class="badge
                                     @switch($task->status_name)
                                         @case('New')
                                             text-bg-primary
@@ -365,20 +377,20 @@
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <!-- View icon -->
-                                    <btn role="button" wire:click="$dispatch('showById', {id: {{ $task->id }}})" class="text-primary m-0">
+                                    <btn role="button" wire:click="$dispatch('showById', {id: {{ $task->id }}})"
+                                        class="text-primary m-0">
                                         <i class="fa-regular fa-eye"></i>
                                     </btn>
-    
+
                                     <!-- Edit icon -->
-                                    <btn role="button" wire:click="$dispatch('edit', {id: {{ $task->id }} })" class="text-warning m-0">
+                                    <btn role="button" wire:click="$dispatch('edit', {id: {{ $task->id }} })"
+                                        class="text-warning m-0">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </btn>
-    
+
                                     <!-- Delete icon -->
                                     <btn role="button" wire:click="alertConfirm({{ $task->id }})"
-    
-                                    {{-- <p role="button" wire:click="$dispatch('alertConfirm', {id: {{ $task->id }}})"  --}}
-                                        class="text-danger m-0">
+                                        {{-- <p role="button" wire:click="$dispatch('alertConfirm', {id: {{ $task->id }}})"  --}} class="text-danger m-0">
                                         <i class="fa-solid fa-box-archive"></i>
                                     </btn>
                                 </div>
