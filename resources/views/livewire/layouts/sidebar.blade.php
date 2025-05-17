@@ -70,7 +70,7 @@
                             <li
                                 class="sidebar-accordition sidebar-menu {{ request()->routeIs('projects.dashboard.task') ? 'active' : '' }} ">
                                 <a class=" text-decoration-none text-white"
-                                    href="{{ route('projects.dashboard.task', $projectId) }}" wire:navigate.defer.defer>
+                                    href="{{ route('projects.dashboard.task', $projectId) }}" wire:navigate.defer>
                                     <i class="fa-solid fa-chart-simple"></i>
                                     <span>Dashboard</span>
                                 </a>
@@ -188,7 +188,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.project-status') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.project-status') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Project Status</span>
                             </a>
@@ -199,7 +199,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-status') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-status') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Status</span>
                             </a>
@@ -210,7 +210,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-flag') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-flag') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Flag</span>
                             </a>
@@ -221,7 +221,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-label') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-label') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Label</span>
                             </a>
@@ -232,7 +232,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-category') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-category') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Category </span>
                             </a>
@@ -243,7 +243,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-criteria') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-criteria') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Criteria</span>
                             </a>
@@ -254,7 +254,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.budget-category') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.budget-category') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Budget Category</span>
                             </a>
@@ -265,7 +265,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.budget-subcategory') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('master.budget-subcategory') }}" wire:navigate.defer.defer>
+                                href="{{ route('master.budget-subcategory') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span> Budget Sub Category</span>
                             </a>
@@ -276,7 +276,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.holidays') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.holidays') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Holiday</span>
                             </a>
@@ -287,7 +287,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.uom') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.uom') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Unit Of Measure</span>
                             </a>
@@ -323,7 +323,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('settings.menu') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('settings.menu') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-bars"></i>
                                 <span>Menu</span>
                             </a>

@@ -7,7 +7,7 @@ use App\Models\Working;
 use Livewire\Component;
 use App\Models\ButtonStart;
 use Livewire\Attributes\On;
-
+use Illuminate\Support\Facades\Auth;
 
 class StartWork extends Component
 {
@@ -16,7 +16,7 @@ class StartWork extends Component
 
     public function store()
     {
-        $employee = 10; //GET ID FROM SESSION LOGIN
+        $employee = Auth::user()->user_id; //GET ID FROM SESSION LOGIN
 
         $storeData = [
             'employee_id' => $employee
