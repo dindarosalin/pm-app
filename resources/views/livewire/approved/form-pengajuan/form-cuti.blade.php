@@ -60,8 +60,13 @@
                 <!-- Informasi Cuti -->
                 <div class="mb-3">
                     <label class="form-label">Jenis Cuti <span class="text-danger">*</span></label>
-                    <input type="text" wire:model="jenis_cuti" class="form-control @error('jenis_cuti') is-invalid @enderror">
-                    @error('jenis_cuti') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <select wire:model="id_jenis_approve" class="form-select @error('id_jenis_approve') is-invalid @enderror">
+                        <option value="">Pilih Jenis Cuti</option>
+                        @foreach ($jenisApprove as $item)
+                            <option value="{{ $item->id }}">{{ $item->jenis }}</option>
+                        @endforeach
+                    </select>
+                    @error('id_jenis_approve') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="mb-3">

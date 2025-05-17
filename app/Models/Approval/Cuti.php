@@ -19,7 +19,7 @@ class Cuti extends BaseModel
             'head_id' => $storeData['selectHead'],
             'email' => $storeData['email'],
             'no_telepon' => $storeData['no_telepon'],
-            'jenis_cuti' => $storeData['jenis_cuti'],
+            'id_jenis_approve' => $storeData['jenis_cuti'],
             'detail' => $storeData['detail'],
             'tanggal_mulai' => $storeData['tanggal_mulai'],
             'tanggal_akhir' => $storeData['tanggal_akhir'],
@@ -47,7 +47,7 @@ class Cuti extends BaseModel
                 'head_id' => $storeData['head_id'],
                 'email' => $storeData['email'],
                 'no_telepon' => $storeData['no_telepon'],
-                'jenis_cuti' => $storeData['jenis_cuti'],
+                'id_jenis_approve' => $storeData['jenis_cuti'],
                 'detail' => $storeData['detail'],
                 'tanggal_mulai' => $storeData['tanggal_mulai'],
                 'tanggal_akhir' => $storeData['tanggal_akhir'],
@@ -85,10 +85,12 @@ class Cuti extends BaseModel
         return DB::table('cutis')
             ->join('jobdesk', 'cutis.jobdesk_id', '=', 'jobdesk.id')
             ->join('heads', 'cutis.head_id', '=', 'heads.id')
+            ->join('jenis_approve', 'cutis.id_jenis_approve', '=', 'jenis_approve.id')
             ->select(
                 'cutis.*',
                 'jobdesk.job as jobdesk_name',
-                'heads.name as head_name'
+                'heads.name as head_name',
+                'jenis_approve.jenis as cuti_name'
             )
             ->orderBy('cutis.created_at', 'desc')
             ->get();
@@ -100,10 +102,12 @@ class Cuti extends BaseModel
             ->where('cutis.id', $id)
             ->join('jobdesk', 'cutis.jobdesk_id', '=', 'jobdesk.id')
             ->join('heads', 'cutis.head_id', '=', 'heads.id')
+            ->join('jenis_approve', 'cutis.id_jenis_approve', '=', 'jenis_approve.id')
             ->select(
                 'cutis.*',
                 'jobdesk.job as jobdesk_name',
-                'heads.name as head_name'
+                'heads.name as head_name',
+                'jenis_approve.jenis as cuti_name'
             )
             ->first();
     }
@@ -119,145 +123,17 @@ class Cuti extends BaseModel
         }, $end) + 1;
     }
 
-
-
-// =======================================CREATE, UPDATE, DELETE, EDIT==========================================================
-    // public static function create(array $storeData)
-    // {
-    //     return DB::table('cutis')->insert([
-    //         'name' => $storeData['name'],
-    //         'jobdesk_id' => $storeData['selectJobdesk'],
-    //         'head_id' => $storeData['selectHead'],
-    //         'email' => $storeData['email'],
-    //         'no_telepon' => $storeData['no_telepon'],
-    //         'jenis_cuti' => $storeData['jenis_cuti'],
-    //         'detail' => $storeData['detail'],
-    //         'tanggal_mulai' => $storeData['tanggal_mulai'],
-    //         'tanggal_akhir' => $storeData['tanggal_akhir'],
-    //         // 'akumulasi' => $storeData['akumulasi'],
-    //         'akumulasi' => self::cutiDays($storeData['tanggal_mulai'], $storeData['tanggal_akhir']),
-    //         'tanggal_pengajuan' => $storeData['tgl_pengajuan'],
-    //         'nama_kontak_darurat' => $storeData['nama_kontak_darurat'],
-    //         'telp_darurat' => $storeData['telp_darurat'],
-    //         'alamat' => $storeData['alamat'],
-    //         'hubungan_darurat' => $storeData['hubungan_darurat'],
-    //         'nama_delegasi' => $storeData['nama_delegasi'],
-    //         'detail_delegasi' => $storeData['detail_delegasi'],
-    //         'file_up' => $storeData['file_up'],
-    //         'created_at' => now(),
-    //     ]);
-    // }
-
-    // public static function update(array $storeData, $id)
-    // {
-    //     return DB::table('cutis')
-    //         ->where('id', $id)
-    //         ->update([
-    //            'name' => $storeData['name'],
-    //            'jobdesk_id' => $storeData['selectJobdesk'],
-    //            'head_id' => $storeData['selectHead'],
-    //            'email' => $storeData['email'],
-    //            'no_telepon' => $storeData['no_telepon'],
-    //            'jenis_cuti' => $storeData['jenis_cuti'],
-    //            'detail' => $storeData['detail'],
-    //            'tanggal_mulai' => $storeData['tanggal_mulai'],
-    //            'tanggal_akhir' => $storeData['tanggal_akhir'],
-    //         //    'akumulasi' => $storeData['akumulasi'],
-    //            'akumulasi' => self::cutiDays($storeData['tanggal_mulai'], $storeData['tanggal_akhir']),
-    //            'tanggal_pengajuan' => $storeData['tgl_pengajuan'],
-    //            'nama_kontak_darurat' => $storeData['nama_kontak_darurat'],
-    //            'telp_darurat' => $storeData['telp_darurat'],
-    //            'alamat' => $storeData['alamat'],
-    //            'hubungan_darurat' => $storeData['hubungan_darurat'],
-    //            'nama_delegasi' => $storeData['nama_delegasi'],
-    //            'detail_delegasi' => $storeData['detail_delegasi'],
-    //            'file_up' => $storeData['file_up'],
-    //            'updated_at' => now(),
-    //         ]);
-    // }
-
-    // public function edit($id)
-    // {
-    //     return DB::table('cutis')
-    //         ->where('cutis.id', $id)
-    //         ->join('jobdesk', 'cutis.jobdesk_id', '=', 'jobdesk.id')
-    //         ->join('heads', 'cutis.head_id', '=', 'heads.id')
-    //         ->select(
-    //             'cutis.*',
-    //             'jobdesk.job as jobdesk_name',
-    //             'heads.name as head_name' 
-    //         )
-    //         ->first();
-    // }
-
-    // public static function delete($id)
-    // {
-    //     return DB::table('cutis')
-    //         ->where('id', $id)
-    //         ->delete();
-    // }
-
-// ===========================================GET DATA===========================================================
-    // public static function getAllCuti()
-    // {
-    //     return DB::table('cutis')
-    //         ->join('jobdesk', 'cutis.jobdesk_id', '=', 'jobdesk.id')
-    //         ->join('heads', 'cutis.head_id', '=', 'heads.id')
-    //         ->select(
-    //             'cutis.*',
-    //             'jobdesk.job as jobdesk_name',
-    //             'heads.name as head_name' 
-    //         )
-    //         ->orderBy('jobdesk_id')
-    //         ->orderBy('head_id')
-    //         ->get();
-    // }
-
-    // public static function getCutiById($id)
-    // {
-    //     return DB::table('cutis')
-    //         ->where('cutis.id', $id)
-    //         ->join('jobdesk', 'cutis.jobdesk_id', '=', 'jobdesk.id')
-    //         ->join('heads', 'cutis.head_id', '=', 'heads.id')
-    //         ->select(
-    //             'cutis.*',
-    //             'jobdesk.job as jobdesk_name',
-    //             'heads.name as head_name' 
-    //         )
-    //         ->first();
-    // }
-
-    // public static function detail($id)
-    // {
-    //     return DB::table('cutis')
-    //         ->join('jobdesk', 'cutis.jobdesk_id', '=', 'jobdesk.id')
-    //         ->join('heads', 'cutis.head_id', '=', 'heads.id')
-    //         ->select(
-    //             'cutis.*',
-    //             'jobdesk.job as jobdesk_name',
-    //             'heads.name as head_name' 
-    //         )
-    //         ->where('cutis.id', $id)
-    //         ->get();
-    // }
-
-// ==============================================DEPENDENT DROPDOWN=====================================================
-    // public static function getHead($jobdesk_id)
-    // {
-    //     return DB::table('heads')
-    //         ->where('head_id', $jobdesk_id)
-    //         ->select('id', 'job')
-    //         ->get();
-    // }
-
-// ===================================================CALCULATE CUTI DAY=======================================================
-    // public static function cutiDays($startDate, $endDate)
-    // {
-    //     $start = Carbon::parse($startDate);
-    //     $end = Carbon::parse($endDate);
-
-    //     return $start->diffInDaysFiltered(function(Carbon $date) {
-    //         return !$date->isWeekend();
-    //     }, $end) + 1;
-    // }
+    // ========================================================GET CUTI================================================
+    public static function getCuti()
+    {
+        return DB::table('cutis')
+            ->join('jenis_approve', 'cutis.id_jenis_approve', '=', 'jenis_approve.id')
+            ->select([
+                'cutis.id as id',
+                'jenis_approve.jenis as jenis_cuti',
+                'cutis.tanggal_pengajuan as tanggal_pengajuan',
+            ])
+            ->orderBy('cutis.tanggal_pengajuan', 'desc')
+            ->get();
+    }
 }

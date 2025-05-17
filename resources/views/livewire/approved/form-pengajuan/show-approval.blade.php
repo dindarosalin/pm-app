@@ -80,7 +80,7 @@
 
             <thead class="text-success fw-medium">
                 <tr>
-                    <th class="fw-medium text-center" rowspan="2">No</th>
+                    {{-- <th class="fw-medium text-center" rowspan="2">No</th> --}}
                     <th class="fw-medium text-center" rowspan="2">Jenis Approval</th>
                     <th class="fw-medium text-center" rowspan="2">Tanggal Pengajuan</th>
                     <th class="fw-medium text-center" rowspan="2">Detail Pengajuan</th>
@@ -89,6 +89,25 @@
             </thead>
 
             <tbody>
+                @foreach ($cutis as $cuti)
+                <tr>
+                    <td class="text-center">{{ $cuti->jenis_cuti }}</td>
+                    <td class="text-center">{{ $cuti->tanggal_pengajuan }}</td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-success btn-sm">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-warning btn-sm">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
                 {{-- @foreach ($permissions as $item)
                     <tr wire:key='{{ $item->id }}'>
                         <td class="text-center">{{ $item->name }}</td>
@@ -111,7 +130,7 @@
                         </td>
                     </tr>
                 @endforeach --}}
-                <tr>
+                {{-- <tr>
                     <td class="text-center">1</td>
                     <td class="text-center">Cuti</td>
                     <td class="text-center">24 April 2025</td>
@@ -131,7 +150,7 @@
                             </button>
                         </div>
                     </td>
-                </tr>
+                </tr> --}}
             </tbody>
         </table>
     </div>

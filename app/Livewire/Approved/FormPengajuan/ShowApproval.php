@@ -2,16 +2,24 @@
 
 namespace App\Livewire\Approved\FormPengajuan;
 
+use App\Models\Approval\Cuti;
 use App\Models\Approval\Ketentuan;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ShowApproval extends Component
 {
     public $rules;
+    public $formId, $typeForm, $data;
+    public $cutis;
+
+    // cuti
+    public $id_jenis_approve, $tanggal_pengajuan;
 
     public function render()
     {
         $this->getRule();
+        $this->loadCuti();
         return view('livewire.approved.form-pengajuan.show-approval');
     }
 // =======================================GET KETENTUAN===============================================================
@@ -44,5 +52,29 @@ class ShowApproval extends Component
     public function btnPengadaan_Clicked()
     {
         $this->dispatch('show-create-offcanvas-proyek');
+    }
+
+    // =============================================LOGIKA GET DATA FORM=========================================================
+    #[On('show-form')]
+    public function showForm($formId, $typeForm)
+    {
+        if($typeForm === 'cuti') {
+            $data = Cuti::getById($formId);
+            if (!$data) {
+                $this->js("alert('Data tidak ditemukan')");
+                return;
+            }
+
+            $this->id_jenis_approve = $data->id_jenis_approve;
+            $this->tanggal_pengajuan = $data->tanggal_pengajuan;
+
+            $this->dispatch('show-detail.cuti');
+        }
+    }
+
+    // ==========================================GET CUTI==============================================
+    public function loadCuti()
+    {
+        $this->cutis = Cuti::getCuti();
     }
 }
