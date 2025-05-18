@@ -12,105 +12,74 @@ use App\Services\evmService;
 class DashboardAll extends Component
 {
     public $percentagesProgress;
+
     public $time;
+
+    // evm data all projects
     public $evmData;
 
-    public function getDataOnsite()
+    // data collection for the tasks dounats
+    public $tasks;
+
+
+
+    public function getDataOnsite() {}
+
+    public function getDataWfh() {}
+
+    public function projectOnSuchedule() {}
+
+    public function projectBehindSchedule() {}
+
+    public function totalResources() {}
+
+
+
+    // GET ALL PROJECT TASKS
+    public function tasksAll()
     {
-        
+        $taskNotStarted = Task::getDoneAllProjectTasks([1, 2])->count();
+        $taskOnProgress = Task::getDoneAllProjectTasks([3, 4])->count();
+        $taskDone = Task::getDoneAllProjectTasks([5, 6])->count();
+        $taskHold = Task::getDoneAllProjectTasks([7])->count();
+        $taskCancel = Task::getDoneAllProjectTasks([8])->count();
+
+
+        return ['notStart' => $taskNotStarted, 'onProgress' => $taskOnProgress, 'done' => $taskDone, 'hold' => $taskHold, 'cancel' => $taskCancel];
     }
 
-    public function getDataWfh()
-    {
-        
-    }
-
-    public function projectOnSuchedule()
-    {
-        
-    }
-
-    public function projectBehindSchedule()
-    {
-        
-    }
-
-    public function totalResources()
-    {
-        
-    }
-
-    // public function earnedValue()
-    // {
-
-    //     try {
-
-    //         $ev = round(task::getDoneProjectTasks($this->projectId, [5,6])->count() / Dashboard::allTask()->count() * 100, 2);
-    //     } catch (DivisionByZeroError $e) {
-
-    //         $ev = 0;
-    //     }
-    //     // $this->ev = $allTask;
-    //     return $ev;
-    // }
-
-    // public function allTaskProjects()
-    // {
-    //     return task::getAllProjectTasks($this->projectId);
-    // }
-
-        // Menghitung presentase rencana penyelesaian proyek
-        public function plannedValue()
-    {
-
-        $allTask = 0;
-        // $all = new all();
-        // $all = Dashboard::allTask();
 
 
-        //mencari project yang harus diselesaikan sampai hari ini
-        // $currentDate = Carbon::now();
-        // $doTasks = $all->filter(function ($task) use ($currentDate) {
-        //     return Carbon::parse($task->end_date_estimation)->lessThan($currentDate);
-        // })->count();
-
-        // try {
-
-        //     $pv = ($doTasks / Dashboard::allTask()->count() * 100);
-        // } catch (DivisionByZeroError $e) {
-
-        //     $pv = 0;
-        // }
-
-        dd();
-    }
-
-    public function health()
-    {
-        
-
-    }
-
+    // PROJECT PROGESS
     public function projectProgress()
     {
-        return $progress = Project::getAll();
+        return Project::getAll()->map(function ($project) {
+            return [
+                'title' => $project->title,
+                'completion' => $project->completion,
+            ];
+        });
         // dd($this->percentagesProgress);
     }
 
+
+
+    // TIME
     public function time()
     {
+        // PRESENTASE PENYELESAIAN /PROYEK
         // Menghitung persentase penyelesaian per proyek
         $allTasks = Task::getAllTasks();
-        $completedTasks = Task::getDoneAllProjectTasks([5,6]);
-        
+        $completedTasks = Task::getDoneAllProjectTasks([5, 6]);
+
         $projectProgress = $allTasks->map(function ($project) use ($completedTasks) {
             $completed = $completedTasks->firstWhere('project_id', $project->project_id);
             $done = $completed->total_tasks_done ?? 0;
-        
+
             $percentage = $project->total_tasks > 0
                 ? ($done / $project->total_tasks) * 100
                 : 0;
-        
+
             return [
                 'project_id' => $project->project_title,
                 'total_tasks' => $project->total_tasks,
@@ -123,25 +92,29 @@ class DashboardAll extends Component
         // return [$evAll, $taskDone];
     }
 
-        
+
 
     public function mount()
     {
+        // GET ALL PROJECTS DATA FOR HEALTH
         $projects = Project::getAllProjectsDashboard();
 
         $this->evmData = $projects->map(function ($project) {
             return EvmService::calculateEVM($project);
         });
 
-        
-        // dd($this);
-        // dd($this->plannedValue());
+        // TASKS DOUNATS
+        $this->tasks = $this->tasksAll();
+
+        //
         $this->percentagesProgress = $this->projectProgress();
+
+        // dd($this->timeData());
         $this->time();
     }
-    
 
-    
+
+
     public function render()
     {
         return view('livewire.dashboard.dashboard-all');

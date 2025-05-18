@@ -3,7 +3,6 @@
         Dashboard
     @endsection
 
-
     <div class="col-lg-12 col-md-12 col-sm-12">
         {{-- Panel --}}
         <div class="row">
@@ -63,14 +62,18 @@
                         <!-- Label End -->
 
                         <!-- Project Health-->
-                        @foreach($evmData as $data)
-                        {{-- @dd($data['cpi']) --}}
+                        @foreach ($evmData as $data)
+                            {{-- @dd($data['cpi']) --}}
                             <span>{{ $data['project_title'] }}</span>
-                            <span class="{{ $data['cpi'] == 1 ? 'text-primary' : ($data['cpi'] > 1 ? 'text-success' : 'text-danger') }}">
-                                <i class="bi bi-circle-fill" data-bs-toggle="tooltip" title="{{ $data['cpi'] == 1 ? 'Proyek sesuai anggaran' : ($data['cpi'] > 1 ? 'Di bawah rencana anggaran' : 'Biaya melebihi perencanaan') }}"></i>
+                            <span
+                                class="{{ $data['cpi'] == 1 ? 'text-primary' : ($data['cpi'] > 1 ? 'text-success' : 'text-danger') }}">
+                                <i class="bi bi-circle-fill" data-bs-toggle="tooltip"
+                                    title="{{ $data['cpi'] == 1 ? 'Proyek sesuai anggaran' : ($data['cpi'] > 1 ? 'Di bawah rencana anggaran' : 'Biaya melebihi perencanaan') }}"></i>
                             </span>
-                            <span class="{{ $data['spi'] == 1 ? 'text-primary' : ($data['spi'] > 1 ? 'text-success' : 'text-danger') }}">
-                                <i class="bi bi-circle-fill" data-bs-toggle="tooltip" title="{{ $data['spi'] == 1 ? 'Proyek sesuai rencana' : ($data['spi'] > 1 ? 'Proyek lebih cepat' : 'Proyek terlambat') }}"></i>
+                            <span
+                                class="{{ $data['spi'] == 1 ? 'text-primary' : ($data['spi'] > 1 ? 'text-success' : 'text-danger') }}">
+                                <i class="bi bi-circle-fill" data-bs-toggle="tooltip"
+                                    title="{{ $data['spi'] == 1 ? 'Proyek sesuai rencana' : ($data['spi'] > 1 ? 'Proyek lebih cepat' : 'Proyek terlambat') }}"></i>
                             </span>
                         @endforeach
 
@@ -153,21 +156,33 @@
         const costChart = document.getElementById('costChart').getContext('2d');
         const ctx = document.getElementById('workHoursChart').getContext('2d');
 
+
+
         new Chart(project, {
             type: 'doughnut',
             data: {
                 labels: [
                     'Not Started',
-                    'Complate',
-                    'Inprogress'
+                    'Inprogress',
+                    'Done',
+                    'Hold',
+                    'Cancel'
                 ],
                 datasets: [{
                     label: 'Project',
-                    data: [1, 2, 1],
+                    data: [
+                        "{{ $tasks['notStart'] }}",
+                        "{{ $tasks['onProgress'] }}",
+                        "{{ $tasks['done'] }}",
+                        "{{ $tasks['hold'] }}",
+                        "{{ $tasks['cancel'] }}"
+                    ],
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(101, 205, 101)',
                         'rgb(255, 205, 86)',
+                        'rgb(253, 107, 8)',
+                        'rgb(215, 97, 84)',
                     ],
                     hoverOffset: 4
                 }]
@@ -218,17 +233,24 @@
                     x: {
                         ticks: {
                             beginAtZero: true,
-                            max: 100,
+                            min: 100,
                             font: {
                                 size: getFontSize()
                             },
                         }
                     },
-
                 },
                 plugins: {
                     legend: {
-                        display: false
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+
+                            label: (tooltipItem) => {
+                                return `${tooltipItem.raw}%`;
+                            }
+                        }
                     }
                 },
                 responsive: true,

@@ -411,46 +411,12 @@ class Project extends BaseModel
                 'tasks.project_id',
                 'projects.title as project_title',
                 'projects.budget as bac',
-                // 'tracks.id as tracks_id',
-                // DB::raw('SUM(tracks.total_per_item) as ac'),
                 DB::raw('COUNT(*) as total_task'),
                 DB::raw("SUM(CASE WHEN end_date_estimation <= '$now' THEN 1 ELSE 0 END) as planned_done_task"),
                 DB::raw("SUM(CASE WHEN tasks.status_id = 5 THEN 1 ELSE 0 END) as actual_done_task"),
                 'track_summary.ac'
-                // DB::raw("SUM(CASE WHEN tracks.id_project = tasks.project_id THEN tracks.total_per_item ELSE 0 END) as ac"),
             )
             ->groupBy('tasks.project_id', 'projects.budget', 'project_title', 'track_summary.ac')
             ->get();
-            // ->groupBy('project_id')
-            // ->map(function ($item) {
-            //     // $ac = 0;
-            //     // $bac = $item->total_task; // Anggap BAC = jumlah task
-            //     $planned_percent = $item->total_task > 0
-            //         ? $item->planned_done_task / $item->total_task
-            //         : 0;
-
-            //     $ev_percent = $item->total_task > 0
-            //         ? $item->actual_done_task / $item->total_task
-            //         : 0;
-
-            //     $pv = $planned_percent * $item->bac;
-            //     $ev = $ev_percent * $item->bac;
-
-            //     return [
-            //         'project_id' => $item->project_id,
-            //         'total_task' => $item->total_task,
-            //         'planned_done_task' => $item->planned_done_task,
-            //         'actual_done_task' => $item->actual_done_task,
-            //         'planned_percent' => round($planned_percent * 100, 2) . '%',
-            //         'earned_percent' => round($ev_percent * 100, 2) . '%',
-            //         'planned_value' => round($pv, 2),
-            //         'earned_value' => round($ev, 2),
-            //         // 'id' => $item->tracks_id,
-            //         'actual_cost' => $item->ac,
-            //         'actual_cost' => round($item->ac, 2),
-            //         'spi' => $ev_percent > 0 ? round($ev / $pv, 2) : 0,
-            //         // 'cpi' => $ev_percent > 0 ? round($ev / $item->, 2) : 0,
-            //     ];
-            // });
     }
 }
