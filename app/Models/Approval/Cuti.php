@@ -112,6 +112,22 @@ class Cuti extends BaseModel
             ->first();
     }
 
+    public static function detailCuti($id)
+    {
+        return DB::table('cutis')
+            ->join ('jobdesk', 'cutis.jobdesk_id', '=', 'jobdesk.id')
+            ->join ('heads', 'cutis.head_id', '=', 'heads.id')
+            ->join ('jenis_approve', 'cutis.id_jenis_approve', '=', 'jenis_approve.id')
+            ->select(
+                'cutis.*',
+                'jobdesk.job as jobdesk_name',
+                'heads.name as head_name',
+                'jenis_approve.jenis as cuti_name'
+            )
+            ->where('cutis.id', $id)
+            ->first();
+    }
+
     // // ==============================================UTILITIES====================================================
     public static function calculateCutiDays($startDate, $endDate)
     {

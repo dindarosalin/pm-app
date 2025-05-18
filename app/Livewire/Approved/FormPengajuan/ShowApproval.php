@@ -12,14 +12,13 @@ class ShowApproval extends Component
     public $rules;
     public $formId, $typeForm, $data;
     public $cutis;
-
     // cuti
-    public $id_jenis_approve, $tanggal_pengajuan;
+    public $cutiId, $id_jenis_approve, $tanggal_pengajuan;
+    public $cuti; //data cuti dari database
+    
 
     public function render()
     {
-        $this->getRule();
-        $this->loadCuti();
         return view('livewire.approved.form-pengajuan.show-approval');
     }
 // =======================================GET KETENTUAN===============================================================
@@ -65,6 +64,7 @@ class ShowApproval extends Component
                 return;
             }
 
+            $this->cutiId = $data->id;
             $this->id_jenis_approve = $data->id_jenis_approve;
             $this->tanggal_pengajuan = $data->tanggal_pengajuan;
 
@@ -77,4 +77,18 @@ class ShowApproval extends Component
     {
         $this->cutis = Cuti::getCuti();
     }
+
+    // ==========================================DETAIL=================================================
+    public function mount()
+    {
+        $this->cuti = Cuti::getAll();
+         $this->getRule();
+        $this->loadCuti();
+    }
+
+    public function detailCuti($id)
+{
+    $this->dispatch('show-detail', id: $id); // memanggil method `detailCuti` di DetailForm
+    $this->dispatch('show-modal-cuti');      // untuk memunculkan modal
+}
 }

@@ -10,6 +10,10 @@
     <livewire:approved.form-pengajuan.form-reimburse :title="'Form Approval'" />
     <livewire:approved.form-pengajuan.form-pengadaan :title="'Form Approval'" />
 
+    <livewire:approved.form-pengajuan.detail-form :cuti="$cuti" />
+    {{-- <livewire:approved.form-pengajuan.detail-form /> --}}
+
+
     <!--BUTTON CREATE PENGAJUAN APPROVAL DAN TABEL KETENTUAN-->
     <div class="card p-1 table-responsive">
         
@@ -80,7 +84,6 @@
 
             <thead class="text-success fw-medium">
                 <tr>
-                    {{-- <th class="fw-medium text-center" rowspan="2">No</th> --}}
                     <th class="fw-medium text-center" rowspan="2">Jenis Approval</th>
                     <th class="fw-medium text-center" rowspan="2">Tanggal Pengajuan</th>
                     <th class="fw-medium text-center" rowspan="2">Detail Pengajuan</th>
@@ -93,8 +96,8 @@
                 <tr>
                     <td class="text-center">{{ $cuti->jenis_cuti }}</td>
                     <td class="text-center">{{ $cuti->tanggal_pengajuan }}</td>
-                    <td class="text-center">
-                        <button class="btn btn-outline-success btn-sm">
+                    <td class="text-center"> 
+                        <button wire:click="detailCuti({{ $cuti->id }})" class="btn btn-outline-success btn-sm">
                             <i class="fa-regular fa-eye"></i>
                         </button>
                     </td>
@@ -108,49 +111,6 @@
                     </td>
                 </tr>
                 @endforeach
-                {{-- @foreach ($permissions as $item)
-                    <tr wire:key='{{ $item->id }}'>
-                        <td class="text-center">{{ $item->name }}</td>
-                        <td class="text-center">{{ $item->tgl_ajuan }}</td>
-                        <td class="text-center">
-                            <button class="btn btn-outline-success btn-sm">
-                                <i class="fa-regular fa-eye"></i>
-                            </button>
-                        </td>
-                        <td>
-                            <div class="d-flex gap-2 justify-content-center align-items-center">
-                                <button class="btn btn-outline-warning btn-sm">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-    
-                                <button class="btn btn-outline-danger btn-sm">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach --}}
-                {{-- <tr>
-                    <td class="text-center">1</td>
-                    <td class="text-center">Cuti</td>
-                    <td class="text-center">24 April 2025</td>
-                    <td class="text-center">
-                        <button class="btn btn-outline-success btn-sm">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <div class="d-flex gap-2 justify-content-center align-items-center">
-                            <button class="btn btn-outline-warning btn-sm">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-
-                            <button class="btn btn-outline-danger btn-sm">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr> --}}
             </tbody>
         </table>
     </div>
@@ -184,5 +144,10 @@
             const offcanvas = new bootstrap.Offcanvas('#pengadaanForm');
             offcanvas.show();
         });
+
+        window.addEventListener('show-modal-cuti', event => {
+            const myModal = new bootstrap.Modal(document.getElementById('detailModal'));
+                myModal.show();
+        })
     </script>
 @endpush
