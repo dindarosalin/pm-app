@@ -165,6 +165,7 @@
         @endif
 
         <div class="accordion-item">
+            @if (App\Models\Base\BaseModel::isAuthorize('97', 'R'))
             <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#masterCollapse"
                 aria-expanded="true" aria-controls="masterCollapse">
                 <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
@@ -179,6 +180,7 @@
                     </svg> {{--  chevron down --}}
                 </button>
             </li>
+            @endif
 
             <div wire:ignore id="masterCollapse"
                 class="accordion-collapse collapse {{ Request::segment(1) == 'master' ? 'show' : '' }}"
