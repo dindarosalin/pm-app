@@ -42,7 +42,12 @@ class Priorities extends Component
         
         $taskRatings = collect();
 
-        foreach ($this->tasks as $task) {
+        $t = $this->tasks->filter(function ($task) {
+            return $task->status_id <= 4;
+        });
+        // dd($t);
+        
+        foreach ($t as $task) {
             $ratings = [];
             foreach ($this->criterias as $c) {
                 $cName = $c->c_name;
@@ -83,7 +88,7 @@ class Priorities extends Component
                     $tDays = now()->startOfDay()->diffInDays(
                         \Carbon\Carbon::parse($task->end_date_estimation)->startOfDay()
                     );                    
-                
+                    
                     // dd($tDays);
                     $sc = DB::table('task_subcriterias')
                         ->where('criteria_id', $c->id)
