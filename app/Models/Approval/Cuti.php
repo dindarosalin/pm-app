@@ -96,6 +96,13 @@ class Cuti extends BaseModel
             ->get();
     }
 
+    public static function getAllByAuth($auth)
+    {
+        return DB::table('cutis')
+            ->where('cutis.name', $auth)
+            ->get();
+    }
+
     public static function getById($id)
     {
         return DB::table('cutis')

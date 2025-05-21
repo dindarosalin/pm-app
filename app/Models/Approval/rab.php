@@ -51,7 +51,7 @@ class rab extends BaseModel
             ->where('id', $id)
             ->delete();
     }
-
+// =======================================GET ALL DATA========================================
     public static function getAllRab($id)
     {
         return DB::table('rabs')
@@ -62,6 +62,14 @@ class rab extends BaseModel
                 $rab->created_at = Carbon::parse($rab->created_at);
                 return $rab;
             });
+    }
+
+    public static function getAllByAuth($auth)
+    {
+        return DB::table('rabs')
+            ->where('rabs.name', $auth)
+            ->select('rabs.*')
+            ->get();
     }
 
     public static function getRabById($id)

@@ -18,7 +18,7 @@ class Izin extends BaseModel
             'head_id' => $storeData['selectHead'],
             'email' => $storeData['email'],
             'telepon' => $storeData['telepon'],
-            'jenis_izin' => $storeData['jenis_izin'],
+            'id_jenis_approve' => $storeData['jenis_izin'],
             'detail_izin' => $storeData['detail_izin'],
             'tgl_mulai' => $storeData['tgl_mulai'],
             'tgl_akhir' => $storeData['tgl_akhir'],
@@ -45,7 +45,7 @@ class Izin extends BaseModel
                 'head_id' => $storeData['selectHead'],
                 'email' => $storeData['email'],
                 'telepon' => $storeData['telepon'],
-                'jenis_izin' => $storeData['jenis_izin'],
+                'id_jenis_approve' => $storeData['jenis_izin'],
                 'detail_izin' => $storeData['detail_izin'],
                 'tgl_mulai' => $storeData['tgl_mulai'],
                 'tgl_akhir' => $storeData['tgl_akhir'],
@@ -77,19 +77,27 @@ class Izin extends BaseModel
             ->delete();
     }
 
-    // GET DATA
+    //============================================GET DATA=========================================
     public static function getAllIzin()
     {
         return DB::table('izins')
             ->join('jobdesk', 'izins.jobdesk_id', '=', 'jobdesk.id')
             ->join('heads', 'izins.head_id', '=', 'heads.id')
+            ->join('jenis_approve', 'izins.id_jenis_approve', '=', 'jenis_approve.id')
             ->select(
                 'izins.*', 
                 'jobdesk.job as jobdesk_name',
-                'heads.name as head_name' 
+                'heads.name as head_name',
+                'jenis_approve.jenis as izin_name'
             )
-            ->orderBy('jobdesk_id')
-            ->orderBy('head_id')
+            ->orderBy('izins.created_at', 'desc')
+            ->get();
+    }
+
+    public static function getAllByAuth($auth)
+    {
+        return DB::table('izins')
+            ->where('izins.name', $auth)
             ->get();
     }
 
@@ -99,10 +107,12 @@ class Izin extends BaseModel
             ->where('izins.id', $id)
             ->join('jobdesk', 'izins.jobdesk_id', '=', 'jobdesk.id')
             ->join('heads', 'izins.head_id', '=', 'heads.id')
+            ->join('jenis_approve', 'izins.id_jenis_approve', '=', 'jenis_approve.id')
             ->select(
                 'izins.*', 
                 'jobdesk.job as jobdesk_name',
-                'heads.name as head_name' 
+                'heads.name as head_name',
+                'jenis_approve.jenis as izin_name'
             )
             ->first();
     }

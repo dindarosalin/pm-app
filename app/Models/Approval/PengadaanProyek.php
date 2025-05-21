@@ -71,6 +71,14 @@ class PengadaanProyek extends BaseModel
             });
     }
 
+    public static function getAllByAuth($auth)
+    {
+        return DB::table('proyeks')
+            ->where('proyeks.name', $auth)
+            ->select('proyeks.*')
+            ->get();
+    }
+
     public static function getPengadaanProyekById($id)
     {
         return DB::table('proyeks')

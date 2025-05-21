@@ -4,8 +4,10 @@ namespace App\Livewire\Approved\FormPengajuan;
 
 use App\Models\Approval\Cuti;
 use App\Models\Approval\Izin;
+use App\Models\Projects\Master\Approval;
 use App\Models\Projects\Master\Head;
 use App\Models\Projects\Master\Jobdesk;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
@@ -18,16 +20,18 @@ class FormIzin extends Component
     use WithFileUploads;
 
     public $izinId;
-    public $jobdesk_id, $head_id, $name, $email, $telepon, $jenis_izin, $detail_izin,
+    public $name, $jobdesk_id, $head_id, $email, $telepon, $id_jenis_approve, $detail_izin,
            $tgl_mulai, $tgl_akhir, $tgl_ajuan, 
            $nama_darurat, $telp_darurat, $relasi_darurat, $alamat,
            $nama_delegasi, $detail_delegasi;
     public $permissions = [];
-    public $atasan =[], $jabatan = [];
-    public $selectJobdesk, $selectHead;
+    public $atasan =[], $jabatan = [], $jenisApprove = [];
     public $akumulasi = 0;
+    public $selectJobdesk, $selectHead, $jenis_izin;
+    public $auth;
+    
 
-    // #[Rule('nullable|file|max:10240')]
+    
     #[Rule('required|mimes:pdf|max:2048',
     onUpdate: 'sometimes|mimes:pdf|max:2048')]
     public $newAttachment;
@@ -36,12 +40,14 @@ class FormIzin extends Component
 
     public function render()
     {
+        $this->auth = Auth::user()->user_id;
         return view('livewire.approved.form-pengajuan.form-izin');
     }
 
     public function mount()
     {
         $this->jabatan = Jobdesk::getAllJob();
+        $this->jenisApprove = Approval::getAllApproval();
         $this->tgl_ajuan = now()->format('Y-m-d');
         $this->atasan = Head::getHeadByJobdesk($this->selectJobdesk);
     }
@@ -115,12 +121,12 @@ class FormIzin extends Component
                 // }
                 // Izin::create([
                 DB::table('izins')->insert([
-                    'name' => $this->name,
+                    'name' => $this->auth,
                     'jobdesk_id' => $this->selectJobdesk,
                     'head_id' => $this->selectHead,
-                    'email' => $this->email,
+                    'email' => Auth::user()->user_email,
                     'telepon' => $this->telepon,
-                    'jenis_izin' => $this->jenis_izin,
+                    'id_jenis_approve' => $this->id_jenis_approve,
                     'detail_izin' => $this->detail_izin,
                     'tgl_mulai' => $this->tgl_mulai,
                     'tgl_akhir' => $this->tgl_akhir,

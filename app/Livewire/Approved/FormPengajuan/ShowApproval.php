@@ -3,7 +3,10 @@
 namespace App\Livewire\Approved\FormPengajuan;
 
 use App\Models\Approval\Cuti;
+use App\Models\Approval\Izin;
 use App\Models\Approval\Ketentuan;
+use App\Models\Approval\Reimburse;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -15,10 +18,17 @@ class ShowApproval extends Component
     // cuti
     public $cutiId, $id_jenis_approve, $tanggal_pengajuan;
     public $cuti; //data cuti dari database
-    
+    public $auth;
+    public $c;
+    public $approvalShow;
+
 
     public function render()
     {
+        $this->auth = Auth::user()->user_id;
+        $this->getRule();
+        $this->loadCuti();
+        // dd($this->getData());
         return view('livewire.approved.form-pengajuan.show-approval');
     }
 // =======================================GET KETENTUAN===============================================================
@@ -82,13 +92,34 @@ class ShowApproval extends Component
     public function mount()
     {
         $this->cuti = Cuti::getAll();
-         $this->getRule();
-        $this->loadCuti();
     }
 
+    public function getData()
+    {
+        $c = Cuti::getAllByAuth($this->auth);
+        // return $c;
+        // $i = Izin::getAllByAuth($this->auth);
+        // $r = Reimburse::getAllByAuth($this->auth);
+    }
     public function detailCuti($id)
-{
-    $this->dispatch('show-detail', id: $id); // memanggil method `detailCuti` di DetailForm
-    $this->dispatch('show-modal-cuti');      // untuk memunculkan modal
-}
+    {
+        $this->dispatch('show-detail', id: $id); // memanggil method `detailCuti` di DetailForm
+        $this->dispatch('show-modal-cuti');      // untuk memunculkan modal
+    }
+
+// ============================================GET APPROVAL BY ID===================================================
+    #[On('showApprovalById')]    
+    public function showApprovalById($id)
+    {
+        try {
+            $this->approvalShow = Cuti::getById($id);
+
+            // kolom file_up berupa string jadi pake koma
+             $this->approvalShow->file_up = explode(',', $this->approvalShow->file_up);
+
+             $this->dispatch('show-view-cuti-offcanvas');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

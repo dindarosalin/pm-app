@@ -55,16 +55,17 @@ class Reimburse extends BaseModel
     }
 
     // ======================================GET ALL DATA========================================
-    public static function getAllreimburse($id)
+    public static function getAllReimburse()
+    {
+        return DB::table('reimburses')->select('reimburses.*')->get();
+    }
+
+    public static function getAllByAuth($auth)
     {
         return DB::table('reimburses')
-            ->where('id', '=', $id)
+            ->where('reimburses.name', $auth)
             ->select('reimburses.*')
-            ->get()
-            ->map(function ($reimburses) {
-                $reimburses->created_at = Carbon::parse($reimburses->created_at);
-                return $reimburses;
-            });
+            ->get();
     }
 
     public static function getreimburseById($id)

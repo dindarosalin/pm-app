@@ -16,6 +16,7 @@ use App\Http\Controllers\Settings\{MenuController, AccountsController, Hierarchy
 use App\Http\Livewire\UpdateComponent;
 use App\Livewire\Approved\Approval;
 use App\Livewire\Approved\DashApprover;
+use App\Livewire\Approved\FormPengajuan\DetailForm;
 use App\Livewire\Approved\FormPengajuan\FormCuti;
 use App\Livewire\Approved\FormPengajuan\FormIzin;
 use App\Livewire\Approved\FormPengajuan\ShowApproval;
@@ -162,6 +163,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('upload-rule', UploadRule::class)->name('upload-rule'); 
         // route dashboard approver
         Route::get('dashboard-approver', DashApprover::class)->name('dashboard-approver'); 
+        // Route::get('/show-approval/detail-form/{id}', DetailForm::class)->name('detail-form');
     });
     // END APPROVAL
     
@@ -178,6 +180,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jobdesk', Jabatan::class)->name('jobdesk');
         Route::get('/atasan', Atasan::class)->name('atasan');
         Route::get('/jenis-approval', JenisApproval::class)->name('jenis-approval');
+        //  Route::get('/track/{title}/detail-nota/{id}', DetailNota::class)->name('detail.nota');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {

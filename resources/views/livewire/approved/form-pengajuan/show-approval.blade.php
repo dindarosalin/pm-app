@@ -80,10 +80,120 @@
             </div>
         </div>
 
+        {{-- OFF CANVAS VIEW DETAIL APPROVAL --}}
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="viewApproval" aria-labelledby="viewApprovalLabel">
+            <div class="offcanvas-header">
+                <h5 id="viewApprovalLabel">View Approval</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body">
+                @if ($approvalShow)
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                {{-- <tr>
+                                    <th>Nama</th>
+                                    <td>{{ $approvalShow-> }}</td>
+                                </tr> --}}
+
+                                {{-- <tr>
+                                    <th>Email</th>
+                                    <td></td>
+                                </tr> --}}
+
+                                <tr>
+                                    <th>No Telepon</th>
+                                    <td>{{ $approvalShow->no_telepon }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Jabatan</th>
+                                    <td>{{ $approvalShow->jobdesk_id }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Atasan</th>
+                                    <td>{{ $approvalShow->head_id }}</td>
+                                </tr>
+
+                                {{-- <tr>
+                                    <th>Jenis Approval</th>
+                                    <td>{{ $approvalShow->id_jenis_approval }}</td>
+                                </tr> --}}
+
+                                <tr>
+                                    <th>Detail Cuti</th>
+                                    <td>{{ $approvalShow->detail }}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <th>Tanggal Mulai</th>
+                                    <td>{{ $approvalShow->tanggal_mulai }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Tanggal Akhir</th>
+                                    <td>{{ $approvalShow->tanggal_akhir }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Jumlah Hari</th>
+                                    <td>{{ $approvalShow->akumulasi }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Tanggal Pengajuan</th>
+                                    <td>{{ $approvalShow->tanggal_pengajuan}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Nama Kontak Darurat</th>
+                                    <td>{{ $approvalShow->nama_kontak_darurat }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>No Telepon Darurat</th>
+                                    <td>{{ $approvalShow->telp_darurat }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Nama Delegasi</th>
+                                    <td>{{ $approvalShow->nama_delegasi }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Detail Delegasi</th>
+                                    <td>{{ $approvalShow->detail_delegasi }}</td>
+                                </tr>
+
+                                {{-- <tr>
+                                    <th>File Pendukung</th>
+                                    <td>
+                                        @if ($approvalShow->file_up)
+                                            @foreach ($approvalShow->file_up as $attachment)
+                                                <div class="attachment-item">
+                                                    <a href="{{ asset('storage/' .$file_up['path']) }}" target="_blank">
+                                                        {{ $file_up['name'] }}
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                </tr> --}}
+                            </tbody>
+                        </table>
+                    </div>                  
+                @endif
+            </div>le
+        </div>
+
         <table id="approve-table" class="table table-hover" style="width: 100%">
 
             <thead class="text-success fw-medium">
                 <tr>
+                    <th class="fw-medium text-center" rowspan="2">id</th>
                     <th class="fw-medium text-center" rowspan="2">Jenis Approval</th>
                     <th class="fw-medium text-center" rowspan="2">Tanggal Pengajuan</th>
                     <th class="fw-medium text-center" rowspan="2">Detail Pengajuan</th>
@@ -94,10 +204,13 @@
             <tbody>
                 @foreach ($cutis as $cuti)
                 <tr>
+                    <td class="text-center">{{ $cuti->id }}</td>
                     <td class="text-center">{{ $cuti->jenis_cuti }}</td>
                     <td class="text-center">{{ $cuti->tanggal_pengajuan }}</td>
+                   
+                   {{-- VIEW DETAIL APPROVAL --}}
                     <td class="text-center"> 
-                        <button wire:click="detailCuti({{ $cuti->id }})" class="btn btn-outline-success btn-sm">
+                        <button wire:click="showApprovalById({{ $cuti->id }})" class="btn btn-outline-success btn-sm">
                             <i class="fa-regular fa-eye"></i>
                         </button>
                     </td>
@@ -148,6 +261,13 @@
         window.addEventListener('show-modal-cuti', event => {
             const myModal = new bootstrap.Modal(document.getElementById('detailModal'));
                 myModal.show();
+        })
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('show-view-cuti-offcanvas', (event) => {
+                const offcanvas = new bootstrap.Offcanvas('#viewApproval');
+                offcanvas.show();
+            })
         })
     </script>
 @endpush

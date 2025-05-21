@@ -8,6 +8,7 @@ use App\Models\Projects\Master\Approval;
 use App\Models\Projects\Master\Head;
 use App\Models\Projects\Master\Jobdesk;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
@@ -35,6 +36,7 @@ class FormCuti extends Component
     public $atasan = [], $jabatan = [], $jenisApprove = [];
     public $akumulasi = 0;
     public $selectJobdesk, $selectHead, $jenis_cuti;
+    public $auth;
 
 
     #[Rule('required|mimes:pdf|max:2048',
@@ -52,6 +54,7 @@ class FormCuti extends Component
 
     public function render()
     {
+        $this->auth = Auth::user()->user_id;
         return view('livewire.approved.form-pengajuan.form-cuti');
     }
 
@@ -91,7 +94,7 @@ class FormCuti extends Component
                 DB::table('cutis')
                     ->where('id', $this->cutiId)
                     ->update([
-                        'name' => $this->name,
+                        'name' => $this->auth,
                         'jobdesk_id' => $this->selectJobdesk,
                         'head_id' => $this->selectHead,
                         'email' => $this->email,
@@ -114,10 +117,10 @@ class FormCuti extends Component
             } else {
                 // dd($this->all());
                 DB::table('cutis')->insert([
-                    'name' => $this->name,
+                    'name' => $this->auth,
                     'jobdesk_id' => $this->jobdesk_id,
                     'head_id' => $this->head_id,
-                    'email' => $this->email,
+                    'email' => Auth::user()->user_email,
                     'no_telepon' => $this->no_telepon,
                     'id_jenis_approve' => $this->id_jenis_approve,
                     'detail' => $this->detail,
