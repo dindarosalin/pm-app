@@ -273,10 +273,10 @@
                 {{ $projectDetail->completion }}%, Status Project: {{ $projectDetail->status }}</p>
         </div>
         <div class="col text-end">
-            <button wire:click="$dispatch('show-create-offcanvas')" class="btn btn-success btn-sm col"><i
+            <button data-bs-toggle="tooltip" title="Create New Task" wire:click="$dispatch('show-create-offcanvas')" class="btn btn-success btn-sm col"><i
                     class="fa-solid fa-plus"></i></button>
             {{-- @dd($projectId); --}}
-            <a href="{{ route('projects.tasks.archived', $projectId) }}" role="button"
+            <a href="{{ route('projects.tasks.archived', $projectId) }}" role="button" data-bs-toggle="tooltip" title="View Archived Tasks"
                 class="btn btn-danger btn-sm col text-white" wire:navigate>
                 <i class="fa-solid fa-box-archive"></i></a>
         </div>
@@ -377,19 +377,19 @@
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <!-- View icon -->
-                                    <btn role="button" wire:click="$dispatch('showById', {id: {{ $task->id }}})"
+                                    <btn role="button" data-bs-toggle="tooltip" title="View Task" wire:click="$dispatch('showById', {id: {{ $task->id }}})"
                                         class="text-primary m-0">
                                         <i class="fa-regular fa-eye"></i>
                                     </btn>
 
                                     <!-- Edit icon -->
-                                    <btn role="button" wire:click="$dispatch('edit', {id: {{ $task->id }} })"
+                                    <btn role="button" data-bs-toggle="tooltip" title="Update Task" wire:click="$dispatch('edit', {id: {{ $task->id }} })"
                                         class="text-warning m-0">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </btn>
 
                                     <!-- Delete icon -->
-                                    <btn role="button" wire:click="alertConfirm({{ $task->id }})"
+                                    <btn role="button" data-bs-toggle="tooltip" title="Archive Task" wire:click="alertConfirm({{ $task->id }})"
                                         {{-- <p role="button" wire:click="$dispatch('alertConfirm', {id: {{ $task->id }}})"  --}} class="text-danger m-0">
                                         <i class="fa-solid fa-box-archive"></i>
                                     </btn>
