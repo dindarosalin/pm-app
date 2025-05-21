@@ -307,7 +307,9 @@
                             <i class="fa-solid fa-arrows-up-down"></i>
                         </th>
                         <th>Category</th>
-                        <th role="button">Status</th>
+                        <th role="button" wire:click="sortBy('status_id')">Status
+                            <i class="fa-solid fa-arrows-up-down"></i>
+                        </th>
                         <th>Flags</th>
                         <th>Holiday</th>
                         <th>Weekend</th>

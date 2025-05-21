@@ -51,15 +51,18 @@ class ShowTask extends Component
 
     // FILTER VAR
     public $search = '';
-    public $sortColumn = null;
+    public $sortColumn = 'status_id';
     public $sortDirection = 'asc';
     public $filters = [];
 
     public $timeFrame = [];
     public $fromToDate;
 
-    public $fromDate = [];
-    public $toDate = [];
+    public $startFromDate = [];
+    public $startToDate = [];
+
+    public $endFromDate = [];
+    public $endToDate = [];
 
     public $fromNumber = [];
     public $toNumber = [];
@@ -76,7 +79,7 @@ class ShowTask extends Component
         $this->getAllTasks();
 
         // $this->filter($this->tasks);
-        $this->tasks = $this->filter($this->tasks)->sortBy('status_id');
+        $this->tasks = $this->filter($this->tasks);
         // dd($this->tasks);
         return view('livewire.projects.tasks.show-task', [
             'totalTask' => $this->totalTask,
@@ -364,11 +367,13 @@ class ShowTask extends Component
 
         // Filter berdasarkan time frame dan date range
         if ($this->timeFrame) {
-            foreach ($this->timeFrame as $column => $this->fromToDate) {
-                if ($this->fromToDate === 'custom-start-date' || $this->fromToDate === 'custom-start' || $this->fromToDate === 'custom-end') {
-                    $tasks = Project::scopeFilterByDateRange($tasks, $this->fromDate, $this->toDate, $column);
+            foreach ($this->timeFrame as $column => $value) {
+                if ($value === 'custom-start-date' && $column === 'start_date_estimation') {
+                    $tasks = Project::scopeFilterByDateRange($tasks, $this->startFromDate, $this->startToDate, $column);
+                } elseif ($value === 'custom-end-date' && $column === 'end_date_estimation') {
+                    $tasks = Project::scopeFilterByDateRange($tasks, $this->endFromDate, $this->endToDate, $column);
                 } else {
-                    $tasks = Task::scopeFilterByTimeFrame($tasks, $column, $this->fromToDate);
+                    $tasks = Task::scopeFilterByTimeFrame($tasks, $column, $value);
                 }
             }
         }
@@ -397,7 +402,7 @@ class ShowTask extends Component
         $this->filters = [];
         $this->search = '';
         $this->timeFrame = [];
-        $this->sortColumn = null;
+        $this->sortColumn = 'status_id';
     }
 
     public function alertConfirm($id)

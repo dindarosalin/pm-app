@@ -174,7 +174,7 @@ class Priorities extends Component
                 (object) [
                     'task_id' => $row['task_id'],
                     'task' => Task::getById($row['task_id']),
-                    'score' => round($score, 4),
+                    'score' => round($score, 3),
                 ],
             );
         }
