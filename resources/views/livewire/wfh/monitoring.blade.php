@@ -44,50 +44,70 @@
 
         // const monitoringPeerId = '123';
 
-
-        var peer = new Peer({
+        let peer = new Peer({
             host: 'pm-app.test',
             port: 9000,
-            path: '/peerjs',
-            debug: 3,
-            // proxied: true,
+            path: '/peerjs'
         });
 
-        peer.on('open', function(id) {
-            console.log('My peer ID is: ' + id);
-            // document.getElementById('my-id').textContent = id;
+        peer.on('open', (id) => {
+            console.log('Admin Peer ID:', id);
+            // Tidak perlu menyimpan ID ini, karena admin tidak menerima stream
         });
 
-        peer.on('connection', function(conn) {
-            conn.on('data', function(data) {
-                // Will print 'hi!'
-                console.log(data);
+        // Misalnya kamu ambil dari database Livewire:
+        window.callKaryawan = function(karyawan_peer_id) {
+            const call = peer.call(karyawan_peer_id, null); // Tidak kirim stream
+
+            call.on('stream', (remoteStream) => {
+                document.getElementById('remoteVideo').srcObject = remoteStream;
             });
-        });
+        };
 
-        // Handle incoming calls and display remote stream
-        peer.on('call', function(call) {
-            // Get user media (camera and microphone)
-            navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: true
-                })
-                .then(function(localStream) {
-                    call.answer(localStream); // Answer the call with local stream
-                    call.on('stream', function(remoteStream) {
-                        const remoteVideo = document.getElementById('remoteVideo');
-                        if ('srcObject' in remoteVideo) {
-                            remoteVideo.srcObject = remoteStream;
-                        } else {
-                            remoteVideo.src = window.URL.createObjectURL(remoteStream);
-                        }
-                        remoteVideo.play();
-                    });
-                })
-                .catch(function(err) {
-                    console.error('Failed to get local stream', err);
-                    call.answer(); // Answer without stream if permission denied
-                });
-        });
+
+        // var peer = new Peer({
+        //     host: 'pm-app.test',
+        //     port: 9000,
+        //     path: '/peerjs',
+        //     debug: 3,
+        //     // proxied: true,
+        // });
+
+        // peer.on('open', function(id) {
+        //     console.log('My peer ID is: ' + id);
+        //     // document.getElementById('my-id').textContent = id;
+        // });
+
+        // peer.on('connection', function(conn) {
+        //     conn.on('data', function(data) {
+        //         // Will print 'hi!'
+        //         console.log(data);
+        //     });
+        // });
+
+        // // Handle incoming calls and display remote stream
+        // peer.on('call', function(call) {
+        //     // Get user media (camera and microphone)
+        //     navigator.mediaDevices.getUserMedia({
+        //             video: true,
+        //             audio: true
+        //         })
+        //         .then(function(localStream) {
+        //             call.answer(localStream); // Answer the call with local stream
+        //             call.on('stream', function(remoteStream) {
+        //                 const remoteVideo = document.getElementById('remoteVideo');
+        //                 if ('srcObject' in remoteVideo) {
+        //                     remoteVideo.srcObject = remoteStream;
+        //                 } else {
+        //                     remoteVideo.src = window.URL.createObjectURL(remoteStream);
+        //                 }
+        //                 remoteVideo.play();
+        //             });
+        //         })
+        //         .catch(function(err) {
+        //             console.error('Failed to get local stream', err);
+        //             call.answer(); // Answer without stream if permission denied
+        //         });
+        // });
     </script>
 @endpush

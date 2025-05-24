@@ -2,13 +2,16 @@
 
 namespace App\Livewire\Wfh;
 
-use Livewire\Component;
 use App\Models\WfhSession;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Monitoring extends Component
 {
 
     public $activeSessions;
+
+
 
     public function getListeners()
     {
@@ -17,12 +20,13 @@ class Monitoring extends Component
 
     public function mount()
     {
-        $this->activeSessions = WfhSession::whereNull('end')->get();
+        // dd($this->storePeerId());
+        // $this->activeSessions = WfhSession::whereNull('end')->get();
     }
 
     public function render()
     {
-        $this->activeSessions = WfhSession::whereNull('end')->get();
+        // $this->activeSessions = WfhSession::whereNull('end')->get();
         return view('livewire.wfh.monitoring');
     }
 }

@@ -32,6 +32,7 @@
     {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- end meta tag -->
     @include('include.css')
     @livewireStyles

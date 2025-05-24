@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Monitoring as ControllersMonitoring;
 use App\Http\Controllers\Projects\Project\ProjectController;
 
 //DASHBOARD
@@ -64,10 +65,12 @@ use App\Livewire\TableTrial;
 use App\Livewire\TimeCard\ShowTimeCard;
 use App\Livewire\Wfh\Monitoring;
 use App\Livewire\WFH\WorkFromHome;
+use App\Models\WfhSession;
 use Illuminate\Contracts\Queue\Monitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 
 
@@ -96,6 +99,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', StartWork::class)->name('start');
     Route::get('/logout', [LogoutController::class, 'logout']);
     Route::get('/dashboard', DashboardAll::class)->name('dashboard');
+    Route::post('/store-peer-id', function (Request $request) {
+        WorkFromHome::storePeerId($request->peer_id);
+
+        return response()->json(['status' => 'ok']);
+    });
+    Route::post('/update-peer-session', function (Request $request) {
+        WorkFromHome::updateSessionEnded($request->peer_id);
+
+        return response()->json(['status' => 'ok']);
+    });
+
 
     Route::prefix('projects')->name('projects.')->group(function () {
 
