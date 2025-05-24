@@ -2,15 +2,37 @@
     @section('title')
         Work From Home
     @endsection
+
+    @push('styles')
+        <style>
+            video {
+                background: #222;
+                margin: 0 0 20px 0;
+                --width: 100%;
+                width: var(--width);
+                height: calc(var(--width) * 0.75);
+            }
+        </style>
+    @endpush
+
     <div class="col-xl-12 col-md-12 col-sm-12">
         <div class="card">
             <div class="row">
                 <div class="col-md-8 mt-3 position-relative">
-                    <video id="localVideo" autoplay muted playsinline class="w-full rounded-xl" style="width: 100%; height:auto"></video>
+
+                    {{-- <video id="gum-local" autoplay playsinline></video> --}}
+
+                    <video id="localVideo" autoplay muted playsinline style="width: 300px;"></video>
+                    {{-- <video id="localVideo" playsinline autoplay muted></video> --}}
+                    <button id="showVideo">Open camera</button>
+                    {{-- <video id="remoteVideo" playsinline autoplay></video> --}}
+
+                    {{-- <video id="localVideo" autoplay muted playsinline class="w-full rounded-xl"
+                        style="width: 100%; height:auto"></video> --}}
                     <div class="text-center mt-2">
-                        <button id="toggleCamera" class="btn btn-warning">
+                        {{-- <button id="toggleCamera" class="btn btn-warning">
                             <i id="cameraIcon" class="fas fa-video"></i> Camera
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -31,7 +53,7 @@
             </div>
         </div>
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-3">
                 <div class="card">
                     <div class="text-center">
@@ -64,64 +86,54 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        let stream = null;
-        const videoElement = document.getElementById('localVideo');
-        const toggleButton = document.getElementById('toggleCamera');
-        const cameraIcon = toggleButton.querySelector('i');
-        let cameraActive = false;
+    <script type="module">
+        import Peer from "https://esm.sh/peerjs@1.5.4?bundle-deps";
 
-        const startCamera = async () => {
+        let localStream;
+        const localVideo = document.getElementById('localVideo');
+        const showVideoBtn = document.getElementById('showVideo');
+
+        // Initialize PeerJS
+        const peer = new Peer({
+            host: 'pm-app.test',
+            port: 9000,
+            path: '/peerjs',
+            debug: 3,
+            // proxied: true,
+        });
+
+        // Open camera and display local stream
+        showVideoBtn.addEventListener('click', async () => {
             try {
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        aspectRatio: 16 / 9
-                    },
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: true
                 });
-
-                videoElement.srcObject = stream;
-                cameraActive = true;
-                cameraIcon.className = 'fas fa-video';
-                // console.log('Camera started.');
-            } catch (error) {
-                console.error('Error accessing media devices.', error);
-                alert('Camera access was denied or not available.');
-            }
-        };
-
-        const stopCamera = () => {
-            if (stream) {
-                const videoTracks = stream.getVideoTracks();
-                videoTracks.forEach(track => track.stop());
-                videoElement.srcObject = null;
-                stream = null;
-                cameraActive = false;
-                cameraIcon.className = 'fas fa-video-slash';
-                // console.log('Camera stopped.');
-            }
-            // Set video element to display a black screen
-            videoElement.srcObject = null;
-            videoElement.style.backgroundColor = 'black';
-            videoElement.style.width = '100%';
-            videoElement.style.height = 'auto';
-        };
-
-        toggleButton.addEventListener('click', async () => {
-            if (cameraActive) {
-                stopCamera();
-            } else {
-                await startCamera();
+                localVideo.srcObject = localStream;
+            } catch (err) {
+                alert('Could not access camera/microphone: ' + err);
             }
         });
 
-        // Start the camera initially
-        await startCamera();
-    });
-</script>
+        // Listen for incoming calls
+        peer.on('call', call => {
+            call.answer(localStream); // Answer the call with your stream
+            call.on('stream', remoteStream => {
+                // You can add a remote video element to display remoteStream if needed
+            });
+        });
+
+        // Example: To call another peer (replace 'remote-peer-id' with actual ID)
+        // const call = peer.call('remote-peer-id', localStream);
+
+        // Optional: Handle peer connection open
+        peer.on('open', id => {
+            console.log('My peer ID is: ' + id);
+        });
+    </script>
 @endpush

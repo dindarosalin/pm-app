@@ -3,6 +3,8 @@
 namespace App\Livewire\Wfh;
 
 use Livewire\Component;
+use App\Models\WfhSession;
+use Illuminate\Support\Str;
 
 class WorkFromHome extends Component
 {
@@ -10,16 +12,9 @@ class WorkFromHome extends Component
 
     protected $listeners = ['receiveSignal'];
 
-    public function mount()
-    {
-        // $this->userId = $userId;
-    }
+    public $peerId;
+    public $status = 'ongoing';
 
-    public function receiveSignal($data)
-    {
-        // Handle signaling data if needed (usually managed via JS/WebSocket)
-        // This could be used to log or route signaling info
-    }
 
     public function render()
     {

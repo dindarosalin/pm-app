@@ -13,6 +13,7 @@ use App\Http\Controllers\Settings\RoleController;
 use App\Http\Controllers\Settings\UserProfileController;
 use App\Http\Controllers\Settings\{MenuController, AccountsController, HierarchyController};
 // use App\Http\Controllers\Settings\{MenuController, AccountsController};
+use App\Http\Controllers\WebRTCController;
 use App\Http\Livewire\UpdateComponent;
 use App\Livewire\Availability\AvailabilityTracking;
 use App\Livewire\Availability\Performa;
@@ -24,28 +25,28 @@ use App\Livewire\Dashboard\Dashboard as Dashboard;
 use App\Livewire\Dashboard\DashboardAll;
 use App\Livewire\Master\BudgetCategory\ShowBudgetCategory;
 use App\Livewire\Master\BudgetCategory\ShowBudgetSubCategory;
-use App\Livewire\Master\Helper;
 //PROJECTS
+use App\Livewire\Master\Helper;
 use App\Livewire\Master\Holiday\ShowHoliday;
 use App\Livewire\Master\ProjectStatus\ShowProjectStatus;
 use App\Livewire\Master\StatusWfh\ShowStatusWfh;
-use App\Livewire\Master\TaskCategory\ShowTaskCategory;
 //TASK
-use App\Livewire\Master\TaskFlag\ShowTaskFlag;
+use App\Livewire\Master\TaskCategory\ShowTaskCategory;
 
 //REPORT
+use App\Livewire\Master\TaskFlag\ShowTaskFlag;
 use App\Livewire\Master\TaskLabel\ShowTaskLabel;
-use App\Livewire\Master\TaskStatus\ShowTaskStatus;
 // RELEASE NOTES
+use App\Livewire\Master\TaskStatus\ShowTaskStatus;
 use App\Livewire\Master\Uom\Measure;
 use App\Livewire\Projects\Budget\Category as ProjectsBudgetCategory;
 use App\Livewire\Projects\Budget\Plan\ShowPlan as PlanShowPlan;
-use App\Livewire\Projects\Budget\ShowBudget;
 
+use App\Livewire\Projects\Budget\ShowBudget;
 use App\Livewire\Projects\Budget\SubCategory as ProjectsBudgetSubCategory;
 use App\Livewire\Projects\Budget\Track\DetailNota;
-use App\Livewire\Projects\Budget\Track\ShowTrack;
 
+use App\Livewire\Projects\Budget\Track\ShowTrack;
 use App\Livewire\Projects\Calendar\ShowCalendar;
 use App\Livewire\Projects\GanttChart\ShowGanttChart;
 use App\Livewire\Projects\Projects\ArchivedProject;
@@ -61,9 +62,14 @@ use App\Livewire\Report\ShowReport;
 use App\Livewire\StartWork;
 use App\Livewire\TableTrial;
 use App\Livewire\TimeCard\ShowTimeCard;
+use App\Livewire\Wfh\Monitoring;
 use App\Livewire\WFH\WorkFromHome;
+use Illuminate\Contracts\Queue\Monitor;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
+
 
 
 
@@ -75,7 +81,7 @@ Livewire::setUpdateRoute(function ($handle) {
     return Route::post('pm/livewire/update', $handle);
 });
 
-Route::get('/', [LoginController::class,'index'])->middleware('guest');
+Route::get('/', [LoginController::class, 'index'])->middleware('guest');
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login/process', [LoginController::class, 'authenticate']);
 
@@ -96,16 +102,16 @@ Route::middleware(['auth'])->group(function () {
         // CRUD PROJECT
         Route::get('/', ShowProject::class)->name('show.project');
         Route::get('/archived', ArchivedProject::class)->name('project.archived');
-    
+
         Route::prefix('{projectId}')->group(function () {
             Route::get('/', Dashboard::class)->name('dashboard.task');
-    
+
             //CRUD TASKS
             Route::get('/tasks', ShowTask::class)->name('tasks.show');
             Route::get('/tasks/archived', ArchivedTask::class)->name('tasks.archived');
             Route::get('/calendar', ShowCalendar::class)->name('calendar');
             Route::get('/ganttchart', ShowGanttChart::class)->name('ganttchart');
-    
+
             //CRUD RELEASE NOTE
             Route::prefix('release-note')->name('release.')->group(function () {
                 //release notes
@@ -118,35 +124,35 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('budget')->name('budget.')->group(function () {
         Route::get('/', ShowBudget::class)->name('show.budget');
 
-            // PLAN
-            Route::get('/plan/{title}', PlanShowPlan::class)->name('show.plan');
-            // TRACK
-            Route::get('/track/{title}', ShowTrack::class)->name('show.track');
-            Route::get('/track/{title}/detail-nota/{id}', DetailNota::class)->name('detail.nota');
+        // PLAN
+        Route::get('/plan/{title}', PlanShowPlan::class)->name('show.plan');
+        // TRACK
+        Route::get('/track/{title}', ShowTrack::class)->name('show.track');
+        Route::get('/track/{title}/detail-nota/{id}', DetailNota::class)->name('detail.nota');
     });
-    
+
     Route::prefix('time-card')->name('time-card.')->group(function () {
         Route::get('/', ShowTimeCard::class)->name('show');
     });
-    
+
     Route::prefix('availability-tracking')->name('availability-tracking.')->group(function () {
         Route::get('/', AvailabilityTracking::class)->name('show');
         Route::get('/performa/{employeeId}',  Performa::class)->name('show.performa');
         // try chart
         // Route::get('/performa/{employeeId}/trychart', TryChart::class)->name('show.chart');
     });
-    
+
     Route::prefix('report')->name('report.')->group(function () {
         //route report
         Route::get('/', ShowReport::class)->name('show.report');
     });
 
-    Route::prefix('work-from-home')->name('work-from-home.')->group(function(){
+    Route::prefix('work-from-home')->name('work-from-home.')->group(function () {
         Route::get('/', WorkFromHome::class)->name('show');
-        
+        Route::get('/monitor', Monitoring::class)->name('show.monitor');
     });
 
-    
+
     Route::prefix('master')->name('master.')->group(function () {
         Route::get('/status-wfh', ShowStatusWfh::class)->name('status-wfh');
         Route::get('/project-status', ShowProjectStatus::class)->name('project-status');
@@ -191,10 +197,11 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::group(['namespace' => 'App\Http\Controllers\Auth'], function(){
-    Route::controller('HierarchyController')->group(function(){
+Route::group(['namespace' => 'App\Http\Controllers\Auth'], function () {
+    Route::controller('HierarchyController')->group(function () {
         Route::get('/hierarchy', 'index');
     });
 });
 
 
+// routes/api.php

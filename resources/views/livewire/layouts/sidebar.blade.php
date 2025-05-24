@@ -43,14 +43,14 @@
         @endforeach --}}
         <div class="accordion-item">
             @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
-        <li class=" {{ request()->routeIs('report.show.report') ? 'active' : '' }}">
-            <a href="{{ route('dashboard') }}" class="sidebar-menu text-decoration-none text-white"
-                wire:navigate.defer>
-                <i class="fa-solid fa-gauge-high"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
-    @endif
+                <li class=" {{ request()->routeIs('report.show.report') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}" class="sidebar-menu text-decoration-none text-white"
+                        wire:navigate.defer>
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+            @endif
 
             @if (App\Models\Base\BaseModel::isAuthorize('90', 'R'))
                 <li
@@ -175,8 +175,8 @@
         @endif
 
         <div class="accordion-item">
-            <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#wfhCollapse"
-                aria-expanded="true" aria-controls="wfhCollapse">
+            <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#wfhCollapse" aria-expanded="true"
+                aria-controls="wfhCollapse">
                 <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
                     <i class="fa-solid fa-house-laptop"></i>
                     Work From Home
@@ -194,7 +194,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'master' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('116', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('work-from-home.show') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('work-from-home.show') }}"
@@ -204,19 +204,19 @@
                             </a>
                         </li>
                     @endif
-                    
-                    @if (App\Models\Base\BaseModel::isAuthorize('94', 'R'))
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('117', 'R'))
                         <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('work-from-home.show') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white" href="{{ route('work-from-home.show') }}"
-                                wire:navigate.defer.defer>
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('work-from-home.show.monitor') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('work-from-home.show.monitor') }}" wire:navigate.defer.defer>
                                 <i class="fa-solid fa-house-laptop"></i>
                                 <span>Monitoring WFH</span>
                             </a>
                         </li>
                     @endif
 
-                    
+
                 </div>
             </div>
         </div>
@@ -231,7 +231,7 @@
             </li>
         @endif --}}
 
-        
+
 
         <div class="accordion-item">
             <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#masterCollapse"

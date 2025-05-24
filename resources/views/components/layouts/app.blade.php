@@ -17,7 +17,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="@yield('title')">
     <meta property="og:description" content="@yield('description')">
-    <meta property="og:url" content="{{url()->current()}}">
+    <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="Abarobotics">
     <meta property="og:image" content="{{ asset('/assets/img/favicon.png') }}">
     <meta property="og:image:secure_url" content="{{ asset('/assets/img/favicon.png') }}">
@@ -25,6 +25,12 @@
     <link href="{{ asset('/assets/img/favicon.png') }}" rel="icon">
     <link href="{{ asset('/assets/img/favicon.png') }}" rel="apple-touch-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/laravel-echo/dist/echo.iife.js"></script>
+    {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- end meta tag -->
     @include('include.css')
@@ -43,11 +49,19 @@
             width: 250px;
             overflow: auto;
             transition: all 0.3s;
-            background: #008036  url("{{asset('img/sidebar-bg.svg')}}") no-repeat left bottom;
+            background: #008036 url("{{ asset('img/sidebar-bg.svg') }}") no-repeat left bottom;
             box-shadow:
                 0 10px 30px -12px rgb(0 0 0 / 42%),
                 0 4px 25px 0px rgb(0 0 0 / 12%),
                 0 8px 10px -5px rgb(0 0 0 / 20%);
+        }
+
+        video {
+            background: #222;
+            margin: 0 0 20px 0;
+            --width: 100%;
+            width: var(--width);
+            height: calc(var(--width) * 0.75);
         }
     </style>
 
