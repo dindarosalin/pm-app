@@ -2,10 +2,15 @@
 
 namespace App\Livewire\Approved\FormPengajuan;
 
+use App\Livewire\Master\Approved\Atasan;
+use App\Models\Projects\Master\Jobdesk;
 use App\Models\Approval\Cuti;
 use App\Models\Approval\Izin;
 use App\Models\Approval\Ketentuan;
 use App\Models\Approval\Reimburse;
+use App\Models\Projects\Master\Approval;
+use App\Models\Projects\Master\Head;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -112,12 +117,17 @@ class ShowApproval extends Component
     public function showApprovalById($id)
     {
         try {
+            // $this->approvalShow = Cuti::getById($id);
             $this->approvalShow = Cuti::getById($id);
-
-            // kolom file_up berupa string jadi pake koma
-             $this->approvalShow->file_up = explode(',', $this->approvalShow->file_up);
-
-             $this->dispatch('show-view-cuti-offcanvas');
+            $this->approvalShow->job_description = Jobdesk::getJobId($this->approvalShow->jobdesk_id)->job;
+            $this->approvalShow->head_description = Head::getHeadById($this->approvalShow->head_id)->name;
+            $this->approvalShow->approval_description = Approval::getApprovalId($this->approvalShow->id_jenis_approve)->jenis;
+            
+            // Process file uploads (split by comma)
+            $this->approvalShow->file_up = explode(',', $this->approvalShow->file_up);
+            
+            // Trigger event to show the offcanvas
+            $this->dispatch('show-view-cuti-offcanvas');
         } catch (\Throwable $th) {
             throw $th;
         }

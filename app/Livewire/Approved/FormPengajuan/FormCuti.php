@@ -88,6 +88,7 @@ class FormCuti extends Component
                     Storage::delete($this->file_up);
                 }
                 $filePath = $this->newAttachment->store('cutis', 'public');
+            
             }
 
             if ($this->cutiId) {
@@ -135,7 +136,6 @@ class FormCuti extends Component
                     'nama_delegasi' => $this->nama_delegasi,
                     'detail_delegasi' => $this->detail_delegasi,
                     'file_up' => $filePath,
-                    'created_at' => now(),
                     'updated_at' => now(),
                 ]);
             }

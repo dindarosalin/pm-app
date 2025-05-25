@@ -31,6 +31,7 @@ class Cuti extends BaseModel
             'hubungan_darurat' => $storeData['hubungan_darurat'],
             'nama_delegasi' => $storeData['nama_delegasi'],
             'detail_delegasi' => $storeData['detail_delegasi'],
+            'file_name' => $storeData['file_name'],
             'file_up' => $storeData['file_up'],
             'created_at' => now(),
             // 'updated_at' => now()
@@ -59,6 +60,7 @@ class Cuti extends BaseModel
                 'hubungan_darurat' => $storeData['hubungan_darurat'],
                 'nama_delegasi' => $storeData['nama_delegasi'],
                 'detail_delegasi' => $storeData['detail_delegasi'],
+                'file_name' => $storeData['file_name'],
                 'file_up' => $storeData['file_up'],
                 'updated_at' => now()
             ]);

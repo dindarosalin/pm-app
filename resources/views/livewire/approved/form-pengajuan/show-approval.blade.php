@@ -92,16 +92,6 @@
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tbody>
-                                {{-- <tr>
-                                    <th>Nama</th>
-                                    <td>{{ $approvalShow-> }}</td>
-                                </tr> --}}
-
-                                {{-- <tr>
-                                    <th>Email</th>
-                                    <td></td>
-                                </tr> --}}
-
                                 <tr>
                                     <th>No Telepon</th>
                                     <td>{{ $approvalShow->no_telepon }}</td>
@@ -109,18 +99,18 @@
 
                                 <tr>
                                     <th>Jabatan</th>
-                                    <td>{{ $approvalShow->jobdesk_id }}</td>
+                                    <td >{{ $approvalShow->job_description }}</td>
                                 </tr>
 
                                 <tr>
                                     <th>Atasan</th>
-                                    <td>{{ $approvalShow->head_id }}</td>
+                                    <td>{{ $approvalShow->head_description }}</td>
                                 </tr>
 
-                                {{-- <tr>
-                                    <th>Jenis Approval</th>
-                                    <td>{{ $approvalShow->id_jenis_approval }}</td>
-                                </tr> --}}
+                                <tr>
+                                        <th>Jenis Cuti</th>
+                                    <td>{{ $approvalShow->approval_description }}</td>
+                                </tr>
 
                                 <tr>
                                     <th>Detail Cuti</th>
@@ -168,20 +158,37 @@
                                     <td>{{ $approvalShow->detail_delegasi }}</td>
                                 </tr>
 
-                                {{-- <tr>
+                                <tr>
                                     <th>File Pendukung</th>
-                                    <td>
+                                    {{-- <td>
                                         @if ($approvalShow->file_up)
-                                            @foreach ($approvalShow->file_up as $attachment)
+                                            @php
+                                                // Convert ke array jika berupa string
+                                                $files = is_array($approvalShow->file_up) 
+                                                    ? $approvalShow->file_up 
+                                                    : [$approvalShow->file_up];
+                                            @endphp
+                                            
+                                            @foreach ($files as $file)
+                                                @php
+                                                    $fileName = basename($file);
+                                                    $originalName = preg_replace('/^\d+_/', '', $fileName);
+                                                @endphp
+                                                
                                                 <div class="attachment-item">
-                                                    <a href="{{ asset('storage/' .$file_up['path']) }}" target="_blank">
-                                                        {{ $file_up['name'] }}
+                                                    <a href="{{ asset('storage/' . $file) }}" 
+                                                        target="_blank"
+                                                        title="Klik untuk melihat file">
+                                                        {{ $originalName }}
                                                     </a>
                                                 </div>
+                                                @if(!$loop->last)<br>@endif
                                             @endforeach
+                                        @else
+                                            <span class="text-muted">Tidak ada file</span>
                                         @endif
-                                    </td>
-                                </tr> --}}
+                                    </td> --}}
+                                </tr>
                             </tbody>
                         </table>
                     </div>                  
