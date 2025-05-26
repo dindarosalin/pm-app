@@ -107,8 +107,7 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        peer_id: id,
-                        session_status: 'started'
+                        peer_id: id
                     })
                 });
             });
@@ -138,8 +137,7 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        peer_id: currentPeerId,
-                        session_status: 'ended'
+                        peer_id: currentPeerId
                     })
                 });
             }

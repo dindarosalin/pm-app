@@ -105,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
         return response()->json(['status' => 'ok']);
     });
     Route::post('/update-peer-session', function (Request $request) {
-        WorkFromHome::updateSessionEnded($request->peer_id);
+        WorkFromHome::updateSessionEnded($request->input('peer_id'));
 
         return response()->json(['status' => 'ok']);
     });

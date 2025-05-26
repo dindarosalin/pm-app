@@ -3,6 +3,7 @@
 namespace App\Livewire\Wfh;
 
 use App\Models\WfhSession;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -35,27 +36,22 @@ class WorkFromHome extends Component
         }
     }
 
-    public static function updateSessionEnded($request)
+    public static function updateSessionEnded($peerId)
     {
         Log::withContext([Auth::user()->user_name]);
-        // Log::info($request);
-        if (isset($request)) {
-            Log::info('Ending session for peer_id: ' . $request);
-            // $updated = DB::table('wfh_session')
-            //     ->where('peer_id', $request)
-            //     // ->where('status', 'ongoing')
-            //     ->update([
-            //         'status' => 'ended',
-            //         'end' => now(),
-            //     ]);
+        // Log::info('Ending session for peer_id: ' . $peerId);
 
-            //     if ($updated) {
-            //         Log::info('Session ended successfully for peer_id: ' . $request);
-            //     } else {
-            //         Log::warning('No ongoing session found to end for peer_id: ' . $request);
-            //     }
-            // } else {
-            //     Log::error('Failed to end session: peer_id is null');
+        $updated = DB::table('wfh_session')
+            ->where('peer_id', $peerId)
+            ->update([
+                'end' => now(),
+                'status' => 'end',
+            ]);
+
+        if ($updated) {
+            Log::info('Session ended successfully for peer_id: ' . $peerId);
+        } else {
+            Log::warning('No ongoing session found to end for peer_id: ' . $peerId);
         }
     }
 
