@@ -1,113 +1,89 @@
-<div>
-    @section('title')
-        Monitoring Work From Home
-    @endsection
+<div wire:poll.10s>
+    @section('title', 'Monitoring Work From Home')
 
     @push('styles')
         <style>
             video {
-                background: #222;
-                margin: 0 0 20px 0;
-                --width: 100%;
-                width: var(--width);
-                height: calc(var(--width) * 0.75);
+                /* background: #222; */
+                width: 100%;
+                height: auto;
+                margin-bottom: 1rem;
             }
         </style>
     @endpush
 
-    <div class="col-xl-12 col-md-12 col-sm-12">
-        <div class="card">
-            <div class="row">
-                <div class="col-md-8 mt-3 position-relative">
-
-                    {{-- <video id="gum-local" autoplay playsinline></video> --}}
-                    <video id="remoteVideo" autoplay></video>
-
-                    {{-- <video id="localVideo" autoplay muted playsinline class="w-full rounded-xl"
-                        style="width: 100%; height:auto"></video> --}}
-                    <div class="text-center mt-2">
-                        {{-- <button id="toggleCamera" class="btn btn-warning">
-                            <i id="cameraIcon" class="fas fa-video"></i> Camera
-                        </button> --}}
-                    </div>
+    <div class="row">
+        @foreach ($sessions as $session)
+            <div class="col-md-6 mb-4">
+                <div class="card p-3">
+                    <h5>{{ $session->user_name }}</h5>
+                    <span>{{ $session->peer_id }}</span>
+                    <video id="video-{{ $session->peer_id }}" autoplay playsinline muted></video>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
-</div>
 
-@push('scripts')
-    <script type="module">
-        import {
-            Peer
-        } from "https://esm.sh/peerjs@1.5.4?bundle-deps";
+    @push('scripts')
+        <script type="module">
+            import {
+                Peer
+            } from "https://esm.sh/peerjs@1.5.4?bundle-deps";
 
-        // const monitoringPeerId = '123';
-
-        let peer = new Peer({
-            host: 'pm-app.test',
-            port: 9000,
-            path: '/peerjs'
-        });
-
-        peer.on('open', (id) => {
-            console.log('Admin Peer ID:', id);
-            // Tidak perlu menyimpan ID ini, karena admin tidak menerima stream
-        });
-
-        // Misalnya kamu ambil dari database Livewire:
-        window.callKaryawan = function(karyawan_peer_id) {
-            const call = peer.call(karyawan_peer_id, null); // Tidak kirim stream
-
-            call.on('stream', (remoteStream) => {
-                document.getElementById('remoteVideo').srcObject = remoteStream;
+            const peer = new Peer({
+                host: 'pm-app.test',
+                port: 9000,
+                path: '/peerjs',
+                secure: true,
+                debug: 3,
+                config: {
+                    'iceServers': [{
+                        urls: 'stun:stun.l.google.com:19302'
+                    }]
+                }
             });
-        };
 
 
-        // var peer = new Peer({
-        //     host: 'pm-app.test',
-        //     port: 9000,
-        //     path: '/peerjs',
-        //     debug: 3,
-        //     // proxied: true,
-        // });
+            const activeCalls = {};
 
-        // peer.on('open', function(id) {
-        //     console.log('My peer ID is: ' + id);
-        //     // document.getElementById('my-id').textContent = id;
-        // });
+            async function connectToPeer(peerId) {
+                if (activeCalls[peerId]) return;
 
-        // peer.on('connection', function(conn) {
-        //     conn.on('data', function(data) {
-        //         // Will print 'hi!'
-        //         console.log(data);
-        //     });
-        // });
+                const emptyStream = new MediaStream(); // stream kosong
+                const call = peer.call(peerId, emptyStream);
 
-        // // Handle incoming calls and display remote stream
-        // peer.on('call', function(call) {
-        //     // Get user media (camera and microphone)
-        //     navigator.mediaDevices.getUserMedia({
-        //             video: true,
-        //             audio: true
-        //         })
-        //         .then(function(localStream) {
-        //             call.answer(localStream); // Answer the call with local stream
-        //             call.on('stream', function(remoteStream) {
-        //                 const remoteVideo = document.getElementById('remoteVideo');
-        //                 if ('srcObject' in remoteVideo) {
-        //                     remoteVideo.srcObject = remoteStream;
-        //                 } else {
-        //                     remoteVideo.src = window.URL.createObjectURL(remoteStream);
-        //                 }
-        //                 remoteVideo.play();
-        //             });
-        //         })
-        //         .catch(function(err) {
-        //             console.error('Failed to get local stream', err);
-        //             call.answer(); // Answer without stream if permission denied
-        //         });
-        // });
-    </script>
-@endpush
+                if (!call) {
+                    console.error("Gagal memanggil peer:", peerId);
+                    return;
+                }
+
+                activeCalls[peerId] = call;
+
+                call.on('stream', (remoteStream) => {
+                    const video = document.getElementById('video-' + peerId);
+                    if (video) {
+                        video.srcObject = remoteStream;
+                        video.play();
+                    }
+                });
+
+                call.on('close', () => delete activeCalls[peerId]);
+                call.on('error', (err) => {
+                    console.error('Call error:', err);
+                    delete activeCalls[peerId];
+                });
+            }
+
+
+            // Check every 5s if video is not playing yet
+            setInterval(() => {
+                document.querySelectorAll('video[id^="video-"]').forEach(video => {
+                    const peerId = video.id.replace('video-', '');
+                    if (!activeCalls[peerId]) {
+                        connectToPeer(peerId);
+                    }
+                });
+            }, 5000);
+        </script>
+    @endpush
+</div>
