@@ -96,17 +96,25 @@
 
             startPeerBtn.disabled = true;
 
-            peer = new Peer({
+            const peer = new Peer({
                 host: 'pm-app.test',
                 port: 9000,
                 path: '/peerjs',
                 secure: true,
-                key: 'peerjs',
                 debug: 3,
                 config: {
                     'iceServers': [{
-                        urls: 'stun:stun.l.google.com:19302'
-                    }]
+                            urls: 'stun:stun.l.google.com:19302'
+                        }, // Existing STUN server
+                        {
+                            urls: 'stun:stun1.l.google.com:19302'
+                        }, // Additional STUN server
+                        {
+                            urls: 'turn:relay1.expressturn.com:3480', // Replace with your TURN server
+                            username: '000000002063784502', // Replace with your TURN server username
+                            credential: 'yJNV6kn+ZsS9n9jpRX87WsyonOA=' // Replace with your TURN server password
+                        }
+                    ]
                 }
             });
 
@@ -122,7 +130,7 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
                             .content,
-                        'X-Socket-Id': window.Echo.socketId,
+                        // 'X-Socket-Id': window.Echo?.socketId ?? '',
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
@@ -133,21 +141,22 @@
 
             // Handle incoming call
             peer.on('call', (call) => {
-                console.log('Incoming call from:', call.peer);
+                console.log('[WFH] Incoming call from:', call.peer);
 
                 if (!localStream) {
-                    console.warn('No local stream to answer call');
+                    console.warn('[WFH] No local stream to answer call');
                     return;
                 }
 
                 call.answer(localStream);
+                console.log('[WFH] Answered call with localStream:', localStream);
 
                 call.on('close', () => {
-                    console.log('Call closed by peer:', call.peer);
+                    console.log('[WFH] Call closed by peer:', call.peer);
                 });
 
                 call.on('error', (err) => {
-                    console.error('Call error:', err);
+                    console.error('[WFH] Call error:', err);
                 });
             });
 
@@ -175,7 +184,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'X-Socket-Id': window.Echo.socketId,
+                        // 'X-Socket-Id': window.Echo?.socketId ?? '',
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
@@ -183,6 +192,8 @@
                     })
                 });
             }
+
+
 
             cameraOn = false;
             sessionRunning = false;
