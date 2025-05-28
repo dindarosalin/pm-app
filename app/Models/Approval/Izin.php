@@ -136,4 +136,17 @@ class Izin extends BaseModel
             return !$date->isWeekend();
         }, $end) + 1;
     }
+
+    public static function getIzin()
+    {
+        return DB::table('izins')
+            ->join('jenis_approve', 'izins.id_jenis_approve', '=', 'jenis_approve.id')
+            ->select([
+                'izins.id as id',
+                'jenis_approve.jenis as jenis_izin',
+                'izins.tgl_ajuan as tgl_ajuan',
+            ])
+            ->orderBy('izins.tgl_ajuan', 'desc')
+            ->get();
+    }
 }

@@ -92,6 +92,178 @@
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tbody>
+                                <!--CUTI-->
+                                @if ($jenis === 'cuti')
+                                    <tr>
+                                        <th>No Telepon</th>
+                                        <td>{{ $approvalShow->no_telepon }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Jabatan</th>
+                                        <td >{{ $approvalShow->job_description }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Atasan</th>
+                                        <td>{{ $approvalShow->head_description }}</td>
+                                    </tr>
+
+                                    <tr>
+                                            <th>Jenis Cuti</th>
+                                        <td>{{ $approvalShow->approval_description }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Detail Cuti</th>
+                                        <td>{{ $approvalShow->detail }}</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <th>Tanggal Mulai</th>
+                                        <td>{{ $approvalShow->tanggal_mulai }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Tanggal Akhir</th>
+                                        <td>{{ $approvalShow->tanggal_akhir }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Jumlah Hari</th>
+                                        <td>{{ $approvalShow->akumulasi }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Tanggal Pengajuan</th>
+                                        <td>{{ $approvalShow->tanggal_pengajuan}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Nama Kontak Darurat</th>
+                                        <td>{{ $approvalShow->nama_kontak_darurat }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>No Telepon Darurat</th>
+                                        <td>{{ $approvalShow->telp_darurat }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Nama Delegasi</th>
+                                        <td>{{ $approvalShow->nama_delegasi }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Detail Delegasi</th>
+                                        <td>{{ $approvalShow->detail_delegasi }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>File Pendukung</th>
+                                        <td>
+                                            @foreach ($approvalShow->file_up as $file)
+                                                <a href="{{ asset('storage/' . $file) }}" target="_blank">
+                                                    {{ basename($file) }}
+                                                </a><br>
+                                            @endforeach
+                                        </td>
+                                    </tr>
+                                @elseif ($jenis === 'izin')
+                                    <!--IZIN-->
+                                    <tr>
+                                    <th>No Telepon</th>
+                                    <td>{{ $approvalShow->telepon }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Jabatan</th>
+                                    <td >{{ $approvalShow->job_description }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Atasan</th>
+                                    <td>{{ $approvalShow->head_description }}</td>
+                                </tr>
+
+                                <tr>
+                                        <th>Jenis Izin</th>
+                                    <td>{{ $approvalShow->approval_description }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Detail Izin</th>
+                                    <td>{{ $approvalShow->detail_izin }}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <th>Tanggal Mulai</th>
+                                    <td>{{ $approvalShow->tgl_mulai }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Tanggal Akhir</th>
+                                    <td>{{ $approvalShow->tgl_akhir }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Jumlah Hari</th>
+                                    <td>{{ $approvalShow->akumulasi }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Tanggal Pengajuan</th>
+                                    <td>{{ $approvalShow->tgl_ajuan}}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Nama Kontak Darurat</th>
+                                    <td>{{ $approvalShow->nama_darurat }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>No Telepon Darurat</th>
+                                    <td>{{ $approvalShow->telp_darurat }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Hubungan Dengan Kontak Darurat</th>
+                                    <td>{{ $approvalShow->relasi_darurat }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Nama Delegasi</th>
+                                    <td>{{ $approvalShow->nama_delegasi }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Detail Delegasi</th>
+                                    <td>{{ $approvalShow->detail_delegasi }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>File Pendukung</th>
+                                    <td>
+                                        @foreach ($approvalShow->file_izin as $file)
+                                            <a href="{{ asset('storage/' . $file) }}" target="_blank">
+                                                {{ basename($file) }}
+                                            </a><br>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+
+
+                {{-- @if ($approvalShow)
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
                                 <tr>
                                     <th>No Telepon</th>
                                     <td>{{ $approvalShow->no_telepon }}</td>
@@ -160,40 +332,19 @@
 
                                 <tr>
                                     <th>File Pendukung</th>
-                                    {{-- <td>
-                                        @if ($approvalShow->file_up)
-                                            @php
-                                                // Convert ke array jika berupa string
-                                                $files = is_array($approvalShow->file_up) 
-                                                    ? $approvalShow->file_up 
-                                                    : [$approvalShow->file_up];
-                                            @endphp
-                                            
-                                            @foreach ($files as $file)
-                                                @php
-                                                    $fileName = basename($file);
-                                                    $originalName = preg_replace('/^\d+_/', '', $fileName);
-                                                @endphp
-                                                
-                                                <div class="attachment-item">
-                                                    <a href="{{ asset('storage/' . $file) }}" 
-                                                        target="_blank"
-                                                        title="Klik untuk melihat file">
-                                                        {{ $originalName }}
-                                                    </a>
-                                                </div>
-                                                @if(!$loop->last)<br>@endif
-                                            @endforeach
-                                        @else
-                                            <span class="text-muted">Tidak ada file</span>
-                                        @endif
-                                    </td> --}}
+                                    <td>
+                                        @foreach ($approvalShow->file_up as $file)
+                                            <a href="{{ asset('storage/' . $file) }}" target="_blank">
+                                                {{ basename($file) }}
+                                            </a><br>
+                                        @endforeach
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>                  
-                @endif
-            </div>le
+                @endif --}}
+            </div>
         </div>
 
         <table id="approve-table" class="table table-hover" style="width: 100%">
@@ -217,7 +368,33 @@
                    
                    {{-- VIEW DETAIL APPROVAL --}}
                     <td class="text-center"> 
-                        <button wire:click="showApprovalById({{ $cuti->id }})" class="btn btn-outline-success btn-sm">
+                        <button wire:click="showApprovalById({{ $cuti->id }}, 'cuti')" 
+                            class="btn btn-outline-success btn-sm">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-warning btn-sm">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+
+            <tbody>
+                @foreach ($izins as $izin)
+                <tr>
+                    <td class="text-center">{{ $izin->id }}</td>
+                    <td class="text-center">{{ $izin->jenis_izin }}</td>
+                    <td class="text-center">{{ $izin->tgl_ajuan }}</td>
+                   
+                   {{-- VIEW DETAIL APPROVAL --}}
+                    <td class="text-center"> 
+                        <button wire:click="showApprovalById({{ $izin->id }}, 'izin')" class="btn btn-outline-success btn-sm">
                             <i class="fa-regular fa-eye"></i>
                         </button>
                     </td>
@@ -265,13 +442,15 @@
             offcanvas.show();
         });
 
-        window.addEventListener('show-modal-cuti', event => {
-            const myModal = new bootstrap.Modal(document.getElementById('detailModal'));
-                myModal.show();
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('show-view-cuti-offcanvas', (event) => {
+                const offcanvas = new bootstrap.Offcanvas('#viewApproval');
+                offcanvas.show();
+            })
         })
 
         document.addEventListener('livewire:init', () => {
-            Livewire.on('show-view-cuti-offcanvas', (event) => {
+            Livewire.on('show-view-izin-offcanvas', (event) => {
                 const offcanvas = new bootstrap.Offcanvas('#viewApproval');
                 offcanvas.show();
             })

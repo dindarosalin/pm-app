@@ -99,7 +99,7 @@ class FormIzin extends Component
                         'head_id' => $this->selectHead,
                         'email' => $this->email,
                         'telepon' => $this->telepon,
-                        'jenis_izin' => $this->jenis_izin,
+                        'id_jenis_approve' => $this->jenis_izin,
                         'detail_izin' => $this->detail_izin,
                         'tgl_mulai' => $this->tgl_mulai,
                         'tgl_akhir' => $this->tgl_akhir,
@@ -152,7 +152,83 @@ class FormIzin extends Component
             $this->js("alert('Tidak Tersimpan')");
         }
 
-            // $filePath = null;
+    }
+
+    #[On('edit')]
+    public function edit($id)
+    {
+        $izin = Izin::getIzinById($id);
+
+        $this->name = $izin->name;
+        $this->selectJobdesk = $izin->jobdesk_id;
+        $this->selectHead = $izin->head_id;
+        $this->email = $izin->email;
+        $this->telepon = $izin->telepon;
+        $this->id_jenis_approve = $izin->jenis_izin;
+        $this->detail_izin = $izin->detail_izin;
+        $this->tgl_mulai = $izin->tgl_mulai;
+        $this->tgl_akhir = $izin->tgl_akhir;
+        $this->tgl_ajuan = $izin->tgl_ajuan;
+        $this->nama_darurat = $izin->nama_darurat;
+        $this->telp_darurat = $izin->telp_darurat;
+        $this->relasi_darurat = $izin->relasi_darurat;
+        $this->alamat = $izin->alamat;
+        $this->nama_delegasi = $izin->nama_delegasi;
+        $this->detail_delegasi = $izin->detail_delegasi;
+        $this->file_izin = $izin->file_izin;
+
+        $this->dispatch('show-edit-offcanvas-cuti');
+    }
+
+     
+
+    // =======================================CALCULATE AKUMULASI==============================================
+    public function calculateIzins()
+    {
+        if ($this->tgl_mulai && $this->tgl_akhir) {
+            $this->akumulasi = Izin::calculateIzin(
+                $this->tgl_mulai,
+                $this->tgl_akhir
+            );
+        } else {
+            $this->akumulasi = 0;
+        }
+    }
+
+    public function updatedTglMulai()
+    {
+        $this->calculateIzins();
+    }
+    public function updatedTglAkhir()
+    {
+        $this->calculateIzins();
+    }
+
+    // =================================================HANDLE OFF CANVAS==================================================
+    public function btnCloseOffcanvas()
+    {
+        $this->resetForm();
+        $this->dispatch('close_offcanvas');
+    }
+    // ======================================================RESET=========================================================
+    #[On('reset')]
+    public function resetForm()
+    {
+        $this->reset([
+            'izinId', 'name', 'selectJobdesk', 'selectHead', 'email', 'telepon',
+            'jenis_izin', 'detail_izin', 'tgl_mulai', 'tgl_akhir', 'tgl_ajuan',
+            'nama_darurat', 'telp_darurat', 'relasi_darurat', 'alamat',
+            'nama_delegasi', 'detail_delegasi', 'newAttachment', 'file_izin'
+        ]);
+        $this->akumulasi = 0;
+        $this->atasan = [];
+        $this->resetValidation();
+    }
+       
+}
+
+
+ // $filePath = null;
             // if ($this->newAttachment) {
             //     $filePath = $this->newAttachment->store('izin', 'public');
             // }
@@ -233,85 +309,8 @@ class FormIzin extends Component
             // $this->js("alert('Tidak Tersimpan')");
         //     $this->js("alert('Gagal menyimpan izin: " . $th->getMessage() . "')");
         // }
-    }
 
-    #[On('edit')]
-    public function edit($id)
-    {
-        $izin = Izin::getIzinById($id);
-
-        $this->name = $izin->name;
-        $this->selectJobdesk = $izin->jobdesk_id;
-        $this->selectHead = $izin->head_id;
-        $this->email = $izin->email;
-        $this->telepon = $izin->telepon;
-        $this->jenis_izin = $izin->jenis_izin;
-        $this->detail_izin = $izin->detail_izin;
-        $this->tgl_mulai = $izin->tgl_mulai;
-        $this->tgl_akhir = $izin->tgl_akhir;
-        $this->tgl_ajuan = $izin->tgl_ajuan;
-        $this->nama_darurat = $izin->nama_darurat;
-        $this->telp_darurat = $izin->telp_darurat;
-        $this->relasi_darurat = $izin->relasi_darurat;
-        $this->alamat = $izin->alamat;
-        $this->nama_delegasi = $izin->nama_delegasi;
-        $this->detail_delegasi = $izin->detail_delegasi;
-        $this->file_izin = $izin->file_izin;
-
-        $this->dispatch('show-edit-offcanvas-cuti');
-    }
-
-    // =====================================DEPENDENT DROPDOWN=================================================
-    public function loadHead()
-    {
-        if ($this->selectJobdesk) {
-            $this->atasan = Head::getHeadByJobdesk($this->selectJobdesk);
-        }
-    }
-
-    // =======================================CALCULATE AKUMULASI==============================================
-    public function calculateIzins()
-    {
-        if ($this->tgl_mulai && $this->tgl_akhir) {
-            $this->akumulasi = Izin::calculateIzin(
-                $this->tgl_mulai,
-                $this->tgl_akhir
-            );
-        } else {
-            $this->akumulasi = 0;
-        }
-    }
-
-    public function updatedTglMulai()
-    {
-        $this->calculateIzins();
-    }
-    public function updatedTglAkhir()
-    {
-        $this->calculateIzins();
-    }
-
-    // =================================================HANDLE OFF CANVAS==================================================
-    public function btnCloseOffcanvas()
-    {
-        $this->resetForm();
-        $this->dispatch('close_offcanvas');
-    }
-    // ======================================================RESET=========================================================
-    #[On('reset')]
-    public function resetForm()
-    {
-        $this->reset([
-            'izinId', 'name', 'selectJobdesk', 'selectHead', 'email', 'telepon',
-            'jenis_izin', 'detail_izin', 'tgl_mulai', 'tgl_akhir', 'tgl_ajuan',
-            'nama_darurat', 'telp_darurat', 'relasi_darurat', 'alamat',
-            'nama_delegasi', 'detail_delegasi', 'newAttachment', 'file_izin'
-        ]);
-        $this->akumulasi = 0;
-        $this->atasan = [];
-        $this->resetValidation();
-    }
-        // $this->name = '';
+         // $this->name = '';
         // $this->selectJobdesk = '';
         // $this->selectHead = '';
         // $this->email = '';
@@ -330,4 +329,3 @@ class FormIzin extends Component
         // $this->file_izin = '';
         // $this->izinId = '';
     // }
-}
