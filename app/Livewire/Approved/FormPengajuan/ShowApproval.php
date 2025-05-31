@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Approved\FormPengajuan;
 
+use App\Exports\RabExport;
 use App\Livewire\Master\Approved\Atasan;
 use App\Models\Projects\Master\Jobdesk;
 use App\Models\Approval\Cuti;
@@ -13,9 +14,11 @@ use App\Models\Approval\Reimburse;
 use App\Models\Projects\Master\Approval;
 use App\Models\Projects\Master\Head;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ShowApproval extends Component
 {
@@ -183,6 +186,17 @@ class ShowApproval extends Component
         }
     }
     
+    public function downloadExcel($id)
+    {
+        return Excel::download(new RabExport($id), 'rab.xlsx');
+    }
+
+    public function downloadPDF($id)
+    {
+        $rab = rab::getRabWithDetails($id);
+        $pdf = Pdf::loadView('livewire.approved.form-pengajuan.pdf-rab', ['rab' => $rab]);
+        return $pdf->download('rab.pdf');
+    }
    
 }
 
