@@ -20,14 +20,6 @@ class FormCuti extends Component
 {
     use WithFileUploads;
 
-    // public $cutiId;
-    // public $name, $selectJobdesk, $selectHead, $email, $no_telepon, $jenis_cuti, $detail;
-    // public $tanggal_mulai, $tanggal_akhir, $tanggal_pengajuan, $akumulasi = 0;
-    // public $nama_kontak_darurat, $telp_darurat, $hubungan_darurat, $alamat;
-    // public $nama_delegasi, $detail_delegasi;
-    // public $atasan = [], $jabatan = [];
-    // public $newAttachment, $file_up;
-
     public $cutiId;
     public $name, $jobdesk_id, $head_id, $email, $no_telepon, $id_jenis_approve, $detail,
            $tanggal_mulai, $tanggal_akhir, $tanggal_pengajuan, $nama_kontak_darurat, 
@@ -96,11 +88,11 @@ class FormCuti extends Component
                     ->where('id', $this->cutiId)
                     ->update([
                         'name' => $this->auth,
-                        'jobdesk_id' => $this->selectJobdesk,
-                        'head_id' => $this->selectHead,
+                        'jobdesk_id' => $this->jobdesk_id,
+                        'head_id' => $this->head_id,
                         'email' => $this->email,
                         'no_telepon' => $this->no_telepon,
-                        'id_jenis_approve' => $this->jenis_cuti,
+                        'id_jenis_approve' => $this->id_jenis_approve,
                         'detail' => $this->detail,
                         'tanggal_mulai' => $this->tanggal_mulai,
                         'tanggal_akhir' => $this->tanggal_akhir,
@@ -142,7 +134,7 @@ class FormCuti extends Component
             }
 
             $this->dispatch('close-offcanvas');
-            // $this->dispatch('ruleUpdated');
+            $this->dispatch('cutiUpdated');
             $this->resetForm();
         } catch (\Throwable $th) {
             throw $th;
@@ -151,18 +143,18 @@ class FormCuti extends Component
     }
 
 
-    #[On('edit')]
-    public function edit($id)
+    #[On('editCuti')]
+    public function editCuti($id)
     {
         $cutis = ApprovalCuti::getById($id);
         
         $this->cutiId = $cutis->id;
         $this->name = $cutis->name;
-        $this->jobdesk_id = $cutis->jobdesk_id;
-        $this->head_id = $cutis->head_id;
+        $this->selectJobdesk = $cutis->jobdesk_id;
+        $this->selectHead = $cutis->head_id;
         $this->email = $cutis->email;
         $this->no_telepon = $cutis->no_telepon;
-        $this->id_jenis_approve = $cutis->jenis_cuti;
+        $this->jenis_cuti = $cutis->id_jenis_approve;
         $this->detail = $cutis->detail;
         $this->tanggal_mulai = $cutis->tanggal_mulai;
         $this->tanggal_akhir = $cutis->tanggal_akhir;
@@ -176,7 +168,7 @@ class FormCuti extends Component
         $this->detail_delegasi = $cutis->detail_delegasi;
         $this->file_up = $cutis->file_up;
 
-        // $this->loadHead();
+        $this->loadHead();
         $this->dispatch('show-edit-offcanvas-cuti');
     }
 
@@ -185,6 +177,12 @@ class FormCuti extends Component
         if ($this->jobdesk_id) {
             $this->atasan = Head::getHeadByJobdesk($this->jobdesk_id);
         }
+    }
+
+    public function updatedSelectJobdesk()
+    {
+        $this->loadHead();
+        $this->head_id = null; // Reset head_id when jobdesk changes
     }
 
     public function calculateDays()
@@ -213,8 +211,8 @@ class FormCuti extends Component
     public function resetForm()
     {
         $this->reset([
-            'cutiId', 'name', 'selectJobdesk', 'selectHead', 'email', 'no_telepon',
-            'jenis_cuti', 'detail', 'tanggal_mulai', 'tanggal_akhir', 'tanggal_pengajuan',
+            'cutiId', 'name', 'jobdesk_id', 'head_id'   , 'email', 'no_telepon',
+            'id_jenis_approve', 'detail', 'tanggal_mulai', 'tanggal_akhir', 'tanggal_pengajuan',
             'nama_kontak_darurat', 'telp_darurat', 'hubungan_darurat', 'alamat',
             'nama_delegasi', 'detail_delegasi', 'newAttachment', 'file_up'
         ]);

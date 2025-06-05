@@ -16,10 +16,7 @@
 
     <!--BUTTON CREATE PENGAJUAN APPROVAL DAN TABEL KETENTUAN-->
     <div class="card p-1 table-responsive">
-        
-
         <table id="rule-table" class="table table-hover" style="width: 100%">
-        
             <thead class="text-success fw-medium">
                 <tr>
                     <th class="fw-medium text-center" rowspan="2">Jenis Ketentuan Approval</th>
@@ -258,9 +255,124 @@
                         </table>
                     </div>
                 @endif
+            </div>
+        </div>
+
+        <table id="approve-table" class="table table-hover" style="width: 100%">
+
+            <thead class="text-success fw-medium">
+                <tr>
+                    <th class="fw-medium text-center" rowspan="2">id</th>
+                    <th class="fw-medium text-center" rowspan="2">Jenis Approval</th>
+                    <th class="fw-medium text-center" rowspan="2">Tanggal Pengajuan</th>
+                    <th class="fw-medium text-center" rowspan="2">Action</th> <!--akan di disable oleh HR tergantung ketentuan-->
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach ($cutis as $cuti)
+                <tr>
+                    <td class="text-center">{{ $cuti->id }}</td>
+                    <td class="text-center">{{ $cuti->jenis_cuti }}</td>
+                    <td class="text-center">{{ $cuti->tanggal_pengajuan }}</td>
+                   
+                   {{-- ACTION CUTI --}}
+                    <td class="text-center">
+                        <button wire:click="showApprovalById({{ $cuti->id }}, 'cuti')" 
+                            class="btn btn-outline-success btn-sm">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                        <button wire:click="$dispatch('editCuti', {id: {{  $cuti->id }} })" class="btn btn-outline-warning btn-sm">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+
+            <tbody>
+                @foreach ($izins as $izin)
+                <tr>
+                    <td class="text-center">{{ $izin->id }}</td>
+                    <td class="text-center">{{ $izin->jenis_izin }}</td>
+                    <td class="text-center">{{ $izin->tgl_ajuan }}</td>
+
+                   {{-- ACTION IZIN --}}
+                    <td class="text-center">
+                        <button wire:click="showApprovalById({{ $izin->id }}, 'izin')" class="btn btn-outline-success btn-sm">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                        <button class="btn btn-outline-warning btn-sm">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-------------------------------JS---------------------------------------------------------------->
+@push('scripts')
+    <script>
+        window.addEventListener('show-create-offcanvas-cuti', event => {
+            const offcanvas = new bootstrap.Offcanvas('#cutiForm');
+            offcanvas.show();
+        });
 
 
-                {{-- @if ($approvalShow)
+        window.addEventListener('show-create-offcanvas-izin', event => {
+            const offcanvas = new bootstrap.Offcanvas('#izinForm');
+            offcanvas.show();
+        });
+
+        window.addEventListener('show-create-offcanvas-rab', event => {
+            const offcanvas = new bootstrap.Offcanvas('#rabForm');
+            offcanvas.show();
+        });
+
+        window.addEventListener('show-create-offcanvas-reimburse', event => {
+            const offcanvas = new bootstrap.Offcanvas('#reimburseForm');
+            offcanvas.show();
+        });
+
+        window.addEventListener('show-create-offcanvas-proyek', event => {
+            const offcanvas = new bootstrap.Offcanvas('#pengadaanForm');
+            offcanvas.show();
+        });
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('show-view-cuti-offcanvas', (event) => {
+                const offcanvas = new bootstrap.Offcanvas('#viewApproval');
+                offcanvas.show();
+            })
+        })
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('show-view-izin-offcanvas', (event) => {
+                const offcanvas = new bootstrap.Offcanvas('#viewApproval');
+                offcanvas.show();
+            })
+        })
+
+        // EDIT
+        window.addEventListener('show-edit-offcanvas-cuti', event => {
+            const offcanvas = new bootstrap.Offcanvas('#cutiForm');
+            offcanvas.show();
+        });
+    </script>
+@endpush
+
+
+
+{{-- @if ($approvalShow)
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tbody>
@@ -344,116 +456,3 @@
                         </table>
                     </div>                  
                 @endif --}}
-            </div>
-        </div>
-
-        <table id="approve-table" class="table table-hover" style="width: 100%">
-
-            <thead class="text-success fw-medium">
-                <tr>
-                    <th class="fw-medium text-center" rowspan="2">id</th>
-                    <th class="fw-medium text-center" rowspan="2">Jenis Approval</th>
-                    <th class="fw-medium text-center" rowspan="2">Tanggal Pengajuan</th>
-                    <th class="fw-medium text-center" rowspan="2">Detail Pengajuan</th>
-                    <th class="fw-medium text-center" rowspan="2">Action</th> <!--akan di disable oleh HR tergantung ketentuan-->
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach ($cutis as $cuti)
-                <tr>
-                    <td class="text-center">{{ $cuti->id }}</td>
-                    <td class="text-center">{{ $cuti->jenis_cuti }}</td>
-                    <td class="text-center">{{ $cuti->tanggal_pengajuan }}</td>
-                   
-                   {{-- VIEW DETAIL APPROVAL --}}
-                    <td class="text-center"> 
-                        <button wire:click="showApprovalById({{ $cuti->id }}, 'cuti')" 
-                            class="btn btn-outline-success btn-sm">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-outline-warning btn-sm">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-
-            <tbody>
-                @foreach ($izins as $izin)
-                <tr>
-                    <td class="text-center">{{ $izin->id }}</td>
-                    <td class="text-center">{{ $izin->jenis_izin }}</td>
-                    <td class="text-center">{{ $izin->tgl_ajuan }}</td>
-                   
-                   {{-- VIEW DETAIL APPROVAL --}}
-                    <td class="text-center"> 
-                        <button wire:click="showApprovalById({{ $izin->id }}, 'izin')" class="btn btn-outline-success btn-sm">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-outline-warning btn-sm">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-------------------------------JS---------------------------------------------------------------->
-@push('scripts')
-    <script>
-        window.addEventListener('show-create-offcanvas-cuti', event => {
-            const offcanvas = new bootstrap.Offcanvas('#cutiForm');
-            offcanvas.show();
-        });
-
-
-        window.addEventListener('show-create-offcanvas-izin', event => {
-            const offcanvas = new bootstrap.Offcanvas('#izinForm');
-            offcanvas.show();
-        });
-
-        window.addEventListener('show-create-offcanvas-rab', event => {
-            const offcanvas = new bootstrap.Offcanvas('#rabForm');
-            offcanvas.show();
-        });
-
-        window.addEventListener('show-create-offcanvas-reimburse', event => {
-            const offcanvas = new bootstrap.Offcanvas('#reimburseForm');
-            offcanvas.show();
-        });
-
-        window.addEventListener('show-create-offcanvas-proyek', event => {
-            const offcanvas = new bootstrap.Offcanvas('#pengadaanForm');
-            offcanvas.show();
-        });
-
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('show-view-cuti-offcanvas', (event) => {
-                const offcanvas = new bootstrap.Offcanvas('#viewApproval');
-                offcanvas.show();
-            })
-        })
-
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('show-view-izin-offcanvas', (event) => {
-                const offcanvas = new bootstrap.Offcanvas('#viewApproval');
-                offcanvas.show();
-            })
-        })
-    </script>
-@endpush

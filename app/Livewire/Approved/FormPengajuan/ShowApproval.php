@@ -177,7 +177,7 @@ class ShowApproval extends Component
             } elseif ($jenis === 'reimburse') {
                 $this->approvalShow = Reimburse::getreimburseById($id);
             } elseif ($jenis === 'rab') {
-                $this->approvalShow = rab::getRabById($id);
+                // $this->approvalShow = rab::getRabById($id);
             } elseif ($jenis === 'pengadaan') {
                 $this->approvalShow = PengadaanProyek::getPengadaanProyekById($id);
             }
@@ -198,6 +198,13 @@ class ShowApproval extends Component
         return $pdf->download('rab.pdf');
     }
    
+    // ==============================================RELOAD OTOMATIS========================================
+    // Cuti
+    #[On('cutiUpdated')]
+    public function cutiUpdated()
+    {
+        $this->cutis = Cuti::getCuti();
+    }
 }
 
 
