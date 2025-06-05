@@ -150,11 +150,11 @@ class FormCuti extends Component
         
         $this->cutiId = $cutis->id;
         $this->name = $cutis->name;
-        $this->selectJobdesk = $cutis->jobdesk_id;
-        $this->selectHead = $cutis->head_id;
+        $this->jobdesk_id = $cutis->jobdesk_id;
+        $this->head_id = $cutis->head_id;
         $this->email = $cutis->email;
         $this->no_telepon = $cutis->no_telepon;
-        $this->jenis_cuti = $cutis->id_jenis_approve;
+        $this->id_jenis_approve = $cutis->id_jenis_approve;
         $this->detail = $cutis->detail;
         $this->tanggal_mulai = $cutis->tanggal_mulai;
         $this->tanggal_akhir = $cutis->tanggal_akhir;
@@ -168,7 +168,7 @@ class FormCuti extends Component
         $this->detail_delegasi = $cutis->detail_delegasi;
         $this->file_up = $cutis->file_up;
 
-        $this->loadHead();
+        // $this->loadHead();
         $this->dispatch('show-edit-offcanvas-cuti');
     }
 
