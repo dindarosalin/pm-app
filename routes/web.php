@@ -30,6 +30,7 @@ use App\Livewire\Budget\Index as BudgetIndex;
 use App\Livewire\Budget\Plan\Plan as BudgetPlan;
 use App\Livewire\Budget\Track\Track as BudgetTrack;
 use App\Livewire\Dashboard\Dashboard as Dashboard;
+use App\Livewire\Master\Approval\ApprovalStatuses;
 use App\Livewire\Master\Approved\Approval as ApprovedApproval;
 use App\Livewire\Master\Approved\Atasan;
 use App\Livewire\Master\Approved\Jabatan;
@@ -212,6 +213,7 @@ Route::middleware(['auth'])->group(function () {
         //  Route::get('/track/{title}/detail-nota/{id}', DetailNota::class)->name('detail.nota');
 
         Route::get('/approval-types', ApprovalTypes::class)->name('approval-types');
+        Route::get('/approval-statuses', ApprovalStatuses::class)->name('approval-statuses');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {
