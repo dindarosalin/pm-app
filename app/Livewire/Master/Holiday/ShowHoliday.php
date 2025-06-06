@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Master\Holiday;
 
+use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Master\Holiday;
 
@@ -14,10 +15,10 @@ class ShowHoliday extends Component
     public function render()
     {
         $this->holidays = Holiday::getAll();
-        
+
         $month = 12;
         $year = 2024;
-        
+
         $activeDays = Holiday::getActiveDayMonth($month, $year);
         return view('livewire.master.holiday.show-holiday');
     }

@@ -25,7 +25,7 @@
 
     <div class="card">
         <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center my-2">
+            <div class="d-flex justify-content-between align-items-center">
                 <p>List of Approval Type</p>
                 <button class="btn btn-sm btn-outline-primary" wire:click="$dispatch('show-offcanvas')">
                     <span class="fa fa-plus"></span>
