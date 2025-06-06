@@ -67,6 +67,8 @@ use App\Livewire\Approval\Responsible\ResponsibleRab;
 use App\Livewire\Approval\Responsible\ResponsibleReimburse;
 use App\Livewire\Approval\Responsible\ResponsibleProjectProcurement;
 
+use App\Livewire\Master\Approval\ApprovalTypes;
+
 use App\Livewire\Projects\Calendar\ShowCalendar;
 use App\Livewire\Projects\GanttChart\ShowGanttChart;
 use App\Livewire\Projects\Projects\ArchivedProject;
@@ -111,16 +113,16 @@ Route::middleware(['auth'])->group(function () {
         // CRUD PROJECT
         Route::get('/', ShowProject::class)->name('show.project');
         Route::get('/archived', ArchivedProject::class)->name('project.archived');
-    
+
         Route::prefix('{projectId}')->group(function () {
             Route::get('/', Dashboard::class)->name('dashboard.task');
-    
+
             //CRUD TASKS
             Route::get('/tasks', ShowTask::class)->name('tasks.show');
             Route::get('/tasks/archived', ArchivedTask::class)->name('tasks.archived');
             Route::get('/calendar', ShowCalendar::class)->name('calendar');
             Route::get('/ganttchart', ShowGanttChart::class)->name('ganttchart');
-    
+
             //CRUD RELEASE NOTE
             Route::prefix('release-note')->name('release.')->group(function () {
                 //release notes
@@ -139,18 +141,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/track/{title}', ShowTrack::class)->name('show.track');
             Route::get('/track/{title}/detail-nota/{id}', DetailNota::class)->name('detail.nota');
     });
-    
+
     Route::prefix('time-card')->name('time-card.')->group(function () {
         Route::get('/', ShowTimeCard::class)->name('show');
     });
-    
+
     Route::prefix('availability-tracking')->name('availability-tracking.')->group(function () {
         Route::get('/', AvailabilityTracking::class)->name('show');
         Route::get('/performa/{employeeId}',  Performa::class)->name('show.performa');
         // try chart
         // Route::get('/performa/{employeeId}/trychart', TryChart::class)->name('show.chart');
     });
-    
+
     Route::prefix('report')->name('report.')->group(function () {
         //route report
         Route::get('/', ShowReport::class)->name('show.report');
@@ -163,12 +165,12 @@ Route::middleware(['auth'])->group(function () {
         // route pengajuan approval
         // Route::get('form-approval', ShowSubmit::class)->name('form-approval');
         Route::get('form-approval', ShowApproval::class)->name('form-approval');
-            
+
         // });
         // route upload ketentuan for HR
-        Route::get('upload-rule', UploadRule::class)->name('upload-rule'); 
+        Route::get('upload-rule', UploadRule::class)->name('upload-rule');
         // route dashboard approver
-        Route::get('dashboard-approver', DashApprover::class)->name('dashboard-approver'); 
+        Route::get('dashboard-approver', DashApprover::class)->name('dashboard-approver');
         // Route::get('/show-approval/detail-form/{id}', DetailForm::class)->name('detail-form');
     });
     // END APPROVAL
@@ -181,7 +183,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('absence-responsible', ResponsibleAbsence::class)->name('absence-responsible');
         Route::get('rab-responsible', ResponsibleRab::class)->name('rab-responsible');
         Route::get('reimburse-responsible', ResponsibleReimburse::class)->name('reimburse-responsible');
-        Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');    
+        Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');
     });
 
     Route::prefix('accountable')->name('accountable.')->group(function(){
@@ -191,9 +193,9 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('absence-responsible', ResponsibleAbsence::class)->name('absence-responsible');
         // Route::get('rab-responsible', ResponsibleRab::class)->name('rab-responsible');
         // Route::get('reimburse-responsible', ResponsibleReimburse::class)->name('reimburse-responsible');
-        // Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');    
+        // Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');
     });
-    
+
     Route::prefix('master')->name('master.')->group(function () {
         Route::get('/project-status', ShowProjectStatus::class)->name('project-status');
         Route::get('/task-status', ShowTaskStatus::class)->name('task-status');
@@ -208,6 +210,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/atasan', Atasan::class)->name('atasan');
         Route::get('/jenis-approval', JenisApproval::class)->name('jenis-approval');
         //  Route::get('/track/{title}/detail-nota/{id}', DetailNota::class)->name('detail.nota');
+
+        Route::get('/approval-types', ApprovalTypes::class)->name('approval-types');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {

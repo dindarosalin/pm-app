@@ -3,7 +3,6 @@
 namespace App\Models\Master;
 use Illuminate\Support\Facades\DB;
 use App\Models\Base\BaseModel;
-use Illuminate\Database\Eloquent\Model;
 
 class Holiday extends BaseModel
 {

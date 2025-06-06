@@ -275,13 +275,13 @@
         </div>
         {{-- end coba --}}
         {{-- @if (App\Models\Base\BaseModel::isAuthorize('114', 'R'))
-            <li class="sidebar-menu {{ request()->routeIs('approval.*') ? 'active' : '' }}"> 
-                <a href="{{ route('approval.show') }}" 
+            <li class="sidebar-menu {{ request()->routeIs('approval.*') ? 'active' : '' }}">
+                <a href="{{ route('approval.show') }}"
                     class="sidebar-menu text-decoration-none text-white" wire:navigate.defer>
                     <i class="fa-solid fa-person-circle-check"></i>
                     <span>Approval</span>
                 </a>
-            </li>    
+            </li>
         @endif --}}
         {{-- END MENU APPROVAL --}}
 
@@ -315,13 +315,6 @@
                             </a>
                         </li>
                     @endif
-                </div>
-            </div>
-
-            <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rules-responsible') ? 'active' : '' }} ">
@@ -332,14 +325,8 @@
                             </a>
                         </li>
                     @endif
-                </div>
-            </div>
 
-            {{-- IZIN TIDAK TERENNCANA --}}
-            <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
+                    {{-- IJIN TIDAK TERWENCANA --}}
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.permission-responsible') ? 'active' : '' }} ">
@@ -350,14 +337,8 @@
                             </a>
                         </li>
                     @endif
-                </div>
-            </div>
 
-            {{-- CUTI --}}
-            <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
+                    {{-- CUTI --}}
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.absence-responsible') ? 'active' : '' }} ">
@@ -368,13 +349,7 @@
                             </a>
                         </li>
                     @endif
-                </div>
-            </div>
 
-            <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rab-responsible') ? 'active' : '' }} ">
@@ -385,13 +360,7 @@
                             </a>
                         </li>
                     @endif
-                </div>
-            </div>
 
-            <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.reimburse-responsible') ? 'active' : '' }} ">
@@ -402,13 +371,7 @@
                             </a>
                         </li>
                     @endif
-                </div>
-            </div>
 
-            <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.project-procurement-responsible') ? 'active' : '' }} ">
@@ -455,6 +418,17 @@
                             </a>
                         </li>
                     @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.dashboard-accountable') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('accountable.dashboard-accountable') }}" wire:navigate.defer.defer>
+                                <i class="fa-solid fa-folder-plus"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                    @endif
                 </div>
             </div>
         </div>
@@ -479,6 +453,17 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'master' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
+                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.approval-types') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.approval-types') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Approval Types</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.project-status') ? 'active' : '' }} ">
