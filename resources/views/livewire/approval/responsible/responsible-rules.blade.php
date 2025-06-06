@@ -1,7 +1,7 @@
 @section('title', 'Upload Rules')
 
 <div>
-    <div wire:ignore class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offCanvasForm"
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offCanvasForm"
         aria-labelledby="offCanvasFormLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offCanvasFormLabel">Upload Rules</h5>
@@ -46,6 +46,8 @@
                         <th>id</th>
                         <th>Approval Type</th>
                         <th>File</th>
+                        <th>Last Update</th>
+                        <th>Uploaded By</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -53,12 +55,16 @@
                     @foreach ($rules as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->approval_id }}</td>
+                            <td>{{ $item->approval_name }}</td>
                             <td>
                                 <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="text-primary">
                                     {{ basename($item->file_name) }}
                                 </a>
                             </td>
+                            <td>
+                                {{ $item->last_updated }}
+                            </td>
+                            <td>{{ $item->creator_name }}</td>
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
 
@@ -91,7 +97,7 @@
             const offcanvas = new bootstrap.Offcanvas('#offCanvasForm');
             offcanvas.show();
         });
-        window.addEventListener('close-offcanvas', event => {
+        window.addEventListener('close-offcanvas-rules', event => {
             const offcanvas = new bootstrap.Offcanvas('#offCanvasForm');
             offcanvas.hide();
         });

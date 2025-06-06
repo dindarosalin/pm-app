@@ -55,6 +55,10 @@ class ResponsibleRules extends Component
 
                 $this->rulePath = $path;
                 $this->fileName = $data['file_name'];
+            } elseif (!$this->newAttachment && $this->ruleId) {
+                $r = ApprovalRules::getById($this->ruleId);
+                $data['file_path'] = $r->file_path;
+                $data['file_name'] = $r->file_name;
             }
 
             if ($this->ruleId) {
@@ -63,12 +67,12 @@ class ResponsibleRules extends Component
                 ApprovalRules::create($data);
             }
 
-            $this->dispatch('close-offcanvas');
+            $this->dispatch('close-offcanvas-rules');
             $this->reset();
             $this->dispatch('swal:modal', [
                 'type' => 'success',
                 'message' => 'Data Saved',
-                'text' => 'It will list on the table.'
+                'text' => 'It will list on the table.',
             ]);
         } catch (\Throwable $th) {
             report($th);
@@ -93,7 +97,7 @@ class ResponsibleRules extends Component
             'message' => 'Are you sure?',
             'text' => 'You won\'t be able to revert this!',
             'id' => $id,
-            'dispatch' => 'delete'
+            'dispatch' => 'delete',
         ]);
     }
 
@@ -104,7 +108,7 @@ class ResponsibleRules extends Component
         $this->dispatch('swal:modal', [
             'type' => 'success',
             'message' => 'Data Deleted',
-            'text' => 'It will not list on the table.'
+            'text' => 'It will not list on the table.',
         ]);
     }
 }

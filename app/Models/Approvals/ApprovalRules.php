@@ -9,7 +9,19 @@ class ApprovalRules extends BaseModel
 {
     public static function getAll()
     {
-        return DB::table('approval_rules')->get();
+        return DB::table('approval_rules')
+            ->join('approval_types', 'approval_rules.approval_id', '=', 'approval_types.id')
+            ->join('app_user', 'approval_rules.created_by', '=', 'app_user.user_id')
+            ->select([
+                'approval_rules.id',
+                'approval_rules.file_name',
+                'approval_rules.file_path',
+                'approval_rules.created_by',
+                'approval_rules.last_updated',
+                'approval_types.name as approval_name',
+                'app_user.user_name as creator_name'
+            ])
+            ->get();
     }
 
     public static function getById($id)
@@ -31,6 +43,7 @@ class ApprovalRules extends BaseModel
 
     public static function update($id, $storeData)
     {
+        // dd($storeData);
         DB::table('approval_rules')
             ->where('id', $id)
             ->update([
@@ -44,8 +57,6 @@ class ApprovalRules extends BaseModel
 
     public static function delete($id)
     {
-        DB::table('approval_rules')
-        ->where('id', $id)
-        ->delete();
+        DB::table('approval_rules')->where('id', $id)->delete();
     }
 }
