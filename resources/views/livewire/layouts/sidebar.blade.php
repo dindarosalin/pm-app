@@ -305,7 +305,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('123', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.dashboard-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -315,7 +315,7 @@
                             </a>
                         </li>
                     @endif
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('124', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rules-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -327,7 +327,7 @@
                     @endif
 
                     {{-- IJIN TIDAK TERWENCANA --}}
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('125', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.permission-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -339,7 +339,7 @@
                     @endif
 
                     {{-- CUTI --}}
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('126', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.absence-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -350,7 +350,7 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('127', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rab-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -361,7 +361,7 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('128', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.reimburse-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -372,7 +372,7 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('129', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.project-procurement-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
