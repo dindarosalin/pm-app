@@ -59,4 +59,9 @@ class ApprovalRules extends BaseModel
     {
         DB::table('approval_rules')->where('id', $id)->delete();
     }
+
+    public static function getByType($typeId)
+    {
+        return DB::table('approval_rules')->where('approval_id', $typeId)->get();
+    }
 }

@@ -27,4 +27,65 @@ class EmployeeHierarchy extends Model
             ->where('user_id', $this->user_id)
             ->first();
     }
+
+    public static function getHierarchyUp($auth){
+        $parent = EmployeeHierarchy::where('user_id', $auth)->first();
+        // dd($parent);
+        $current = $parent->parent;
+        $atasan = [];
+        while($current!=null){
+            $parentEmployee = EmployeeHierarchy::where('user_id', $current->user_id)->first();
+            $paramAtasan = [
+                'id' => $parentEmployee->user_id,
+                'name' => $parentEmployee->getEmploye()->user_name,
+                'email' => $parentEmployee->getEmploye()->user_email
+            ];
+            array_push($atasan, $paramAtasan);
+            $current = $current->parent;
+        }
+
+        return $atasan;
+    }
+
+    public static function getHierarchyDown($auth) {
+        $dataBawahanLangsung = [];
+        // Get bawahan dari user login
+        $employee = EmployeeHierarchy::where('user_id', $auth)->whereHas('child')->first();
+
+        if ($employee) {
+            foreach($employee->child as $e){
+                $param = [
+                    'id' => $e->user_id,
+                    'name' => $e->getEmploye()->user_name,
+                    'email' => $e->getEmploye()->user_email
+                ];
+
+                $dataBawahanLangsung[] = $param;
+            }
+
+            // Get All bawahan
+            $usr = EmployeeHierarchy::where('parent_id', $employee->user_id)->get();
+            $dataSemuaBawahan = [];
+            $no = 1;
+
+            while(count($usr) > 0){
+                $nextUsr = [];
+                foreach ($usr as $c) {
+                    $param = [
+                        'id' => $c->user_id,
+                        'name' => $c->getEmploye()->user_name,
+                        'email' => $c->getEmploye()->user_email
+                    ];
+                    array_push($dataSemuaBawahan, $param);
+                    $nextUsr = array_merge($nextUsr, $c->child->all());
+                }
+                $no++;
+                $usr = $nextUsr;
+            }
+
+            return $dataSemuaBawahan;
+        }
+
+        // return $dataBawahanLangsung;
+    }
 }

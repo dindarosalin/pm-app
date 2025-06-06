@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Models\Approvals;
+
+use App\Models\Base\BaseModel;
+use Illuminate\Support\Facades\DB;
+
+class ApprovalPermissions extends BaseModel
+{
+    public static function getAll()
+    {
+        return DB::table('approval_permission')->get();
+    }
+
+    public static function getById($id)
+    {
+        return DB::table('approval_permission')->where('id', $id)->first();
+    }
+
+    public static function create($storeData)
+    {
+        // dd($storeData);
+        DB::table('approval_permission')->insert([
+            'user_id' => $storeData['auth'],
+            'subject' => $storeData['subject'],
+            'accountable' => (int) $storeData['accountable'],
+            'approval_id' => $storeData['approvalId'],
+            'permission_detail' => $storeData['permDetail'],
+            'start_date' => $storeData['startDate'],
+            'end_date' => $storeData['endDate'],
+            'total_days' => $storeData['totalDays'],
+            'emergency_contact' => $storeData['emergencyContact'],
+            'relationship_emergency_contact' => $storeData['relationship'],
+            'delegation' => (int) $storeData['delegation'],
+            'delegation_detail' => $storeData['noteDelegation'],
+            'status_id' => $storeData['statusId'],
+            'last_updated' => now(),
+            'submission_date' => now(),
+            'file_name' => $storeData['fileName'],
+            'file_path' => $storeData['filePath'],
+            'note' => $storeData['noteDelegation'],
+        ]);
+    }
+
+    public static function update($id, $storeData)
+    {
+        // dd($storeData);
+
+        DB::table('approval_permission')
+            ->where('id', $id)
+            ->update([
+                'user_id' => $storeData['auth'],
+                'subject' => $storeData['subject'],
+                'accountable' => (int) $storeData['accountable'],
+                'approval_id' => $storeData['approvalId'],
+                'permission_detail' => $storeData['permDetail'],
+                'start_date' => $storeData['startDate'],
+                'end_date' => $storeData['endDate'],
+                'total_days' => $storeData['totalDays'],
+                'emergency_contact' => $storeData['emergencyContact'],
+                'relationship_emergency_contact' => $storeData['relationship'],
+                'delegation' => (int) $storeData['delegation'],
+                'delegation_detail' => $storeData['noteDelegation'],
+                'status_id' => $storeData['statusId'],
+                'last_updated' => now(),
+                'submission_date' => $storeData['submitDate'],
+                'file_name' => $storeData['fileName'],
+                'file_path' => $storeData['filePath'],
+                'note' => $storeData['noteDelegation'],
+            ]);
+    }
+
+    public static function delete($id)
+    {
+        DB::table('approval_permission')->where('id', $id)->delete();
+    }
+}
