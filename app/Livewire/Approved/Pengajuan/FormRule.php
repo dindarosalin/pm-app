@@ -27,7 +27,7 @@ class FormRule extends Component
     onUpdate: 'sometimes|mimes:pdf|max:2048')]
     public $newAttachment; //simpan file baru
     public $file_path; // simpan path file
-    
+
 
     public function render()
     {
@@ -55,7 +55,7 @@ class FormRule extends Component
 
         try {
             $filePath = $this->file_path;
-        
+
         if ($this->newAttachment) {
             // Hapus file lama jika ada (untuk update)
             if ($this->ruleId && $this->file_path) {
@@ -116,7 +116,6 @@ class FormRule extends Component
             // $this->resetForm();
         } catch (\Throwable $th) {
             throw $th;
-            $this->js("alert('Tidak Tersimpan')");
         }
     }
 

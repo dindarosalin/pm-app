@@ -3,6 +3,7 @@
 namespace App\Models\Master;
 use Illuminate\Support\Facades\DB;
 use App\Models\Base\BaseModel;
+use function Laravel\Prompts\table;
 
 class Holiday extends BaseModel
 {
@@ -76,6 +77,11 @@ class Holiday extends BaseModel
 
         // jumlah active days = jumlah hari 1 bulan - weekend - holidays
         return $activeDays;
+    }
+
+    public static function delete($id)
+    {
+        DB::table('holidays')->where('id', $id)->delete();
     }
 
 }
