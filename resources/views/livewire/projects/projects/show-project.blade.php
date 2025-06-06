@@ -433,7 +433,7 @@
                             </td>
                             {{-- <td>{{ date('d F Y', strtotime($project->created_at)) }}</td> --}}
                             <td>
-                                <a href="{{ route('projects.tasks.show', $project->id) }}"
+                                <a href="{{ route('projects.dashboard.task', $project->id) }}"
                                     wire:navigate.defer>{{ $project->title }}</a>
                             </td>
                             <td>{{ $project->pm_name }}</td>
