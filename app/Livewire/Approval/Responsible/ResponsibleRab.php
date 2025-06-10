@@ -7,16 +7,16 @@ use App\Models\Approvals\ApprovalRab;
 use App\Models\Approvals\ApprovalRules;
 use App\Models\master\uom;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ResponsibleRab extends Component
 {
     // RAB VAR
-    public $auth, $rabs, $subject, $statusId, $rabId, $subDate, $rabDesc;
+    public $auth, $rabs, $subject, $statusId, $rabId, $subDate, $rabDesc, $total;
 
     // RAB DETAILS VAR
-    public $rabDetailId, $name, $description, $uom, $qty, $iPrice, $iTPrice;
-    public $rabRules, $step, $uoms;
+    public $rabRules;
     public $approvalId = 3;
 
     public function render()
@@ -30,17 +30,14 @@ class ResponsibleRab extends Component
         $this->auth = Auth::user()->user_id;
         $this->rabs = ApprovalRab::getAll();
         $this->rabRules = ApprovalRules::getByType($this->approvalId);
-        $this->uoms = uom::getAll();
     }
 
     public function save()
     {
         if ($this->rabId) {
             $this->updateRab($this->rabId);
-            $this->updateDetailRab($this->rabDetailId);
         } else {
             $this->createRab();
-            $this->createDetailRab();
         }
     }
 
@@ -48,24 +45,62 @@ class ResponsibleRab extends Component
     {
         $this->statusId = 1;
         ApprovalRab::create([
-            $this->subject,
-            $this->statusId,
-            $this->auth,
+            'subject' => $this->subject,
+            'statusId' => $this->statusId,
+            'auth' => $this->auth,
+            'approvalId' => $this->approvalId,
+            'rabDesc' => $this->rabDesc,
+            'total' => 0
         ]);
-    }
-
-    public function createDetailRab()
-    {
-
     }
 
     public function updateRab($id)
     {
-
+        $this->statusId = 1;
+        ApprovalRab::update($id,[
+            'subject' => $this->subject,
+            'statusId' => $this->statusId,
+            'auth' => $this->auth,
+            'approvalId' => $this->approvalId,
+            'rabDesc' => $this->rabDesc,
+            'total' => $this->total,
+            'subDate' => $this->subDate,
+        ]);
     }
 
-    public function updateDetailRab($id)
+    public function edit($id)
     {
+        $this->dispatch('show-offcanvas');
+        $rab = ApprovalRab::getById($id);
 
+        // dd($rab);
+        $this->rabId = $rab->id;
+        $this->subject = $rab->subject;
+        $this->statusId = $rab->status_id;
+        $this->rabDesc = $rab->description;
+        $this->total = $rab->total;
+        $this->subDate = $rab->submission_date;
+    }
+
+    public function alertConfirm($id)
+    {
+        $this->dispatch('swal:confirm', [
+            'type' => 'warning',
+            'message' => 'Are you sure?',
+            'text' => 'You won\'t be able to revert this!',
+            'id' => $id,
+            'dispatch' => 'delete',
+        ]);
+    }
+
+    #[On('delete')]
+    public function delete($id)
+    {
+        ApprovalRab::delete($id);
+        $this->dispatch('swal:modal', [
+            'type' => 'success',
+            'message' => 'Data Deleted',
+            'text' => 'It will not list on the table.',
+        ]);
     }
 }

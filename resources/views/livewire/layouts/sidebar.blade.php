@@ -70,7 +70,7 @@
                             <li
                                 class="sidebar-accordition sidebar-menu {{ request()->routeIs('projects.dashboard.task') ? 'active' : '' }} ">
                                 <a class=" text-decoration-none text-white"
-                                    href="{{ route('projects.dashboard.task', $projectId) }}" wire:navigate.defer.defer>
+                                    href="{{ route('projects.dashboard.task', $projectId) }}" wire:navigate.defer>
                                     <i class="fa-solid fa-chart-simple"></i>
                                     <span>Dashboard</span>
                                 </a>

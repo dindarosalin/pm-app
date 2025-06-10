@@ -14,6 +14,7 @@ use App\Http\Controllers\Settings\UserProfileController;
 use App\Http\Controllers\Settings\{MenuController, AccountsController, HierarchyController};
 // use App\Http\Controllers\Settings\{MenuController, AccountsController};
 use App\Http\Livewire\UpdateComponent;
+use App\Livewire\Approval\Responsible\ResponsibleRabDetail;
 use App\Livewire\Approved\Approval;
 use App\Livewire\Approved\DashApprover;
 use App\Livewire\Approved\FormPengajuan\DetailForm;
@@ -183,6 +184,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('permission-responsible', ResponsiblePermission::class)->name('permission-responsible');
         Route::get('absence-responsible', ResponsibleAbsence::class)->name('absence-responsible');
         Route::get('rab-responsible', ResponsibleRab::class)->name('rab-responsible');
+        Route::get('rab-responsible/{rabId}', ResponsibleRabDetail::class)->name('rab-detail-responsible');
         Route::get('reimburse-responsible', ResponsibleReimburse::class)->name('reimburse-responsible');
         Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');
     });
