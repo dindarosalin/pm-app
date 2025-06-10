@@ -15,6 +15,7 @@ use App\Http\Controllers\Settings\{MenuController, AccountsController, Hierarchy
 // use App\Http\Controllers\Settings\{MenuController, AccountsController};
 use App\Http\Livewire\UpdateComponent;
 use App\Livewire\Approval\Responsible\ResponsibleRabDetail;
+use App\Livewire\Approval\Responsible\ResponsibleReimburseDetail;
 use App\Livewire\Approved\Approval;
 use App\Livewire\Approved\DashApprover;
 use App\Livewire\Approved\FormPengajuan\DetailForm;
@@ -86,6 +87,7 @@ use App\Livewire\Report\ShowReport;
 use App\Livewire\StartWork;
 use App\Livewire\TableTrial;
 use App\Livewire\TimeCard\ShowTimeCard;
+use App\Models\Approvals\ApprovalReimburseDetail;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 
@@ -186,6 +188,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('rab-responsible', ResponsibleRab::class)->name('rab-responsible');
         Route::get('rab-responsible/{rabId}', ResponsibleRabDetail::class)->name('rab-detail-responsible');
         Route::get('reimburse-responsible', ResponsibleReimburse::class)->name('reimburse-responsible');
+        Route::get('reimburse-responsible/{reimburseId}', ResponsibleReimburseDetail::class)->name('reimburse-detail-responsible');
         Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');
     });
 

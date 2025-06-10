@@ -56,7 +56,6 @@ class ResponsibleRab extends Component
 
     public function updateRab($id)
     {
-        $this->statusId = 1;
         ApprovalRab::update($id,[
             'subject' => $this->subject,
             'statusId' => $this->statusId,

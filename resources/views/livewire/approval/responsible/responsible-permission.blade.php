@@ -1,7 +1,6 @@
 @section('title', 'Pemission')
 
 <div>
-
     <div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offCanvasForm"
         aria-labelledby="offCanvasFormLabel">
         <div class="offcanvas-header">
