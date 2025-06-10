@@ -41,6 +41,11 @@ class ResponsibleRabDetail extends Component
         }
 
         ApprovalRab::updateTotal($this->rabId);
+        $this->dispatch('swal:modal', [
+            'type' => 'success',
+            'message' => 'Data Deleted',
+            'text' => 'It will not list on the table.',
+        ]);
     }
 
     public function createDetailRab()

@@ -57,12 +57,12 @@ class ApprovalReimburse extends BaseModel
         DB::table('approval_reimburses')->where('id', $id)->delete();
     }
 
-    // public static function updateTotal($id)
-    // {
-    //     $total = ApprovalReimburseDetail::getByReimburseId($id);
+    public static function updateTotal($id)
+    {
+        $total = ApprovalReimburseDetail::getByReimburseId($id);
 
-    //     DB::table('approval_reimburses')->where('id', $id)->update([
-    //         'total' => $total
-    //     ]);
-    // }
+        DB::table('approval_reimburses')->where('id', $id)->update([
+            'total' => $total
+        ]);
+    }
 }
