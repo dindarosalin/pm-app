@@ -95,11 +95,19 @@
                     <p>List of Your Permissions</p>
                 </div>
                 <div>
-                    @foreach ($permissionRules as $item)
-                        <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="text-primary">
-                            {{ basename($item->file_name) }} View Rules For This Approval
-                        </a>
-                    @endforeach
+                    <ul class="d-flex gap-2">
+                        <li>
+                            View Rules For This Approval:
+                        </li>
+                        @foreach ($permissionRules as $item)
+                            <li>
+                                <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank"
+                                    class="text-primary">
+                                    {{ $item->file_name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
                 <button class="btn btn-sm btn-outline-primary" wire:click="$dispatch('show-offcanvas')">
                     <span class="fa fa-plus"></span>

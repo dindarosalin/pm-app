@@ -1,3 +1,4 @@
+@section('title', 'Leave Of Absence')
 <div>
-    {{-- In work, do what you enjoy. --}}
+
 </div>
