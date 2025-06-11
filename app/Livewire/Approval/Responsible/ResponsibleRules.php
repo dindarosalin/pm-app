@@ -33,12 +33,12 @@ class ResponsibleRules extends Component
 
     public function save()
     {
-        $this->validate([
-            'approvalId' => 'required',
-            'newAttachment' => $this->ruleId ? 'nullable|mimes:pdf|max:2048' : 'required|mimes:pdf|max:2048',
-        ]);
+        // $this->validate([
+        //     'approvalId' => 'required',
+        //     'newAttachment' => $this->ruleId ? 'nullable|mimes:pdf|max:2048' : 'required|mimes:pdf|max:2048',
+        // ]);
 
-        try {
+        // try {
             $data = [
                 'approval_id' => (int) $this->approvalId,
                 'auth' => (int) $this->auth,
@@ -74,10 +74,10 @@ class ResponsibleRules extends Component
                 'message' => 'Data Saved',
                 'text' => 'It will list on the table.',
             ]);
-        } catch (\Throwable $th) {
-            report($th);
-            session()->flash('error', 'Gagal menyimpan data.');
-        }
+        // } catch (\Throwable $th) {
+        //     report($th);
+        //     session()->flash('error', 'Gagal menyimpan data.');
+        // }
     }
 
     #[On('edit')]

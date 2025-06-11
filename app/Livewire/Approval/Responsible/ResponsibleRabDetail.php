@@ -27,7 +27,7 @@ class ResponsibleRabDetail extends Component
 
     public function loadData()
     {
-        $this->data = ApprovalRabDetail::getAll();
+        $this->data = ApprovalRabDetail::getByRabIdAll($this->rabId);
         $this->uoms = uom::getAll();
         $this->rab = ApprovalRab::getById($this->rabId);
     }
@@ -123,6 +123,7 @@ class ResponsibleRabDetail extends Component
     public function delete($id)
     {
         ApprovalRabDetail::delete($id);
+        ApprovalRab::updateTotal($this->rabId);
         $this->dispatch('swal:modal', [
             'type' => 'success',
             'message' => 'Data Deleted',

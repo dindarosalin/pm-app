@@ -27,7 +27,7 @@ class ResponsibleReimburseDetail extends Component
 
     public function loadData()
     {
-        $this->data = ApprovalReimburseDetail::getAll();
+        $this->data = ApprovalReimburseDetail::getByreimburseIdAll($this->reimburseId);
         $this->uoms = uom::getAll();
         $this->reimburse = ApprovalReimburse::getById($this->reimburseId);
     }
@@ -123,6 +123,7 @@ class ResponsibleReimburseDetail extends Component
     public function delete($id)
     {
         ApprovalReimburseDetail::delete($id);
+        ApprovalReimburse::updateTotal($this->reimburseId);
         $this->dispatch('swal:modal', [
             'type' => 'success',
             'message' => 'Data Deleted',

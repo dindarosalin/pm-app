@@ -57,7 +57,7 @@
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <p>List of <strong>{{ $reimburse->subject }}</strong>  </p>
+                    <p>List of <strong>{{ $reimburse->subject }}</strong> </p>
                 </div>
                 <div>
 
@@ -82,31 +82,37 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data as $item)
-                        <tr>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->description }}</td>
-                            <td>{{ $item->uom }}</td>
-                            <td>{{ $item->quantity }}</td>
-                            <td>{{ $item->item_price }}</td>
-                            <td>{{ $item->total_item_price }}</td>
-                            <td>
-                                <div class="d-flex gap-2 justify-content-center align-items-center">
-                                    <!-- Edit icon -->
-                                    <p role="button" wire:click='edit({{ $item->id }})'class="text-warning m-0 p-0"
-                                        style="cursor: pointer;">
-                                        <i class="fa-regular fa-pen-to-square"></i>
-                                    </p>
+                    @if (!$data)
+                        <p>Tida ada data</p>
+                    @else
+                        @foreach ($data as $item)
+                            <tr>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->description }}</td>
+                                <td>{{ $item->uom }}</td>
+                                <td>{{ $item->quantity }}</td>
+                                <td>{{ $item->item_price }}</td>
+                                <td>{{ $item->total_item_price }}</td>
+                                <td>
+                                    <div class="d-flex gap-2 justify-content-center align-items-center">
+                                        <!-- Edit icon -->
+                                        <p role="button"
+                                            wire:click='edit({{ $item->id }})'class="text-warning m-0 p-0"
+                                            style="cursor: pointer;">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </p>
 
-                                    <!-- Delete icon -->
-                                    <p role="button" wire:click="alertConfirm({{ $item->id }})"
-                                        class="text-danger m-0 p-0" style="cursor: pointer;">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
+                                        <!-- Delete icon -->
+                                        <p role="button" wire:click="alertConfirm({{ $item->id }})"
+                                            class="text-danger m-0 p-0" style="cursor: pointer;">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+
                 </tbody>
             </table>
         </div>

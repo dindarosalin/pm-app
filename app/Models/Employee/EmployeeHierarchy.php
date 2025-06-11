@@ -29,6 +29,7 @@ class EmployeeHierarchy extends Model
     }
 
     public static function getHierarchyUp($auth){
+        // dd($auth);
         $parent = EmployeeHierarchy::where('user_id', $auth)->first();
         // dd($parent);
         $current = $parent->parent;
@@ -44,6 +45,7 @@ class EmployeeHierarchy extends Model
             $current = $current->parent;
         }
 
+        dd($atasan);
         return $atasan;
     }
 
@@ -83,6 +85,7 @@ class EmployeeHierarchy extends Model
                 $usr = $nextUsr;
             }
 
+            // dd($dataSemuaBawahan);
             return $dataSemuaBawahan;
         }
 

@@ -52,4 +52,9 @@ class ApprovalReimburseDetail extends BaseModel
     {
         return DB::table('approval_reimburse_details')->where('reimburse_id', $id)->sum('total_item_price');
     }
+
+    public static function getByreimburseIdAll($id)
+    {
+        return DB::table('approval_reimburse_details')->where('reimburse_id', $id)->get();
+    }
 }

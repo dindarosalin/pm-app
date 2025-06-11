@@ -22,10 +22,12 @@
                     <select class="form-select form-select-sm" wire:model='accountable'>
                         <option value="">Select Accountable (Tujuan)</option>
                         @foreach ($accountableList as $item)
-                            <option value="{{ $item->role_id }}">{{ $item->role_name }}</option>
+                            <option wire:key='{{ $item['id'] }}' value="{{ $item['id'] }}">{{ $item['name'] }}</option>
                         @endforeach
                     </select>
                 </div>
+
+
 
                 <div class="mb-3 form-floating">
                     <textarea class="form-control" wire:model='permDetail' placeholder="Permission Detail" id="floatingTextarea2"></textarea>

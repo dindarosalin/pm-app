@@ -477,6 +477,28 @@
 
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.approval-statuses') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.approval-statuses') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Permission Types</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.approval-statuses') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.approval-statuses') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Absence Types</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.project-status') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.project-status') }}"
                                 wire:navigate.defer.defer>

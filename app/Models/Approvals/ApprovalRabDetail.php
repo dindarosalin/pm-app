@@ -52,4 +52,9 @@ class ApprovalRabDetail extends BaseModel
     {
         return DB::table('approval_rab_details')->where('rab_id', $id)->sum('total_item_price');
     }
+
+    public static function getByRabIdAll($id)
+    {
+        return DB::table('approval_rab_details')->where('rab_id', $id)->get();
+    }
 }

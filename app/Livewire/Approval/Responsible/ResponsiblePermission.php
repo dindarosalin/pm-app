@@ -4,6 +4,7 @@ namespace App\Livewire\Approval\Responsible;
 
 use App\Models\Approvals\ApprovalPermissions;
 use App\Models\Approvals\ApprovalRules;
+use App\Models\Employee\EmployeeHierarchy;
 use App\Models\Settings\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -30,10 +31,11 @@ class ResponsiblePermission extends Component
 
     public function loadData()
     {
-        // DATA ACCOUNTABLE ATAU ATASAN
-        $this->accountableList = Role::getAll();
-        $this->delegationList = User::get();
         $this->auth = Auth::user()->user_id;
+        // DATA ACCOUNTABLE ATAU ATASAN
+        // $this->accountableList = Role::getAll();
+        $this->accountableList = EmployeeHierarchy::getHierarchyDown($this->auth);
+        $this->delegationList = User::get();
 
         $this->permissions = ApprovalPermissions::getAll();
         $this->permissionRules = ApprovalRules::getByType($this->approvalId);
