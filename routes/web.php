@@ -32,6 +32,8 @@ use App\Livewire\Budget\Index as BudgetIndex;
 use App\Livewire\Budget\Plan\Plan as BudgetPlan;
 use App\Livewire\Budget\Track\Track as BudgetTrack;
 use App\Livewire\Dashboard\Dashboard as Dashboard;
+use App\Livewire\Master\Approval\ApprovalAbsenceTypes;
+use App\Livewire\Master\Approval\ApprovalPermissionTypes;
 use App\Livewire\Master\Approval\ApprovalStatuses;
 use App\Livewire\Master\Approved\Approval as ApprovedApproval;
 use App\Livewire\Master\Approved\Atasan;
@@ -219,6 +221,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/approval-types', ApprovalTypes::class)->name('approval-types');
         Route::get('/approval-statuses', ApprovalStatuses::class)->name('approval-statuses');
+        Route::get('/approval-permission-types', ApprovalPermissionTypes::class)->name('approval-permission-types');
+        Route::get('/approval-absence-types', ApprovalAbsenceTypes::class)->name('approval-absence-types');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {
