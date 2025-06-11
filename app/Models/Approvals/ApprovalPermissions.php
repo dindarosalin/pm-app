@@ -9,7 +9,10 @@ class ApprovalPermissions extends BaseModel
 {
     public static function getAll()
     {
-        return DB::table('approval_permission')->get();
+        return DB::table('approval_permission')
+            ->join('approval_permission_types', 'approval_permission.subject', '=', 'approval_permission_types.id')
+            ->select('approval_permission.*', 'approval_permission_types.name as subject_name') // sesuaikan dengan kolom yang dibutuhkan
+            ->get();
     }
 
     public static function getById($id)

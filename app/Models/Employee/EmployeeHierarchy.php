@@ -30,7 +30,7 @@ class EmployeeHierarchy extends Model
 
     public static function getHierarchyUp($auth){
         // dd($auth);
-        $parent = EmployeeHierarchy::where('user_id', $auth)->first();
+        $parent = EmployeeHierarchy::where('user_id', $auth)->whereHas('parent')->first();
         // dd($parent);
         $current = $parent->parent;
         $atasan = [];
@@ -45,7 +45,7 @@ class EmployeeHierarchy extends Model
             $current = $current->parent;
         }
 
-        dd($atasan);
+        // dd($atasan);
         return $atasan;
     }
 

@@ -3,10 +3,12 @@
 namespace App\Livewire\Approval\Responsible;
 
 use App\Models\Approvals\ApprovalPermissions;
+use App\Models\Approvals\ApprovalPermissionTypes;
 use App\Models\Approvals\ApprovalRules;
 use App\Models\Employee\EmployeeHierarchy;
 use App\Models\Settings\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -14,7 +16,7 @@ use Livewire\WithFileUploads;
 
 class ResponsiblePermission extends Component
 {
-    public $auth, $permissions, $accountableList, $delegationList;
+    public $auth, $permissions, $accountableList, $delegationList, $subjectList;
     public $subject, $accountable, $permDetail, $startDate, $endDate, $totalDays, $emergencyContact, $relationship, $delegation, $noteDelegation, $submitDate, $fileName, $filePath;
     public $permissionId, $statusId;
     public $permissionRules;
@@ -26,6 +28,7 @@ class ResponsiblePermission extends Component
     public function render()
     {
         $this->loadData();
+        // dd($this->accountableList);
         return view('livewire.approval.responsible.responsible-permission');
     }
 
@@ -34,8 +37,9 @@ class ResponsiblePermission extends Component
         $this->auth = Auth::user()->user_id;
         // DATA ACCOUNTABLE ATAU ATASAN
         // $this->accountableList = Role::getAll();
-        $this->accountableList = EmployeeHierarchy::getHierarchyDown($this->auth);
+        $this->accountableList = EmployeeHierarchy::getHierarchyUp($this->auth);
         $this->delegationList = User::get();
+        $this->subjectList = ApprovalPermissionTypes::getAll();
 
         $this->permissions = ApprovalPermissions::getAll();
         $this->permissionRules = ApprovalRules::getByType($this->approvalId);
@@ -59,9 +63,9 @@ class ResponsiblePermission extends Component
     public function uploadFile()
     {
         if ($this->file) {
-            $this->validate([
-                'file' => 'file|max:2048|mimes:pdf,doc,docx,jpg,jpeg,png',
-            ]);
+            // $this->validate([
+            //     'file' => 'file|max:2048|mimes:pdf,doc,docx,jpg,jpeg,png',
+            // ]);
 
             // Hapus file lama jika ada dan sedang update
             if ($this->filePath && \Storage::disk('public')->exists($this->filePath)) {
@@ -118,5 +122,26 @@ class ResponsiblePermission extends Component
             'message' => 'Data Deleted',
             'text' => 'It will not list on the table.',
         ]);
+    }
+
+    public function updatedStartDate()
+    {
+        $this->calculateTotalDays();
+    }
+
+    public function updatedEndDate()
+    {
+        $this->calculateTotalDays();
+    }
+
+    public function calculateTotalDays()
+    {
+        if ($this->startDate && $this->endDate) {
+            $start = Carbon::parse($this->startDate);
+            $end = Carbon::parse($this->endDate);
+            $this->totalDays = $start->diffInDays($end) + 1; // +1 jika ingin menyertakan hari pertama
+        } else {
+            $this->totalDays = null;
+        }
     }
 }

@@ -13,9 +13,12 @@
                 duis.</p>
             <form wire:submit.prevent='save'>
                 <div class="mb-3">
-                    <label class="form-label">Subject:</label>
-                    <input wire:model='subject' class="form-control form-control-sm" type="text"
-                        placeholder="Subject of Permission">
+                    <select class="form-select form-select-sm" wire:model='subject'>
+                        <option value="">Select Subject</option>
+                        @foreach ($subjectList as $item)
+                            <option wire:key='{{ $item->id }}' value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -46,11 +49,6 @@
                         <input wire:model='endDate' class="form-control form-control-sm" type="date"
                             placeholder="Approval Name">
                     </div>
-                    <div class="col">
-                        <label class="form-label">Total Days:</label>
-                        <input wire:model='totalDays' class="form-control form-control-sm" type="number" disabled
-                            placeholder="Total Days Automaticly">
-                    </div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col">
@@ -78,7 +76,7 @@
                     <label for="floatingTextarea2">Note For Delegations</label>
                 </div>
                 <div class="mb-3">
-                    <label for="formFileSm" class="form-label">Upload Rule File</label>
+                    <label for="formFileSm" class="form-label">Upload File</label>
                     <input class="form-control form-control-sm" id="formFileSm" type="file" wire:model.defer='file'
                         accept="application/pdf">
                     <span wire:loading wire:target='file'>Uploading...</span>
@@ -130,7 +128,7 @@
                 <tbody>
                     @foreach ($permissions as $item)
                         <tr>
-                            <td>{{ $item->subject }}</td>
+                            <td>{{ $item->subject_name }}</td>
                             <td>{{ $item->submission_date }}</td>
                             <td>{{ $item->status_id }}</td>
                             <td>{{ $item->last_updated }}</td>
