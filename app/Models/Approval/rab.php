@@ -11,7 +11,7 @@ class rab extends BaseModel
     // ==============================================================STORE RABS==================================================================
     public static function create(array $storeData)
     {
-        return DB::table('rabs')->insert([
+        return DB::table('rabs')->insertGetId([
             'name_id' => $storeData['name_id'],
             'telepon' => $storeData['telepon'],
             'email' => $storeData['email'],
@@ -21,6 +21,7 @@ class rab extends BaseModel
             'created_at' => now(),
         ]);
     }
+    
 
     public static function update(array $storeData, $id)
     {
@@ -47,10 +48,38 @@ class rab extends BaseModel
 
     public static function delete($id)
     {
+        // hapus detail dulu biar ga ada data rusak
+        DB::table('rab_details')
+            ->where('rab_id', $id)
+            ->delete();
+
+        // hapus rab
         return DB::table('rabs')
             ->where('id', $id)
             ->delete();
     }
+
+    // public static function create(array $storeData)
+    // {
+    //     return DB::table('rabs')->insert([
+    //         'name_id' => $storeData['name_id'],
+    //         'telepon' => $storeData['telepon'],
+    //         'email' => $storeData['email'],
+    //         'jobdesk_id' => $storeData['selectJobdesk'],
+    //         'head_id' => $storeData['selectHead'],
+    //         'id_jenis_approve' => $storeData['jenis_rab'],
+    //         'created_at' => now(),
+    //     ]);
+    // }
+
+    // public static function delete($id)
+    // {
+    //     return DB::table('rabs')
+    //         ->where('id', $id)
+    //         ->delete();
+    // }
+
+    
 
     // =======================================GET ALL DATA RABS========================================
     public static function getAllRab()
@@ -77,13 +106,21 @@ class rab extends BaseModel
     } 
     
     // ================================================DEPENDENT DROPDOWN================================================
-    public static function getHeads($jobdesk_id)
+    public static function getHeads ($jobdesk_id)
     {
-        return DB::table('rabs')
-        ->where('jobdesk_id', $jobdesk_id)
-        ->select('id', 'job')
-        ->get();
+        return DB::table('heads')
+            ->where('jobdesk_id', $jobdesk_id)
+            ->select('id', 'name')
+            ->get();
     }
+
+    // public static function getHeads($jobdesk_id)
+    // {
+    //     return DB::table('rabs')
+    //     ->where('jobdesk_id', $jobdesk_id)
+    //     ->select('id', 'job')
+    //     ->get();
+    // }
 
 
     // =======================================================STORE RAB DETAIL================================================
@@ -93,93 +130,167 @@ class rab extends BaseModel
             'rab_id' => $storeData['rab_id'],
             'kebutuhan' => $storeData['kebutuhan'],
             'deskripsi' => $storeData['deskripsi'],
-            'oum' => $storeData['uom'],
+            'uom' => $storeData['uom'],
             'quantity' => $storeData['quantity'],
             'unit_price' => $storeData['unit_price'],
-            'total_per_item' => $storeData['total_per_item'],
+            // 'total_per_item' => $storeData['total_per_item'],
+            'total_per_item' => $storeData['quantity'] * $storeData['unit_price'],
             'created_at' => now(),
         ]);
     }
 
-    public static function updateRabDetail(array $storeData, $id)
+    public static function updateRabDetail(array $storeData, $detailId)
     {
         return DB::table('rab_details')
-        ->where('id', $id)
+        ->where('id', $detailId)
         ->update([
             'rab_id' => $storeData['rab_id'],
             'kebutuhan' => $storeData['kebutuhan'],
             'deskripsi' => $storeData['deskripsi'],
-            'oum' => $storeData['uom'],
+            'uom' => $storeData['uom'],
             'quantity' => $storeData['quantity'],
             'unit_price' => $storeData['unit_price'],
-            'total_per_item' => $storeData['total_per_item'],
+            // 'total_per_item' => $storeData['total_per_item'],
+            'total_per_item' => $storeData['quantity'] * $storeData['unit_price'],
+            'updated_at' => now(),
         ]);
     }
 
-    public static function editRabDetail($id)
+    public static function getDetailsByRabId($rabId)
     {
         return DB::table('rab_details')
-        ->where('rab_details.id', $id)
-        ->join('rabs', 'rab_details.rab_id', '=', 'rabs.id')
-        ->select(
-            'rab_details.*',
-            'rabs.id as rab_detail_name')
+            ->where('rab_id', $rabId)
+            ->orderBy('created_at', 'asc')
+            ->get();
+    }
+
+    public static function getRabWithDetails($rabId)
+    {
+        $rab = DB::table('rabs')
+            ->join('jobdesk', 'rabs.jobdesk_id', '=', 'jobdesk.id')
+            ->join('heads', 'rabs.head_id', '=', 'heads.id')
+            ->join('jenis_approve', 'rabs.id_jenis_approve', '=', 'jenis_approve.id')
+            ->where('rabs.id', $rabId)
+            ->select(
+                'rabs.*',
+                'jobdesk.job as jobdesk_name',
+                'heads.name as head_name',
+                'jenis_approve.jenis as rab_name'
+            )
             ->first();
+
+            if ($rab) {
+                $rab->details = self::getDetailsByRabId($rabId);
+            }
+            return $rab;
     }
 
-    public static function deleteRabDetail($id)
+    public static function deleteRabDetail($detailId)
     {
         return DB::table('rab_details')
-        ->where('id', $id)
-        ->delete();
+            ->where('id', $detailId)
+            ->delete();
     }
 
-    public static function getAllRabDetail($rabId)
-    {
-        return DB::table('rab_details')
-        ->where('rab_id', $rabId)
-        ->join('rabs', 'rab_details.rab_id', '=', 'rabs.id')
-        ->select('rab_details.*',
-                'rabs.id as rab_detail_name')
-        ->get();
-    }
+    // public static function editRabDetail($id)
+    // {
+    //     return DB::table('rab_details')
+    //     ->where('rab_details.id', $id)
+    //     ->join('rabs', 'rab_details.rab_id', '=', 'rabs.id')
+    //     ->select(
+    //         'rab_details.*',
+    //         'rabs.id as rab_detail_name')
+    //         ->first();
+    // }
 
-    public static function getTotalRab($rabId)
-    {
-        return DB::table('rab_details')
-        ->select('rab_id', DB::raw('SUM(total_per_item) as total'))
-        ->groupBy('rab_id')
-        ->first();
-    }
+    // public static function deleteRabDetail($id)
+    // {
+    //     return DB::table('rab_details')
+    //     ->where('id', $id)
+    //     ->delete();
+    // }
 
-    public static function getRabDetailById($id)
-    {
-        return DB::table('rab_details')
-        ->where('rab_details.id', $id)
-        ->join('rabs', 'rab_details.rab_id', '=', 'rabs.id')
-        ->select(
-            'rab_details.*',
-            'rabs.id as rab_detail_name'
-        )
-        ->first();
-    }
+    // public static function getAllRabDetail($rabId)
+    // {
+    //     return DB::table('rab_details')
+    //     ->where('rab_id', $rabId)
+    //     ->join('rabs', 'rab_details.rab_id', '=', 'rabs.id')
+    //     ->select('rab_details.*',
+    //             'rabs.id as rab_detail_name')
+    //     ->get();
+    // }
 
-    public static function getDetailByIdRab($rab_id)
-    {
-        return DB::table('rab_details')
-            ->where('rab_details.rab_id', $rab_id)
-            ->join('rabs', 'rab_details.rab_id', '=', 'rabs.id')
-            ->select('rab_details.*',
-                     'rabs.id as rab_detail_name')
-            ->first();
-    }
+    // public static function getTotalRab($rabId)
+    // {
+    //     return DB::table('rab_details')
+    //     ->select('rab_id', DB::raw('SUM(total_per_item) as total'))
+    //     ->groupBy('rab_id')
+    //     ->first();
+    // }
+
+    // public static function getRabDetailById($id)
+    // {
+    //     return DB::table('rab_details')
+    //     ->where('rab_details.id', $id)
+    //     ->join('rabs', 'rab_details.rab_id', '=', 'rabs.id')
+    //     ->select(
+    //         'rab_details.*',
+    //         'rabs.id as rab_detail_name'
+    //     )
+    //     ->first();
+    // }
+
+    // public static function getDetailByIdRab($rabId)
+    // {
+    //     return DB::table('rab_details')
+    //         ->where('rab_details.rab_id', $rab_id)
+    //         ->join('rabs', 'rab_details.rab_id', '=', 'rabs.id')
+    //         ->select('rab_details.*',
+    //                  'rabs.id as rab_detail_name')
+    //         ->first();
+    // }
+
+    // public static function getIdRab($rab_id)
+    // {
+    //     return DB::table('rabs')
+    //         ->where('id', $rab_id)
+    //         ->value('id');
+    // }
+    
 
     // =======================================================COUNT TOTAL PER ITEM================================================
-    public static function totalPriceItem()
+    public static function getTotalPrice($rabId)
     {
         return DB::table('rab_details')
-            ->select('id', 'quantity', 'unit_price', DB::raw('quantity * unit_price as total_per_item'))
-            ->get();
+            ->where('rab_id', $rabId)
+            ->sum('total_per_item');
+    }
+
+    // public static function totalPriceItem($rabId)
+    // {
+    //     return DB::table('rab_details')
+    //         ->where('rab_id', $rabId)
+    //         ->sum(DB::raw('quantity * unit_price'));
+    // }
+
+
+    // =========================================================BULK INSERT DETAIL RAB================================================
+    public static function createBulkRabDetail($rabId, array $detailData)
+    {
+        $inserData = [];
+        foreach ($detailData as $detail) {
+            $insertData[] = [
+                'rab_id' => $rabId,
+                'kebutuhan' => $detail['kebutuhan'],
+                'deskripsi' => $detail['deskripsi'],
+                'uom' => $detail['uom'],
+                'quantity' => $detail['quantity'],
+                'unit_price' => $detail['unit_price'],
+                'total_per_item' => $detail['quantity'] * $detail['unit_price'],
+                'created_at' => now(),
+            ];
+        }
+        return DB::table('rab_details')->insert($insertData);
     }
     
 }

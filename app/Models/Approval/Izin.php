@@ -41,11 +41,11 @@ class Izin extends BaseModel
             ->where('id', $id)
             ->update([
                 'name' => $storeData['name'],
-                'jobdesk_id' => $storeData['selectJobdesk'],
-                'head_id' => $storeData['selectHead'],
+                'jobdesk_id' => $storeData['jobdesk_id'],
+                'head_id' => $storeData['head_id'],
                 'email' => $storeData['email'],
                 'telepon' => $storeData['telepon'],
-                'id_jenis_approve' => $storeData['jenis_izin'],
+                'id_jenis_approve' => $storeData['id_jenis_approve'],
                 'detail_izin' => $storeData['detail_izin'],
                 'tgl_mulai' => $storeData['tgl_mulai'],
                 'tgl_akhir' => $storeData['tgl_akhir'],
@@ -78,7 +78,7 @@ class Izin extends BaseModel
     }
 
     //============================================GET DATA=========================================
-    public static function getAllIzin()
+    public static function getAll()
     {
         return DB::table('izins')
             ->join('jobdesk', 'izins.jobdesk_id', '=', 'jobdesk.id')
@@ -117,14 +117,30 @@ class Izin extends BaseModel
             ->first();
     }
 
-// DEPENDENT DROPDOWN
-    public static function getHeads($jobdesk_id)
+    public static function detailIzin($id)
     {
         return DB::table('izins')
-            ->where('jobdesk_id', $jobdesk_id)
-            ->select('id', 'job')
-            ->get();
+            ->join ('jobdesk', 'izins.jobdesk_id', '=', 'jobdesk.id')
+            ->join ('heads', 'izins.head_id', '=', 'heads.id')
+            ->join ('jenis_approve', 'izins.id_jenis_approve', '=', 'jenis_approve.id')
+            ->select(
+                'izins.*',
+                'jobdesk.job as jobdesk_name',
+                'heads.name as head_name',
+                'jenis_approve.jenis as izin_name'
+            )
+            ->where('izins.id', $id)
+            ->first();
     }
+
+// DEPENDENT DROPDOWN
+    // public static function getHeads($jobdesk_id)
+    // {
+    //     return DB::table('izins')
+    //         ->where('jobdesk_id', $jobdesk_id)
+    //         ->select('id', 'job')
+    //         ->get();
+    // }
 
 //  COUNT AKUMULATION
     public static function calculateIzin($tgl_mulai, $tgl_akhir)

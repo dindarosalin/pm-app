@@ -1,6 +1,6 @@
 <div>
     <div wire:ignore.self class="offcanvas offcanvas-end" tabindex="-1" id="izinForm" 
-        aria-labelledby="cutiFormLabel" data-bs-scroll="true" data-bs-backdrop="static">
+        aria-labelledby="izinFormLabel" data-bs-scroll="true" data-bs-backdrop="static">
 
         <div class="offcanvas-header bg-success text-white">
             <h5 id="izinLabel">
@@ -12,19 +12,7 @@
 
         <div class="offcanvas-body">
             <form wire:submit.prevent="store">
-               <!-- Informasi Pegawai -->
-                {{-- <div class="mb-3">
-                    <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
-                    <input type="text" wire:model="name" class="form-control @error('name') is-invalid @enderror">
-                    @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div> --}}
-            
                 <div class="row">
-                    {{-- <div class="col-md-6 mb-3">
-                        <label class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror">
-                        @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    </div> --}}
                     <div class="col-md-6 mb-3">
                         <label class="form-label">No. Telepon <span class="text-danger">*</span></label>
                         <input type="number" wire:model="telepon" class="form-control @error('telepon') is-invalid @enderror">
@@ -36,24 +24,24 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Jabatan <span class="text-danger">*</span></label>
-                        <select wire:model="selectJobdesk" wire:change="loadHead" 
-                                class="form-select @error('selectJobdesk') is-invalid @enderror">
+                        <select wire:model="jobdesk_id" wire:change="loadHead" 
+                                class="form-select @error('jobdesk_id') is-invalid @enderror">
                             <option value="">Pilih Jabatan</option>
                             @foreach ($jabatan as $item)
                                 <option value="{{ $item->id }}">{{ $item->job }}</option>
                             @endforeach
                         </select>
-                        @error('selectJobdesk') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        @error('jobdesk_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Atasan <span class="text-danger">*</span></label>
-                        <select wire:model="selectHead" class="form-select @error('selectHead') is-invalid @enderror">
+                        <select wire:model="head_id" class="form-select @error('head_id') is-invalid @enderror">
                             <option value="">Pilih Atasan</option>
                             @foreach ($atasan as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
-                        @error('selectHead') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        @error('head_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>
 
@@ -67,7 +55,7 @@
                         @endforeach
                     </select>
                     @error('id_jenis_approve') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                
+
                 </div>
 
                 <div class="mb-3">
@@ -76,7 +64,7 @@
                     @error('detail_izin') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
-                <!-- Periode Cuti -->
+                <!-- Periode Izin -->
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Tanggal Mulai <span class="text-danger">*</span></label>
@@ -93,7 +81,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Jumlah Hari Cuti</label>
+                    <label class="form-label">Jumlah Hari Izin</label>
                     <div class="input-group">
                         <input type="number" wire:model="akumulasi" class="form-control" readonly>
                         <button type="button" wire:click="calculateIzins" class="btn btn-primary">

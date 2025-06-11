@@ -24,7 +24,8 @@ class FormIzin extends Component
            $tgl_mulai, $tgl_akhir, $tgl_ajuan, 
            $nama_darurat, $telp_darurat, $relasi_darurat, $alamat,
            $nama_delegasi, $detail_delegasi;
-    public $permissions = [];
+    // public $permissions = [];
+    public $izins = [];
     public $atasan =[], $jabatan = [], $jenisApprove = [];
     public $akumulasi = 0;
     public $selectJobdesk, $selectHead, $jenis_izin;
@@ -37,19 +38,18 @@ class FormIzin extends Component
     public $newAttachment;
     public $file_izin;
 
-
-    public function render()
-    {
-        $this->auth = Auth::user()->user_id;
-        return view('livewire.approved.form-pengajuan.form-izin');
-    }
-
     public function mount()
     {
         $this->jabatan = Jobdesk::getAllJob();
         $this->jenisApprove = Approval::getAllApproval();
         $this->tgl_ajuan = now()->format('Y-m-d');
         $this->atasan = Head::getHeadByJobdesk($this->selectJobdesk);
+    }
+
+    public function render()
+    {
+        $this->auth = Auth::user()->user_id;
+        return view('livewire.approved.form-pengajuan.form-izin');
     }
 
     // =====================================STORE===============================================
@@ -86,20 +86,15 @@ class FormIzin extends Component
                 $filePath = $this->newAttachment->store('izin', 'public');
             }
             if ($this->izinId) {
-
-                // if ($this->newAttachment) {
-                //     Storage::delete($this->file_izin, 'public');
-                //     $this->newAttachment = $this->newAttachment->store('izin', 'public');
-                // }
                 DB::table('izins')
                     ->where('id', $this->izinId)
                     ->update([
                         'name' => $this->name,
-                        'jobdesk_id' => $this->selectJobdesk,
-                        'head_id' => $this->selectHead,
+                        'jobdesk_id' => $this->jobdesk_id,
+                        'head_id' => $this->head_id,
                         'email' => $this->email,
                         'telepon' => $this->telepon,
-                        'id_jenis_approve' => $this->jenis_izin,
+                        'id_jenis_approve' => $this->id_jenis_approve,
                         'detail_izin' => $this->detail_izin,
                         'tgl_mulai' => $this->tgl_mulai,
                         'tgl_akhir' => $this->tgl_akhir,
@@ -116,14 +111,10 @@ class FormIzin extends Component
                 ]);
                 $this->js("alert('Data Approval Izin Tidak Terencana Berhasil Diupdate!')");
             } else {
-                // if ($this->newAttachment) {
-                //     $this->newAttachment = $this->newAttachment->store('izin', 'public');
-                // }
-                // Izin::create([
                 DB::table('izins')->insert([
                     'name' => $this->auth,
-                    'jobdesk_id' => $this->selectJobdesk,
-                    'head_id' => $this->selectHead,
+                    'jobdesk_id' => $this->jobdesk_id,
+                    'head_id' => $this->head_id,
                     'email' => Auth::user()->user_email,
                     'telepon' => $this->telepon,
                     'id_jenis_approve' => $this->id_jenis_approve,
@@ -145,7 +136,7 @@ class FormIzin extends Component
                 // $this->js("alert('Data Approval Izin Tidak Terencana Berhasil Dibuat!')");
             }
             $this->dispatch('close-offcanvas');
-            // $this->dispatch('izinUpdated');
+            $this->dispatch('izinUpdated');
             $this->resetForm();
         } catch (\Throwable $th) {
             throw $th;
@@ -154,32 +145,45 @@ class FormIzin extends Component
 
     }
 
-    #[On('edit')]
-    public function edit($id)
+    #[On('editIzin')]
+    public function editIzin($id)
     {
-        $izin = Izin::getIzinById($id);
+        $izins = Izin::getIzinById($id);
 
-        $this->name = $izin->name;
-        $this->selectJobdesk = $izin->jobdesk_id;
-        $this->selectHead = $izin->head_id;
-        $this->email = $izin->email;
-        $this->telepon = $izin->telepon;
-        $this->id_jenis_approve = $izin->jenis_izin;
-        $this->detail_izin = $izin->detail_izin;
-        $this->tgl_mulai = $izin->tgl_mulai;
-        $this->tgl_akhir = $izin->tgl_akhir;
-        $this->tgl_ajuan = $izin->tgl_ajuan;
-        $this->nama_darurat = $izin->nama_darurat;
-        $this->telp_darurat = $izin->telp_darurat;
-        $this->relasi_darurat = $izin->relasi_darurat;
-        $this->alamat = $izin->alamat;
-        $this->nama_delegasi = $izin->nama_delegasi;
-        $this->detail_delegasi = $izin->detail_delegasi;
-        $this->file_izin = $izin->file_izin;
+        $this->name = $izins->name;
+        $this->jobdesk_id = $izins->jobdesk_id;
+        $this->head_id = $izins->head_id;
+        $this->email = $izins->email;
+        $this->telepon = $izins->telepon;
+        $this->id_jenis_approve = $izins->id_jenis_approve;
+        $this->detail_izin = $izins->detail_izin;
+        $this->tgl_mulai = $izins->tgl_mulai;
+        $this->tgl_akhir = $izins->tgl_akhir;
+        $this->tgl_ajuan = $izins->tgl_ajuan;
+        $this->nama_darurat = $izins->nama_darurat;
+        $this->telp_darurat = $izins->telp_darurat;
+        $this->relasi_darurat = $izins->relasi_darurat;
+        $this->alamat = $izins->alamat;
+        $this->nama_delegasi = $izins->nama_delegasi;
+        $this->detail_delegasi = $izins->detail_delegasi;
+        $this->file_izin = $izins->file_izin;
 
-        $this->dispatch('show-edit-offcanvas-cuti');
+        $this->dispatch('show-edit-offcanvas-izin');
     }
 
+    // =======================================LOAD HEAD==============================================
+    public function loadHead()
+    {
+        if ($this->selectJobdesk) {
+            $this->atasan = Head::getHeadByJobdesk($this->selectJobdesk);
+        }
+    }
+
+    public function updatedSelectJobdesk()
+    {
+        $this->loadHead();
+        $this->head_id = null; // Reset head_id when jobdesk changes
+    }
      
 
     // =======================================CALCULATE AKUMULASI==============================================
@@ -215,8 +219,8 @@ class FormIzin extends Component
     public function resetForm()
     {
         $this->reset([
-            'izinId', 'name', 'selectJobdesk', 'selectHead', 'email', 'telepon',
-            'jenis_izin', 'detail_izin', 'tgl_mulai', 'tgl_akhir', 'tgl_ajuan',
+            'izinId', 'name', 'jobdesk_id', 'head_id', 'email', 'telepon',
+            'id_jenis_approve', 'detail_izin', 'tgl_mulai', 'tgl_akhir', 'tgl_ajuan',
             'nama_darurat', 'telp_darurat', 'relasi_darurat', 'alamat',
             'nama_delegasi', 'detail_delegasi', 'newAttachment', 'file_izin'
         ]);
@@ -224,6 +228,7 @@ class FormIzin extends Component
         $this->atasan = [];
         $this->resetValidation();
     }
+    
        
 }
 

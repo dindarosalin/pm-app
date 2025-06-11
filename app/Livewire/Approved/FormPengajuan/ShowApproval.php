@@ -126,7 +126,7 @@ class ShowApproval extends Component
     public function mount()
     {
         $this->cuti = Cuti::getAll();
-        $this->izin = Izin::getAllIzin();
+        $this->izin = Izin::getAll();
     }
 
     public function getData()
@@ -204,6 +204,26 @@ class ShowApproval extends Component
     public function cutiUpdated()
     {
         $this->cutis = Cuti::getCuti();
+    }
+
+    #[On('izinUpdated')]
+    public function izinUpdated()
+    {
+        $this->izins = Izin::getIzin();
+    }
+
+    public function deleteIzin($id)
+    {
+        // call method delete from model
+        Izin::delete($id);
+        $this->js("alert('Izin Deleted!')");
+    }
+
+    public function deleteCuti($id)
+    {
+        // call method delete from model
+        Cuti::delete($id);
+        $this->js("alert('Cuti Deleted!')");
     }
 }
 

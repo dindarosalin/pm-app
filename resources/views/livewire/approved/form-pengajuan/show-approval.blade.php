@@ -285,7 +285,7 @@
                         <button wire:click="$dispatch('editCuti', {id: {{  $cuti->id }} })" class="btn btn-outline-warning btn-sm">
                             <i class="fa-regular fa-pen-to-square"></i>
                         </button>
-                        <button class="btn btn-outline-danger btn-sm">
+                        <button wire:click='deleteCuti({{ $cuti->id }})' class="btn btn-outline-danger btn-sm">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
@@ -305,10 +305,10 @@
                         <button wire:click="showApprovalById({{ $izin->id }}, 'izin')" class="btn btn-outline-success btn-sm">
                             <i class="fa-regular fa-eye"></i>
                         </button>
-                        <button class="btn btn-outline-warning btn-sm">
+                        <button wire:click="$dispatch('editIzin', {id: {{  $izin->id }} })" class="btn btn-outline-warning btn-sm">
                             <i class="fa-regular fa-pen-to-square"></i>
                         </button>
-                        <button class="btn btn-outline-danger btn-sm">
+                        <button wire:click='deleteIzin({{ $izin->id }})' class="btn btn-outline-danger btn-sm">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
@@ -365,6 +365,11 @@
         // EDIT
         window.addEventListener('show-edit-offcanvas-cuti', event => {
             const offcanvas = new bootstrap.Offcanvas('#cutiForm');
+            offcanvas.show();
+        });
+
+        window.addEventListener('show-edit-offcanvas-izin', event => {
+            const offcanvas = new bootstrap.Offcanvas('#izinForm');
             offcanvas.show();
         });
     </script>
