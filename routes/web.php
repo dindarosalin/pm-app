@@ -58,6 +58,15 @@ use App\Livewire\Projects\Budget\SubCategory as ProjectsBudgetSubCategory;
 use App\Livewire\Projects\Budget\Track\DetailNota;
 use App\Livewire\Projects\Budget\Track\ShowTrack;
 
+// APPROVAL
+use App\Livewire\Approval\Responsible\ResponsibleDashboard;
+use App\Livewire\Approval\Responsible\ResponsibleRules;
+use App\Livewire\Approval\Responsible\ResponsiblePermission;
+use App\Livewire\Approval\Responsible\ResponsibleAbsence;
+use App\Livewire\Approval\Responsible\ResponsibleRab;
+use App\Livewire\Approval\Responsible\ResponsibleReimburse;
+use App\Livewire\Approval\Responsible\ResponsibleProjectProcurement;
+
 use App\Livewire\Projects\Calendar\ShowCalendar;
 use App\Livewire\Projects\GanttChart\ShowGanttChart;
 use App\Livewire\Projects\Projects\ArchivedProject;
@@ -75,9 +84,6 @@ use App\Livewire\TableTrial;
 use App\Livewire\TimeCard\ShowTimeCard;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
-
-
-
 
 
 //Active this in dev or prod
@@ -166,6 +172,27 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/show-approval/detail-form/{id}', DetailForm::class)->name('detail-form');
     });
     // END APPROVAL
+
+    // RESPONSIBLE
+    Route::prefix('responsible')->name('responsible.')->group(function(){
+        Route::get('dashboard-responsible', ResponsibleDashboard::class)->name('dashboard-responsible');
+        Route::get('rules-responsible', ResponsibleRules::class)->name('rules-responsible');
+        Route::get('permission-responsible', ResponsiblePermission::class)->name('permission-responsible');
+        Route::get('absence-responsible', ResponsibleAbsence::class)->name('absence-responsible');
+        Route::get('rab-responsible', ResponsibleRab::class)->name('rab-responsible');
+        Route::get('reimburse-responsible', ResponsibleReimburse::class)->name('reimburse-responsible');
+        Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');    
+    });
+
+    Route::prefix('accountable')->name('accountable.')->group(function(){
+        Route::get('dashboard-accountable', ResponsibleDashboard::class)->name('dashboard-accountable');
+        // Route::get('rules-responsible', ResponsibleRules::class)->name('rules-responsible');
+        // Route::get('permission-responsible', ResponsiblePermission::class)->name('permission-responsible');
+        // Route::get('absence-responsible', ResponsibleAbsence::class)->name('absence-responsible');
+        // Route::get('rab-responsible', ResponsibleRab::class)->name('rab-responsible');
+        // Route::get('reimburse-responsible', ResponsibleReimburse::class)->name('reimburse-responsible');
+        // Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');    
+    });
     
     Route::prefix('master')->name('master.')->group(function () {
         Route::get('/project-status', ShowProjectStatus::class)->name('project-status');
