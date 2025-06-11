@@ -39,6 +39,13 @@ class ResponsibleRab extends Component
         } else {
             $this->createRab();
         }
+
+        $this->reset();
+        $this->dispatch('swal:modal', [
+            'type' => 'success',
+            'message' => 'Data Saved',
+            'text' => 'It will list on the table.',
+        ]);
     }
 
     public function createRab()
