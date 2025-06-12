@@ -27,8 +27,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/laravel-echo/dist/echo.iife.js"></script>
+    {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/laravel-echo/dist/echo.iife.js"></script> --}}
+
+    {{-- @vite('/resources/js/disableDev.js') --}}
+    {{-- <script src="./resources/js/echo.js"></script> --}}
     {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
 
     <meta name="csrf-token" content="{{ csrf_token() }}">

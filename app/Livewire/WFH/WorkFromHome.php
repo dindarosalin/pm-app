@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Livewire\Wfh;
+namespace App\Livewire\WFH;
 
-use App\Events\PeerSessionStarted;
 use App\Models\WfhSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +20,7 @@ class WorkFromHome extends Component
     {
         Log::withContext([Auth::user()->user_name]);
         $status = "ongoing";
+        Log::info('Storing session with peer_id: ' . $request);
         if (isset($request)) {
             $query = DB::table('wfh_session')->insert(
                 [
@@ -33,7 +33,7 @@ class WorkFromHome extends Component
             );
 
 
-            event(new PeerSessionStarted(Auth::user()->user_name, $status, $request));
+
 
             Log::info('Store session success with peer_id: ' . $request);
         } else {
@@ -53,7 +53,7 @@ class WorkFromHome extends Component
                 'status' => $status,
             ]);
 
-        event(new PeerSessionStarted(Auth::user()->user_name, $status, $peerId));
+
 
 
         if ($updated) {

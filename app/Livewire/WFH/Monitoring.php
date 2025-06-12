@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Wfh;
+namespace App\Livewire\WFH;
 
 use App\Models\WfhSession;
 use Illuminate\Support\Facades\Auth;
@@ -35,12 +35,20 @@ class Monitoring extends Component
             ->get();
     }
 
+    public static function getOngoingPeerIds()
+    {
+
+        $peerIds = DB::table('wfh_session')
+            ->where('status', 'ongoing')->pluck('peer_id');
+        // dd($peerIds);
+        return response()->json(['peer_ids' => $peerIds]);
+    }
+
     public function render()
     {
 
         $this->sessions = $this->getSessionsProperty();
 
-        // dd($this->sessions);
 
 
         // $this->activeSessions = WfhSession::whereNull('end')->get();

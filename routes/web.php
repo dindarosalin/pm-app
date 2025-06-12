@@ -110,6 +110,9 @@ Route::middleware(['auth'])->group(function () {
         return response()->json(['status' => 'ok']);
     });
 
+    Route::get('ongoing-peer-ids', [\App\Livewire\WFH\Monitoring::class, 'getOngoingPeerIds']);
+
+
 
     Route::prefix('projects')->name('projects.')->group(function () {
 
@@ -216,6 +219,5 @@ Route::group(['namespace' => 'App\Http\Controllers\Auth'], function () {
         Route::get('/hierarchy', 'index');
     });
 });
-
 
 // routes/api.php
