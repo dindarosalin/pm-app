@@ -66,7 +66,7 @@ use App\Livewire\Approval\Responsible\ResponsibleAbsence;
 use App\Livewire\Approval\Responsible\ResponsibleRab;
 use App\Livewire\Approval\Responsible\ResponsibleReimburse;
 use App\Livewire\Approval\Responsible\ResponsibleProjectProcurement;
-
+use App\Livewire\Master\Approval\ApprovalTypes;
 use App\Livewire\Projects\Calendar\ShowCalendar;
 use App\Livewire\Projects\GanttChart\ShowGanttChart;
 use App\Livewire\Projects\Projects\ArchivedProject;
@@ -171,7 +171,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('dashboard-approver', DashApprover::class)->name('dashboard-approver'); 
         // Route::get('/show-approval/detail-form/{id}', DetailForm::class)->name('detail-form');
     });
-    // END APPROVAL
 
     // RESPONSIBLE
     Route::prefix('responsible')->name('responsible.')->group(function(){
@@ -193,6 +192,9 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('reimburse-responsible', ResponsibleReimburse::class)->name('reimburse-responsible');
         // Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');    
     });
+    // END APPROVAL
+
+    
     
     Route::prefix('master')->name('master.')->group(function () {
         Route::get('/project-status', ShowProjectStatus::class)->name('project-status');
@@ -208,6 +210,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/atasan', Atasan::class)->name('atasan');
         Route::get('/jenis-approval', JenisApproval::class)->name('jenis-approval');
         //  Route::get('/track/{title}/detail-nota/{id}', DetailNota::class)->name('detail.nota');
+        Route::get('/approval-types', ApprovalTypes::class)->name('approval-types');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {
