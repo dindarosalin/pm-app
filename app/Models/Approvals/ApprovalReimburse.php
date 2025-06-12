@@ -18,9 +18,11 @@ class ApprovalReimburse extends BaseModel
         return DB::table('approval_reimburses')
         ->where('user_id', $auth)
         ->join('approval_statuses', 'approval_reimburses.status_id', '=', 'approval_statuses.id')
+        ->join('approval_types', 'approval_reimburses.approval_id', '=', 'approval_types.id' )
         ->select(
             'approval_reimburses.*',
-            'approval_statuses.name as status_name'
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
         )
         ->get();
     }

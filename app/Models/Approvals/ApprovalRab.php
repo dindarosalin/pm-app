@@ -17,9 +17,11 @@ class ApprovalRab extends BaseModel
         return DB::table('approval_rab')
         ->where('user_id', $auth)
         ->join('approval_statuses', 'approval_rab.status_id', '=', 'approval_statuses.id')
+        ->join('approval_types', 'approval_rab.approval_id', '=', 'approval_types.id' )
         ->select(
             'approval_rab.*',
-            'approval_statuses.name as status_name'
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
         )
         ->get();
     }

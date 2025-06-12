@@ -17,9 +17,11 @@ class ApprovalProjectProcurement extends BaseModel
         return DB::table('approval_project_procurements')
         ->where('user_id', $auth)
         ->join('approval_statuses', 'approval_project_procurements.status_id', '=', 'approval_statuses.id')
+        ->join('approval_types', 'approval_project_procurements.approval_id', '=', 'approval_types.id' )
         ->select(
             'approval_project_procurements.*',
-            'approval_statuses.name as status_name'
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
         )
         ->get();
     }
