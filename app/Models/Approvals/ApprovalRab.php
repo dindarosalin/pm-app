@@ -12,6 +12,18 @@ class ApprovalRab extends BaseModel
         return DB::table('approval_rab')->get();
     }
 
+    public static function getAllByUserId($auth)
+    {
+        return DB::table('approval_rab')
+        ->where('user_id', $auth)
+        ->join('approval_statuses', 'approval_rab.status_id', '=', 'approval_statuses.id')
+        ->select(
+            'approval_rab.*',
+            'approval_statuses.name as status_name'
+        )
+        ->get();
+    }
+
     public static function getById($id)
     {
         return DB::table('approval_rab')->where('id', $id)->first();

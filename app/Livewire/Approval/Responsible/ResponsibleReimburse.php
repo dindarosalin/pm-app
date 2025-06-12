@@ -25,7 +25,7 @@ class ResponsibleReimburse extends Component
     public function loadData()
     {
         $this->auth = Auth::user()->user_id;
-        $this->reimburses = ApprovalReimburse::getAll();
+        $this->reimburses = ApprovalReimburse::getAllByUserId($this->auth);
         $this->reimburseRules = ApprovalRules::getByType($this->approvalId);
     }
 

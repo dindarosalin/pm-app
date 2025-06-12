@@ -28,7 +28,7 @@ class ResponsibleRab extends Component
     public function loadData()
     {
         $this->auth = Auth::user()->user_id;
-        $this->rabs = ApprovalRab::getAll();
+        $this->rabs = ApprovalRab::getAllByUserId($this->auth);
         $this->rabRules = ApprovalRules::getByType($this->approvalId);
     }
 

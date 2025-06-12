@@ -107,7 +107,27 @@
                         <tr>
                             <td>{{ $item->project_name }}</td>
                             <td>{{ $item->submission_date }}</td>
-                            <td>{{ $item->status_id }}</td>
+                            <td>
+                                <span
+                                        class="badge
+                                @switch($item->status_id)
+                                    @case('1')
+                                        text-bg-primary
+                                        @break
+                                    @case('2')
+                                        text-bg-info
+                                        @break
+                                    @case('3')
+                                        text-bg-warning
+                                        @break
+                                    @case('4')
+                                        text-bg-success
+                                        @break
+                                    @case('5')
+                                        text-bg-danger
+                                        @break
+                                @endswitch ">{{ $item->status_name }}
+                            </td>
                             <td>{{ $item->last_updated }}</td>
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">

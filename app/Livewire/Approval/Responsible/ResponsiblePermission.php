@@ -41,7 +41,7 @@ class ResponsiblePermission extends Component
         $this->delegationList = User::get();
         $this->subjectList = ApprovalPermissionTypes::getAll();
 
-        $this->permissions = ApprovalPermissions::getAll();
+        $this->permissions = ApprovalPermissions::getAllByUserId($this->auth);
         $this->permissionRules = ApprovalRules::getByType($this->approvalId);
     }
 

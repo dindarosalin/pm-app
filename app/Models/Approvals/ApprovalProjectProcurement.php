@@ -12,6 +12,18 @@ class ApprovalProjectProcurement extends BaseModel
         return DB::table('approval_project_procurements')->get();
     }
 
+    public static function getAllByUserId($auth)
+    {
+        return DB::table('approval_project_procurements')
+        ->where('user_id', $auth)
+        ->join('approval_statuses', 'approval_project_procurements.status_id', '=', 'approval_statuses.id')
+        ->select(
+            'approval_project_procurements.*',
+            'approval_statuses.name as status_name'
+        )
+        ->get();
+    }
+
     public static function getById($id)
     {
         return DB::table('approval_project_procurements')->where('id', $id)->first();

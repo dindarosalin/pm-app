@@ -11,7 +11,21 @@ class ApprovalPermissions extends BaseModel
     {
         return DB::table('approval_permission')
             ->join('approval_permission_types', 'approval_permission.subject', '=', 'approval_permission_types.id')
-            ->select('approval_permission.*', 'approval_permission_types.name as subject_name') // sesuaikan dengan kolom yang dibutuhkan
+            ->select('approval_permission.*', 'approval_permission_types.name as subject_name')
+            ->get();
+    }
+
+    public static function getAllByUserId($auth)
+    {
+        return DB::table('approval_permission')
+            ->where('user_id', $auth)
+            ->join('approval_permission_types', 'approval_permission.subject', '=', 'approval_permission_types.id')
+            ->join('approval_statuses', 'approval_permission.status_id', '=', 'approval_statuses.id')
+            ->select(
+                'approval_permission.*',
+                'approval_permission_types.name as subject_name',
+                'approval_statuses.name as status_name'
+                )
             ->get();
     }
 

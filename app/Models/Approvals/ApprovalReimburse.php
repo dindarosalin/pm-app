@@ -13,6 +13,18 @@ class ApprovalReimburse extends BaseModel
         return DB::table('approval_reimburses')->get();
     }
 
+        public static function getAllByUserId($auth)
+    {
+        return DB::table('approval_reimburses')
+        ->where('user_id', $auth)
+        ->join('approval_statuses', 'approval_reimburses.status_id', '=', 'approval_statuses.id')
+        ->select(
+            'approval_reimburses.*',
+            'approval_statuses.name as status_name'
+        )
+        ->get();
+    }
+
     public static function getById($id)
     {
         return DB::table('approval_reimburses')->where('id', $id)->first();
