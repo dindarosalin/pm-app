@@ -97,6 +97,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Client</th>
+                        <th>Submitted Date</th>
                         <th>Status</th>
                         <th>Last Update</th>
                         <th>Action</th>
@@ -106,6 +107,7 @@
                     @foreach ($projects as $item)
                         <tr>
                             <td>{{ $item->project_name }}</td>
+                            <td>{{ $item->client }}</td>
                             <td>{{ $item->submission_date }}</td>
                             <td>{{ $item->status_id }}</td>
                             <td>{{ $item->last_updated }}</td>
