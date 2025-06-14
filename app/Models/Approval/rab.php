@@ -74,8 +74,8 @@ class rab extends BaseModel
         return DB::table('rabs')
             ->where('rabs.name_id', $auth)
             ->get();
-    } 
-    
+    }
+
     // ================================================DEPENDENT DROPDOWN================================================
     public static function getHeads($jobdesk_id)
     {
@@ -181,7 +181,7 @@ class rab extends BaseModel
             ->select('id', 'quantity', 'unit_price', DB::raw('quantity * unit_price as total_per_item'))
             ->get();
     }
-    
+
 }
 
 
@@ -295,7 +295,7 @@ class rab extends BaseModel
 //         return DB::table('rabs')
 //             ->where('jobdesk_id', $jobdesk_id)
 //             ->select('id', 'job')
-//             ->get();            
+//             ->get();
 //     }
 
 //     // GET TOTAL PLAN

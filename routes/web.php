@@ -20,6 +20,8 @@ use App\Livewire\Approval\Accountable\AccountableDashboard;
 use App\Livewire\Approval\Accountable\AccountablePermission;
 use App\Livewire\Approval\Accountable\AccountablePermission\AccountableDetailPermission;
 use App\Livewire\Approval\Accountable\AccountablePermission\AccountableTablePermission;
+use App\Livewire\Approval\Accountable\AccountableRab\AccountableDetailRab;
+use App\Livewire\Approval\Accountable\AccountableRab\AccountableTableRab;
 use App\Livewire\Approval\Responsible\ResponsibleRabDetail;
 use App\Livewire\Approval\Responsible\ResponsibleReimburseDetail;
 use App\Livewire\Approved\Approval;
@@ -207,6 +209,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('permission-table-accountable/{permissionId}', AccountableDetailPermission::class)->name('permission-table-accountable-detail');
         Route::get('absence-table-accountable', AccountableTableAbsence::class)->name('absence-table-accountable');
         Route::get('absence-table-accountable/{absenceId}', AccountableDetailAbsence::class)->name('absence-table-accountable-detail');
+        Route::get('rab-table-accountable', AccountableTableRab::class)->name('rab-table-accountable');
+        Route::get('rab-table-accountable/{rabId}', AccountableDetailRab::class)->name('rab-table-accountable-detail');
     });
 
     Route::prefix('master')->name('master.')->group(function () {

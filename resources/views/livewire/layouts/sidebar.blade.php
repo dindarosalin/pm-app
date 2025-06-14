@@ -190,7 +190,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.form-approval') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('approval.form-approval') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-file"></i>
                                 <span>Pengajuan Approval</span>
                             </a>
@@ -242,7 +242,7 @@
                     <li
                         class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.upload-rule') ? 'active' : '' }} ">
                         <a class=" text-decoration-none text-white" href="{{ route('approval.upload-rule') }}"
-                            wire:navigate.defer.defer>
+                            wire:navigate.defer>
                             <i class="fa-solid fa-upload"></i>
                             <span>Upload Ketentuan</span>
                         </a>
@@ -253,7 +253,7 @@
                     <li
                         class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.dashboard-request') ? 'active' : '' }} ">
                         <a class=" text-decoration-none text-white" href="{{ route('approval.dashboard-request') }}"
-                            wire:navigate.defer.defer>
+                            wire:navigate.defer>
                             <i class="fa-solid fa-check-to-slot"></i>
                             <span>Dashboard Pemohon</span>
                         </a>
@@ -264,7 +264,7 @@
                     <li
                         class="sidebar-accordition sidebar-menu {{ request()->routeIs('approval.dashboard-approver') ? 'active' : '' }} ">
                         <a class=" text-decoration-none text-white" href="{{ route('approval.dashboard-approver') }}"
-                            wire:navigate.defer.defer>
+                            wire:navigate.defer>
                             <i class="fa-solid fa-check-to-slot"></i>
                             <span>Dashboard Approver</span>
                         </a>
@@ -309,7 +309,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.dashboard-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.dashboard-responsible') }}" wire:navigate.defer.defer>
+                                href="{{ route('responsible.dashboard-responsible') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-person-circle-check"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -319,7 +319,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rules-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.rules-responsible') }}" wire:navigate.defer.defer>
+                                href="{{ route('responsible.rules-responsible') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-hands-bound"></i>
                                 <span>Rules</span>
                             </a>
@@ -331,7 +331,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.permission-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.permission-responsible') }}" wire:navigate.defer.defer>
+                                href="{{ route('responsible.permission-responsible') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-file-lines"></i>
                                 <span>Permission</span>
                             </a>
@@ -343,7 +343,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.absence-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.absence-responsible') }}" wire:navigate.defer.defer>
+                                href="{{ route('responsible.absence-responsible') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-calendar-xmark"></i>
                                 <span>Leave of Absence</span>
                             </a>
@@ -354,7 +354,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rab-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.rab-responsible') }}" wire:navigate.defer.defer>
+                                href="{{ route('responsible.rab-responsible') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-file-invoice"></i>
                                 <span>RAB</span>
                             </a>
@@ -365,7 +365,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.reimburse-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.reimburse-responsible') }}" wire:navigate.defer.defer>
+                                href="{{ route('responsible.reimburse-responsible') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-money-check-dollar"></i>
                                 <span>Reimburse</span>
                             </a>
@@ -377,7 +377,7 @@
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.project-procurement-responsible') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
                                 href="{{ route('responsible.project-procurement-responsible') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>Project Procurement</span>
                             </a>
@@ -412,7 +412,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.dashboard-accountable') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.dashboard-accountable') }}" wire:navigate.defer.defer>
+                                href="{{ route('accountable.dashboard-accountable') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -423,7 +423,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>Permission</span>
                             </a>
@@ -434,7 +434,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>Leave Of Absence</span>
                             </a>
@@ -443,9 +443,9 @@
 
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.rab-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                href="{{ route('accountable.rab-table-accountable') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>RAB</span>
                             </a>
@@ -456,7 +456,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>Reimburse</span>
                             </a>
@@ -467,7 +467,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>Project Procurement</span>
                             </a>
@@ -501,7 +501,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.approval-types') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.approval-types') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Approval Types</span>
                             </a>
@@ -512,7 +512,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.approval-statuses') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.approval-statuses') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Approval Status</span>
                             </a>
@@ -523,7 +523,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.approval-permission-types') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.approval-permission-types') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Permission Types</span>
                             </a>
@@ -534,7 +534,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.approval-absence-types') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.approval-absence-types') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Absence Types</span>
                             </a>
@@ -545,7 +545,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.project-status') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.project-status') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Project Status</span>
                             </a>
@@ -556,7 +556,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-status') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-status') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Status</span>
                             </a>
@@ -567,7 +567,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-flag') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-flag') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Flag</span>
                             </a>
@@ -578,7 +578,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-label') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-label') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Label</span>
                             </a>
@@ -589,7 +589,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-category') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-category') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Category </span>
                             </a>
@@ -600,7 +600,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.budget-category') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.budget-category') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Budget Category</span>
                             </a>
@@ -611,7 +611,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.budget-subcategory') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('master.budget-subcategory') }}" wire:navigate.defer.defer>
+                                href="{{ route('master.budget-subcategory') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span> Budget Sub Category</span>
                             </a>
@@ -622,7 +622,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.holidays') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.holidays') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Holiday</span>
                             </a>
@@ -633,7 +633,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.uom') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.uom') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Unit Of Measure</span>
                             </a>
@@ -646,7 +646,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.jobdesk') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.jobdesk') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Jabatan</span>
                             </a>
@@ -658,7 +658,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.atasan') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.atasan') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Atasan</span>
                             </a>
@@ -669,7 +669,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.jenis-approval') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.jenis-approval') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Jenis Approval</span>
                             </a>
@@ -705,7 +705,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('settings.menu') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('settings.menu') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-bars"></i>
                                 <span>Menu</span>
                             </a>
