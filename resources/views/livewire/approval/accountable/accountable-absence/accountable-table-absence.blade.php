@@ -1,4 +1,4 @@
-@section('title', 'Permission List')
+@section('title', 'Leave Of Absence')
 
 <div>
     <div class="card">
@@ -15,7 +15,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($permissions as $item)
+                    @foreach ($absences as $item)
                         <tr>
                             <td>{{ $item->user_name }}</td>
                             <td>{{ $item->subject_name }}</td>
@@ -57,4 +57,3 @@
         </div>
     </div>
 </div>
-

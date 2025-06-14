@@ -14,6 +14,8 @@ use App\Http\Controllers\Settings\UserProfileController;
 use App\Http\Controllers\Settings\{MenuController, AccountsController, HierarchyController};
 // use App\Http\Controllers\Settings\{MenuController, AccountsController};
 use App\Http\Livewire\UpdateComponent;
+use App\Livewire\Approval\Accountable\AccountableAbsence\AccountableDetailAbsence;
+use App\Livewire\Approval\Accountable\AccountableAbsence\AccountableTableAbsence;
 use App\Livewire\Approval\Accountable\AccountableDashboard;
 use App\Livewire\Approval\Accountable\AccountablePermission;
 use App\Livewire\Approval\Accountable\AccountablePermission\AccountableDetailPermission;
@@ -198,10 +200,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');
     });
 
+    // ACCOUNTABLE
     Route::prefix('accountable')->name('accountable.')->group(function(){
         Route::get('dashboard-accountable', AccountableDashboard::class)->name('dashboard-accountable');
         Route::get('permission-table-accountable', AccountableTablePermission::class)->name('permission-table-accountable');
         Route::get('permission-table-accountable/{permissionId}', AccountableDetailPermission::class)->name('permission-table-accountable-detail');
+        Route::get('absence-table-accountable', AccountableTableAbsence::class)->name('absence-table-accountable');
+        Route::get('absence-table-accountable/{absenceId}', AccountableDetailAbsence::class)->name('absence-table-accountable-detail');
     });
 
     Route::prefix('master')->name('master.')->group(function () {
