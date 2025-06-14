@@ -454,9 +454,9 @@
 
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.reimburse-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer>
+                                href="{{ route('accountable.reimburse-table-accountable') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>Reimburse</span>
                             </a>
