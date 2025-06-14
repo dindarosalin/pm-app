@@ -42,7 +42,7 @@ class ResponsiblePermission extends Component
         $this->delegationList = User::get();
         $this->subjectList = ApprovalPermissionTypes::getAll();
 
-        $this->permissions = ApprovalPermissions::getAll();
+        $this->permissions = ApprovalPermissions::getAllByUserId($this->auth);
         $this->permissionRules = ApprovalRules::getByType($this->approvalId);
     }
 
@@ -59,6 +59,12 @@ class ResponsiblePermission extends Component
 
         $this->reset();
         $this->dispatch('close-offcanvas');
+        $this->dispatch('swal:modal', [
+            'type' => 'success',
+            'message' => 'Data Saved',
+            'text' => 'It will list on the table.',
+        ]);
+
     }
 
     public function uploadFile()

@@ -34,7 +34,7 @@ class ResponsibleProjectProcurement extends Component
             ->get();
         $this->rules = ApprovalRules::getByType($this->approvalId);
 
-        $this->projects = ApprovalProjectProcurement::getAll();
+        $this->projects = ApprovalProjectProcurement::getAllByUserId($this->auth);
     }
 
     public function save()

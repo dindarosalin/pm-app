@@ -25,52 +25,6 @@
                     <label for="floatingTextarea2">Description</label>
                 </div>
 
-                {{-- SECTION 2 FOR RAB DETAILS   --}}
-
-                {{-- <div class="mb-3 row">
-                    <div class="col">
-                        <label class="form-label">Item Name:</label>
-                        <input wire:model='name' class="form-control form-control-sm" type="text"
-                            placeholder="Item Name">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">Select UOM:</label>
-
-                        <select class="form-select form-select-sm" wire:model='accountable'>
-                            <option value="">UOM</option>
-                            @foreach ($uoms as $item)
-                                <option value="{{ $item->name }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col">
-                        <label class="form-label">Quantity:</label>
-                        <input wire:model='qty' class="form-control form-control-sm" type="number"
-                            placeholder="Quantity">
-                    </div>
-
-                </div>
-
-                <div class="mb-3 row">
-                    <div class="col">
-                        <label class="form-label">Item Price:</label>
-                        <input wire:model='iPrice' class="form-control form-control-sm" type="number"
-                            placeholder="Price Per Item">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">Total Price Per Item:</label>
-                        <input wire:model='iTPrice' class="form-control form-control-sm" type="number"
-                            placeholder="Total Per Item" disabled>
-                    </div>
-                </div>
-
-                <div class="mb-3 form-floating">
-                    <textarea class="form-control" wire:model='description' placeholder="Description" id="floatingTextarea2"></textarea>
-                    <label for="floatingTextarea2">Item Description</label>
-                </div> --}}
-
-
-
                 <button type="submit" class="btn btn-sm btn-primary">Save</button>
             </form>
         </div>
@@ -121,7 +75,27 @@
                         <tr>
                             <td>{{ $item->subject }}</td>
                             <td>{{ $item->submission_date }}</td>
-                            <td>{{ $item->status_id }}</td>
+                            <td>
+                                <span
+                                        class="badge
+                                @switch($item->status_id)
+                                    @case('1')
+                                        text-bg-primary
+                                        @break
+                                    @case('2')
+                                        text-bg-info
+                                        @break
+                                    @case('3')
+                                        text-bg-warning
+                                        @break
+                                    @case('4')
+                                        text-bg-success
+                                        @break
+                                    @case('5')
+                                        text-bg-danger
+                                        @break
+                                @endswitch ">{{ $item->status_name }}
+                            </td>
                             <td>{{ $item->last_updated }}</td>
                             <td>{{ $item->total }}</td>
                             <td>
