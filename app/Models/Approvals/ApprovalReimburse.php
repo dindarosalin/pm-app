@@ -10,14 +10,24 @@ class ApprovalReimburse extends BaseModel
 {
     public static function getAll()
     {
-        return DB::table('approval_reimburses')->get();
+        return DB::table('approval_reimburses')
+        ->join('app_user', 'approval_reimburses.user_id', '=', 'app_user.user_id')
+        ->join('approval_statuses', 'approval_reimburses.status_id', '=', 'approval_statuses.code')
+        ->join('approval_types', 'approval_reimburses.approval_id', '=', 'approval_types.id' )
+        ->select(
+            'approval_reimburses.*',
+            'app_user.user_name as user_name',
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
+        )
+        ->get();
     }
 
-        public static function getAllByUserId($auth)
+    public static function getAllByUserId($auth)
     {
         return DB::table('approval_reimburses')
         ->where('user_id', $auth)
-        ->join('approval_statuses', 'approval_reimburses.status_id', '=', 'approval_statuses.id')
+        ->join('approval_statuses', 'approval_reimburses.status_id', '=', 'approval_statuses.code')
         ->join('approval_types', 'approval_reimburses.approval_id', '=', 'approval_types.id' )
         ->select(
             'approval_reimburses.*',
@@ -77,6 +87,18 @@ class ApprovalReimburse extends BaseModel
 
         DB::table('approval_reimburses')->where('id', $id)->update([
             'total' => $total
+        ]);
+    }
+
+    public static function updateStatus($id, $statusCode, $note)
+    {
+        // dd('halo');
+        DB::table('approval_reimburses')
+        ->where('id', $id)
+        ->update([
+            'status_id' => $statusCode,
+            'last_updated' => now(),
+            'note' => $note
         ]);
     }
 }

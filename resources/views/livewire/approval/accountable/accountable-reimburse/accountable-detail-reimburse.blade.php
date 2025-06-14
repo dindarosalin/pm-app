@@ -1,10 +1,11 @@
-@section('title', 'RAB Details')
+@section('title', 'Reimburse Details')
 
 <div>
-    @livewire('approval.responsible.responsible-rab-detail', ['rabId' => $rabId])
+    @livewire('approval.responsible.responsible-reimburse-detail', ['reimburseId' => $reimburseId])
+
     <div class="card border rounded p-3">
         <div class="card-body">
-            <form wire:submit='updateRab'>
+            <form wire:submit='updateReimburse'>
                 <div class="mb-3">
                     <label class="form-label"><strong>Status:</strong></label>
                     <div class="d-flex gap-4">
