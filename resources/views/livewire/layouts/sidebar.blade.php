@@ -408,7 +408,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('131', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.dashboard-accountable') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -419,7 +419,7 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('132', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -430,7 +430,7 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('133', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -441,7 +441,7 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('134', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.rab-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -452,7 +452,7 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('135', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.reimburse-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -463,7 +463,7 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('129', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('136', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.project-procurement-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
