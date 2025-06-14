@@ -1,30 +1,21 @@
-@section('title', 'Permission Detail')
+@section('title', 'Project Detail')
 
 <div>
     <div class="card border rounded p-3">
-        <h5 class="mb-3">Detail Permission</h5>
+        <h5 class="mb-3">Project Permission</h5>
 
         <div class="card-body">
             <div class="row mb-2 gap-2">
                 <div class="col border p-2 rounded">
-                    <strong>ID:</strong> {{ $permissionDetail->id }}
+                    <strong>ID:</strong> {{ $project->id }}
                 </div>
                 <div class="col border p-2 rounded">
-                    <strong>User ID:</strong> {{ $permissionDetail->user_name }}
+                    <strong>User ID:</strong> {{ $project->user_name }}
                 </div>
-            </div>
-
-            <div class="row mb-2 gap-2">
-                <div class="col border p-2 rounded">
-                    <strong>Subject:</strong> {{ $permissionDetail->subject_name }}
-                </div>
-                <div class="col border p-2 rounded">
-                    <strong>Approval Type:</strong> {{ $permissionDetail->approval_name }}
-                </div>
-                <div class="col border p-2 rounded">
+                 <div class="col border p-2 rounded">
                     <strong>Status:</strong> <span
                         class="badge
-                                @switch($permissionDetail->status_id)
+                                @switch($project->status_id)
                                     @case('1')
                                         text-bg-primary
                                         @break
@@ -40,62 +31,52 @@
                                     @case('5')
                                         text-bg-danger
                                         @break
-                                @endswitch ">{{ $permissionDetail->status_name }}
+                                @endswitch ">{{ $project->status_name }}
                     </span>
                 </div>
                 <div class="col border p-2 rounded">
-                    <strong>Last Updated:</strong> {{ $permissionDetail->last_updated }}
+                    <strong>Last Updated:</strong> {{ $project->last_updated }}
+                </div>
+            </div>
+
+            <div class="row mb-2 gap-2">
+                <div class="col border p-2 rounded">
+                    <strong>Project Name:</strong> {{ $project->project_name }}
+                </div>
+                <div class="col border p-2 rounded">
+                    <strong>Client Name:</strong> {{ $project->client }}
+                </div>
+                <div class="col border p-2 rounded">
+                    <strong>Budget:</strong> {{ $project->budget }}
+                </div>
+                <div class="col border p-2 rounded">
+                    <strong>Approval Type:</strong> {{ $project->approval_name }}
+                </div>
+
+            </div>
+
+            <div class="row mb-2 ">
+                <div class="col border p-2 rounded">
+                    <strong>Project Description:</strong> {{ $project->description }}
+                </div>
+            </div>
+
+            <div class="row mb-2 gap-2">
+                <div class="col border p-2 rounded">
+                    <strong>Start Date Estimation:</strong> {{ $project->start_date_estimation }}
+                </div>
+                <div class="col border p-2 rounded">
+                    <strong>End Date Estimation:</strong> {{ $project->end_date_estimation }}
+                </div>
+                <div class="col border p-2 rounded">
+                    <strong>Submission Date:</strong> {{ $project->submission_date }}
                 </div>
             </div>
 
             <div class="row mb-2 ">
                 <div class="col border p-2 rounded">
-                    <strong>Permission Detail:</strong> {{ $permissionDetail->permission_detail }}
+                    <strong>Note:</strong> {{ $project->note }}
                 </div>
-            </div>
-
-            <div class="row mb-2 gap-2">
-                <div class="col border p-2 rounded">
-                    <strong>Start Date:</strong> {{ $permissionDetail->start_date }}
-                </div>
-                <div class="col border p-2 rounded">
-                    <strong>End Date:</strong> {{ $permissionDetail->end_date }}
-                </div>
-                <div class="col border p-2 rounded">
-                    <strong>Total Days:</strong> {{ $permissionDetail->total_days }}
-                </div>
-                <div class="col border p-2 rounded">
-                    <strong>Submission Date:</strong> {{ $permissionDetail->submission_date }}
-                </div>
-            </div>
-
-            <div class="row mb-2 gap-2">
-                <div class="col border p-2 rounded">
-                    <strong>Emergency Contact:</strong> {{ $permissionDetail->emergency_contact }}
-                </div>
-                <div class="col border p-2 rounded">
-                    <strong>Relationship:</strong> {{ $permissionDetail->relationship_emergency_contact }}
-                </div>
-            </div>
-
-            <div class="row mb-2 gap-2">
-                <div class="col border p-2 rounded">
-                    <strong>Delegation:</strong> {{ $permissionDetail->delegation }}
-                </div>
-                <div class="col border p-2 rounded">
-                    <strong>Delegation Detail:</strong> {{ $permissionDetail->delegation_detail }}
-                </div>
-            </div>
-            <div class="row mb-2 ">
-                <div class="col border p-2 rounded">
-                    <strong>Note:</strong> {{ $permissionDetail->note  }}
-                </div>
-            </div>
-            <div class="row border p-2 rounded">
-                <strong>File:</strong>
-                <a href="{{ asset('storage/' . $permissionDetail->file_path) }}" target="_blank">
-                    {{ $permissionDetail->file_name }}
-                </a>
             </div>
         </div>
     </div>

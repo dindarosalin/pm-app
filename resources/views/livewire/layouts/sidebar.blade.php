@@ -463,11 +463,11 @@
                         </li>
                     @endif
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('129', 'R'))
                         <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.project-procurement-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer>
+                                href="{{ route('accountable.project-procurement-table-accountable') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
                                 <span>Project Procurement</span>
                             </a>

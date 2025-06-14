@@ -16,7 +16,7 @@ class ApprovalProjectProcurement extends BaseModel
     {
         return DB::table('approval_project_procurements')
         ->where('user_id', $auth)
-        ->join('approval_statuses', 'approval_project_procurements.status_id', '=', 'approval_statuses.id')
+        ->join('approval_statuses', 'approval_project_procurements.status_id', '=', 'approval_statuses.code')
         ->join('approval_types', 'approval_project_procurements.approval_id', '=', 'approval_types.id' )
         ->select(
             'approval_project_procurements.*',
@@ -26,9 +26,35 @@ class ApprovalProjectProcurement extends BaseModel
         ->get();
     }
 
+    public static function getByAccountable($auth)
+    {
+        return DB::table('approval_project_procurements')
+        ->where('accountable', $auth)
+        ->join('app_user', 'approval_project_procurements.accountable', '=', 'app_user.user_id')
+        ->join('approval_statuses', 'approval_project_procurements.status_id', '=', 'approval_statuses.code')
+        ->join('approval_types', 'approval_project_procurements.approval_id', '=', 'approval_types.id' )
+        ->select(
+            'approval_project_procurements.*',
+            'app_user.user_name as user_name',
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
+        )
+        ->get();
+    }
+
     public static function getById($id)
     {
-        return DB::table('approval_project_procurements')->where('id', $id)->first();
+        return DB::table('approval_project_procurements')
+        ->where('approval_project_procurements.id', $id)
+        ->join('app_user', 'approval_project_procurements.accountable', '=', 'app_user.user_id')
+        ->join('approval_statuses', 'approval_project_procurements.status_id', '=', 'approval_statuses.code')
+        ->join('approval_types', 'approval_project_procurements.approval_id', '=', 'approval_types.id' )
+        ->select(
+            'approval_project_procurements.*',
+            'app_user.user_name as user_name',
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
+        )->first();
     }
 
     public static function create($storeData)
@@ -73,5 +99,17 @@ class ApprovalProjectProcurement extends BaseModel
     public static function delete($id)
     {
         DB::table('approval_project_procurements')->where('id', $id)->delete();
+    }
+
+    public static function updateStatus($id, $statusCode, $note)
+    {
+        // dd('halo');
+        DB::table('approval_project_procurements')
+        ->where('id', $id)
+        ->update([
+            'status_id' => $statusCode,
+            'last_updated' => now(),
+            'note' => $note
+        ]);
     }
 }

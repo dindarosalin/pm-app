@@ -20,6 +20,8 @@ use App\Livewire\Approval\Accountable\AccountableDashboard;
 use App\Livewire\Approval\Accountable\AccountablePermission;
 use App\Livewire\Approval\Accountable\AccountablePermission\AccountableDetailPermission;
 use App\Livewire\Approval\Accountable\AccountablePermission\AccountableTablePermission;
+use App\Livewire\Approval\Accountable\AccountableProject\AccountableDetailProject;
+use App\Livewire\Approval\Accountable\AccountableProject\AccountableTableProject;
 use App\Livewire\Approval\Accountable\AccountableRab\AccountableDetailRab;
 use App\Livewire\Approval\Accountable\AccountableRab\AccountableTableRab;
 use App\Livewire\Approval\Accountable\AccountableReimburse\AccountableDetailReimburse;
@@ -215,6 +217,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('rab-table-accountable/{rabId}', AccountableDetailRab::class)->name('rab-table-accountable-detail');
         Route::get('reimburse-table-accountable', AccountableTableReimburse::class)->name('reimburse-table-accountable');
         Route::get('reimburse-table-accountable/{reimburseId}', AccountableDetailReimburse::class)->name('reimburse-table-accountable-detail');
+        Route::get('project-procurement-table-accountable', AccountableTableProject::class)->name('project-procurement-table-accountable');
+        Route::get('project-procurement-table-accountable/{projectId}', AccountableDetailProject::class)->name('project-procurement-table-accountable-detail');
     });
 
     Route::prefix('master')->name('master.')->group(function () {

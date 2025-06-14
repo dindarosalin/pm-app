@@ -2,7 +2,6 @@
 
 <div>
     @livewire('approval.responsible.responsible-rab-detail', ['rabId' => $rabId])
-
     <div class="card border rounded p-3">
         <div class="card-body">
             <form wire:submit='updateRab'>
