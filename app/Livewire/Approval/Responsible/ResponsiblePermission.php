@@ -58,6 +58,12 @@ class ResponsiblePermission extends Component
 
         $this->reset();
         $this->dispatch('close-offcanvas');
+        $this->dispatch('swal:modal', [
+            'type' => 'success',
+            'message' => 'Data Saved',
+            'text' => 'It will list on the table.',
+        ]);
+
     }
 
     public function uploadFile()

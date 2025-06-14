@@ -20,7 +20,7 @@ class ApprovalPermissions extends BaseModel
         return DB::table('approval_permission')
             ->where('user_id', $auth)
             ->join('approval_permission_types', 'approval_permission.subject', '=', 'approval_permission_types.id')
-            ->join('approval_statuses', 'approval_permission.status_id', '=', 'approval_statuses.id')
+            ->join('approval_statuses', 'approval_permission.status_id', '=', 'approval_statuses.code')
             ->join('approval_types', 'approval_permission.approval_id', '=', 'approval_types.id' )
             ->select(
                 'approval_permission.*',
@@ -33,7 +33,20 @@ class ApprovalPermissions extends BaseModel
 
     public static function getById($id)
     {
-        return DB::table('approval_permission')->where('id', $id)->first();
+        return DB::table('approval_permission')
+        ->where('approval_permission.id', $id)
+        ->join('app_user', 'approval_permission.user_id', '=', 'app_user.user_id')
+        ->join('approval_permission_types', 'approval_permission.subject', '=', 'approval_permission_types.id')
+        ->join('approval_statuses', 'approval_permission.status_id', '=', 'approval_statuses.code')
+        ->join('approval_types', 'approval_permission.approval_id', '=', 'approval_types.id' )
+        ->select(
+            'approval_permission.*',
+            'app_user.user_name as user_name',
+            'approval_permission_types.name as subject_name',
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
+        )
+        ->first();
     }
 
     public static function create($storeData)
@@ -93,4 +106,36 @@ class ApprovalPermissions extends BaseModel
     {
         DB::table('approval_permission')->where('id', $id)->delete();
     }
+
+        // ====================================== FOR ACCOUNTABLE ====================================
+
+    public static function getByAccountable($id)
+    {
+        return DB::table('approval_permission')
+        ->where('accountable', $id)
+        ->join('app_user', 'approval_permission.user_id', '=', 'app_user.user_id')
+        ->join('approval_permission_types', 'approval_permission.subject', '=', 'approval_permission_types.id')
+        ->join('approval_statuses', 'approval_permission.status_id', '=', 'approval_statuses.code')
+        ->join('approval_types', 'approval_permission.approval_id', '=', 'approval_types.id' )
+        ->select(
+            'approval_permission.*',
+            'app_user.user_name as user_name',
+            'approval_permission_types.name as subject_name',
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
+            )
+        ->get();
+    }
+
+    public static function updateStatus($id, $statusCode, $note)
+    {
+        DB::table('approval_permission')
+        ->where('id', $id)
+        ->update([
+            'status_id' => $statusCode,
+            'last_updated' => now(),
+            'note' => $note
+        ]);
+    }
+
 }

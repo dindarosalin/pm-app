@@ -421,11 +421,55 @@
 
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.dashboard-accountable') ? 'active' : '' }} ">
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('accountable.dashboard-accountable') }}" wire:navigate.defer.defer>
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
                                 <i class="fa-solid fa-folder-plus"></i>
-                                <span>Dashboard</span>
+                                <span>Permission</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                <i class="fa-solid fa-folder-plus"></i>
+                                <span>Leave Of Absence</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                <i class="fa-solid fa-folder-plus"></i>
+                                <span>RAB</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                <i class="fa-solid fa-folder-plus"></i>
+                                <span>Reimburse</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer.defer>
+                                <i class="fa-solid fa-folder-plus"></i>
+                                <span>Project Procurement</span>
                             </a>
                         </li>
                     @endif

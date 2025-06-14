@@ -14,6 +14,10 @@ use App\Http\Controllers\Settings\UserProfileController;
 use App\Http\Controllers\Settings\{MenuController, AccountsController, HierarchyController};
 // use App\Http\Controllers\Settings\{MenuController, AccountsController};
 use App\Http\Livewire\UpdateComponent;
+use App\Livewire\Approval\Accountable\AccountableDashboard;
+use App\Livewire\Approval\Accountable\AccountablePermission;
+use App\Livewire\Approval\Accountable\AccountablePermission\AccountableDetailPermission;
+use App\Livewire\Approval\Accountable\AccountablePermission\AccountableTablePermission;
 use App\Livewire\Approval\Responsible\ResponsibleRabDetail;
 use App\Livewire\Approval\Responsible\ResponsibleReimburseDetail;
 use App\Livewire\Approved\Approval;
@@ -195,13 +199,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('accountable')->name('accountable.')->group(function(){
-        Route::get('dashboard-accountable', ResponsibleDashboard::class)->name('dashboard-accountable');
-        // Route::get('rules-responsible', ResponsibleRules::class)->name('rules-responsible');
-        // Route::get('permission-responsible', ResponsiblePermission::class)->name('permission-responsible');
-        // Route::get('absence-responsible', ResponsibleAbsence::class)->name('absence-responsible');
-        // Route::get('rab-responsible', ResponsibleRab::class)->name('rab-responsible');
-        // Route::get('reimburse-responsible', ResponsibleReimburse::class)->name('reimburse-responsible');
-        // Route::get('project-procurement-responsible', ResponsibleProjectProcurement::class)->name('project-procurement-responsible');
+        Route::get('dashboard-accountable', AccountableDashboard::class)->name('dashboard-accountable');
+        Route::get('permission-table-accountable', AccountableTablePermission::class)->name('permission-table-accountable');
+        Route::get('permission-table-accountable/{permissionId}', AccountableDetailPermission::class)->name('permission-table-accountable-detail');
     });
 
     Route::prefix('master')->name('master.')->group(function () {

@@ -10,4 +10,9 @@ class AccountableDashboard extends Component
     {
         return view('livewire.approval.accountable.accountable-dashboard');
     }
+
+    public function loadData()
+    {
+
+    }
 }
