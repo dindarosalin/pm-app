@@ -6,6 +6,15 @@ class EvmService
 {
     public static function calculateEVM($project)
     {
+        if (
+            $project->planned_done_task < 0 ||
+            $project->actual_done_task < 0 ||
+            $project->bac < 0 ||
+            $project->ac < 0
+        ) {
+            throw new \InvalidArgumentException('Nilai tidak boleh negatif');
+        }
+
         $planned_percent = $project->total_task > 0
             ? $project->planned_done_task / $project->total_task
             : 0;

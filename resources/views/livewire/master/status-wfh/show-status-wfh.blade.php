@@ -1,6 +1,7 @@
 @section('title', 'Wfh Statuses')
 <div>
-    <div class="offcanvas offcanvas-end"  data-bs-scroll="true" tabindex="-1" id="offCanvasFormProject" aria-labelledby="offCanvasFormProjectLabel">
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offCanvasFormProject"
+        aria-labelledby="offCanvasFormProjectLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offCanvasFormProjectLabel">Form Wfh Statuses</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -9,11 +10,13 @@
             <form wire:submit='save'>
                 <div class="mb-3">
                     <label class="form-label">Status Name:</label>
-                    <input wire:model='statusName' class="form-control form-control-sm" type="text" placeholder="Status Name">
+                    <input wire:model='statusName' class="form-control form-control-sm" type="text"
+                        placeholder="Status Name">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Status Code:</label>
-                    <input wire:model='statusCode' class="form-control form-control-sm" type="text" placeholder="Status Code">
+                    <input wire:model='statusCode' class="form-control form-control-sm" type="text"
+                        placeholder="Status Code">
                 </div>
                 <button type="submit" class="btn btn-sm btn-primary">Save</button>
             </form>
@@ -23,25 +26,30 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center my-2">
-            <p>List of Wfh Status</p>
-            <button class="btn btn-sm btn-outline-primary" wire:click="$dispatch('show-offcanvas-project')">
-                <span class="fa fa-plus"></span>
-                Create new wfh status
-            </button>
-        </div>
+                <p>List of Wfh Status</p>
+                <button class="btn btn-sm btn-outline-primary" wire:click="$dispatch('show-offcanvas-project')">
+                    <span class="fa fa-plus"></span>
+                    Create new wfh status
+                </button>
+            </div>
         </div>
         <div class="card-body table-responsive">
             <table class="table table-striped table-sm">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>Status Name</th>
-                    <th>Code Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{-- @foreach ($projectStatuses as $item)
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Status Name</th>
+                        <th>Code Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($statuses)
+                        <tr>
+                            <td colspan="4" class="text-center">No data available</td>
+                        </tr>
+                    @endif
+                    {{-- @foreach ($projectStatuses as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->project_status }}</td>
@@ -71,8 +79,8 @@
                     </td>
                 </tr>
                 @endforeach --}}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

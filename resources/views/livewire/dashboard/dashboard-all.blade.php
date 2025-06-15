@@ -50,7 +50,7 @@
         </div>
         <div class="row">
             <!-- Health -->
-            <div class="col-md-12 col-xl-4 col-sm-12 ">
+            <div class="col-xl-6 col-md-12 col-sm-12 ">
                 <div class="card card-switch p-3 overflow-scroll" style="min-height: 40vh; max-height: 40vh;">
                     <h5>Health</h5>
                     <div class="row row-cols-3">
@@ -83,19 +83,8 @@
             </div>
             <!-- Health End -->
 
-            {{-- Project --}}
-            <div class="col-md-12 col-xl-4 col-sm-12">
-                <div class="card card-switch p-3" style="min-height: 40vh; max-height: 40vh;">
-                    <h5>Tasks</h5>
-                    <div class="chart-container" style="position: relative; height:30vh;">
-                        <canvas id="projectCharts" style="width: 100px; height: 100px;"></canvas>
-                    </div>
-                </div>
-            </div>
-            {{-- Project End --}}
-
             <!-- Progress -->
-            <div class="col-xl-4 col-md-12 col-sm-12">
+            <div class="col-xl-6 col-md-12 col-sm-12">
                 <div class="card card-switch p-3" style="min-height: 40vh;">
                     <h5>Projects Progress</h5>
                     <div class="scroll overflow-y-scroll" style="max-height: 30vh">
@@ -106,8 +95,19 @@
             </div>
             <!-- End Progress -->
 
+            <!-- Work Hours -->
+            <div class="col-xl-6 col-md-12 col-sm-12">
+                <div class="card card-switch p-3" style="max-height: 40vh;">
+                    <h5>Work Hours/month</h5>
+                    <div class="scroll overflow-y-scroll" style="max-height: 100%">
+                        <canvas id="workHoursChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Work Hours End -->
+
             <!-- Time -->
-            <div class="col-md-12 col-xl-4 col-sm-12">
+            <div class="col-xl-6 col-md-12 col-sm-12">
                 <div class="card card-switch p-3" style="min-height: 40vh; max-height: 40vh;">
                     <h5>Time</h5>
                     <div class="scroll overflow-y-scroll" style="max-height: 100%">
@@ -117,27 +117,27 @@
             </div>
             <!-- Time End -->
 
+            {{-- Project --}}
+            <div class="col-xl-6 col-md-12 col-sm-12">
+                <div class="card card-switch p-3" style="min-height: 40vh; max-height: 40vh;">
+                    <h5>Project</h5>
+                    <div class="chart-container" style="position: relative; height:30vh;">
+                        <canvas id="projectCharts" style="width: 100px; height: 100px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            {{-- Project End --}}
+
             <!-- Cost Chart -->
-            <div class="col-xl-8 col-md-12 col-sm-12">
+            <div class="col-xl-6 col-md-12 col-sm-12">
                 <div class="card card-switch p-3" style="max-height: 40vh;">
                     <h5>Cost</h5>
-                    <div class="scroll overflow-y-scroll" style="max-height: 100%">
+                    <div class="scroll overflow-scroll" style="max-height: 100%">
                         <canvas id="costChart"></canvas>
                     </div>
                 </div>
             </div>
             <!-- Cost Chart End -->
-
-            <!-- Work Hours -->
-            <div class="col-xl-12 col-md-12 col-sm-12">
-                <div class="card card-switch p-3" style="max-height: 40vh;">
-                    <h5>Work Hours/month</h5>
-                    <div class="scroll overflow-y-scroll" style="max-height: 100%">
-                        <canvas id="workHoursChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            <!-- Work Hours End -->
 
         </div>
     </div>
@@ -161,22 +161,10 @@
         new Chart(project, {
             type: 'doughnut',
             data: {
-                labels: [
-                    'Not Started',
-                    'Inprogress',
-                    'Done',
-                    'Hold',
-                    'Cancel'
-                ],
+                labels: @json(array_keys($projectsCountByStatus)),
                 datasets: [{
                     label: 'Project',
-                    data: [
-                        "{{ $tasks['notStart'] }}",
-                        "{{ $tasks['onProgress'] }}",
-                        "{{ $tasks['done'] }}",
-                        "{{ $tasks['hold'] }}",
-                        "{{ $tasks['cancel'] }}"
-                    ],
+                    data: @json(array_values($projectsCountByStatus)),
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(101, 205, 101)',
@@ -306,20 +294,20 @@
         new Chart(costChart, {
             type: 'bar',
             data: {
-                labels: ['Project A', 'Project B', 'Project C'],
+                labels: @json($evmData->pluck('project_title')),
                 datasets: [{
                         label: 'Actual',
-                        data: [1000000, 1500000, 1500000],
+                        data: @json($evmData->pluck('actual_cost')),
                         backgroundColor: '#FCD34D' // yellow-400
                     },
                     {
                         label: 'Planned',
-                        data: [1900000, 1100000, 1100000],
+                        data: @json($evmData->pluck('planned_value')),
                         backgroundColor: '#4ADE80' // green-400
                     },
                     {
                         label: 'Budget',
-                        data: [2500000, 2000000, 1100000],
+                        data: @json($evmData->pluck('budget_at_complated')),
                         backgroundColor: '#FB7185' // rose-400
                     }
                 ]
@@ -330,7 +318,7 @@
                         position: 'top',
                     },
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Cost'
                     }
                 },
@@ -343,6 +331,11 @@
                             }
                         }
                     }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                onResize: function(chart, size) {
+                    chart.options.scales.y.ticks.maxTicksLimit = Math.floor(size.height / 30);
                 }
             }
         });
