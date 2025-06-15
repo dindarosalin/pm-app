@@ -38,7 +38,6 @@ use App\Livewire\Master\TaskFlag\ShowTaskFlag;
 use App\Livewire\Master\TaskCriteria\ShowTaskCriteria;
 
 //REPORT
-use App\Livewire\Master\TaskFlag\ShowTaskFlag;
 use App\Livewire\Master\TaskLabel\ShowTaskLabel;
 // RELEASE NOTES
 use App\Livewire\Master\TaskStatus\ShowTaskStatus;
