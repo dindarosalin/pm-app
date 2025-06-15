@@ -44,4 +44,5 @@ class ApprovalTypesModel extends BaseModel
             ->where('id', $id)
             ->delete();
     }
+
 }

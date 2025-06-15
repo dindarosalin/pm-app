@@ -10,7 +10,7 @@ class ApprovalRab extends BaseModel
     public static function getAll()
     {
         return DB::table('approval_rab')
-        ->join('app_user', 'approval_rab.user_id', '=', 'app_user.user_id')
+        ->join('app_user', 'approval_rab.user_id_rab', '=', 'app_user.user_id')
         ->join('approval_statuses', 'approval_rab.status_id', '=', 'approval_statuses.code')
         ->join('approval_types', 'approval_rab.approval_id', '=', 'approval_types.id' )
         ->select(
@@ -26,7 +26,7 @@ class ApprovalRab extends BaseModel
     {
         return DB::table('approval_rab')
         ->where('user_id', $auth)
-        ->join('app_user', 'approval_rab.user_id', '=', 'app_user.user_id')
+        ->join('app_user', 'approval_rab.user_id_rab', '=', 'app_user.user_id')
         ->join('approval_statuses', 'approval_rab.status_id', '=', 'approval_statuses.code')
         ->join('approval_types', 'approval_rab.approval_id', '=', 'approval_types.id' )
         ->select(
@@ -47,7 +47,7 @@ class ApprovalRab extends BaseModel
     {
         // dd($storeData);
         DB::table('approval_rab')->insert([
-            'user_id' => $storeData['auth'],
+            'user_id_rab' => $storeData['auth'],
             'subject' => $storeData['subject'],
             'approval_id' => $storeData['approvalId'],
             'status_id' => $storeData['statusId'],
@@ -62,7 +62,7 @@ class ApprovalRab extends BaseModel
     {
         // dd($storeData);
         DB::table('approval_rab')->where('id', $id)->update([
-            'user_id' => $storeData['auth'],
+            'user_id_rab' => $storeData['auth'],
             'subject' => $storeData['subject'],
             'approval_id' => $storeData['approvalId'],
             'status_id' => $storeData['statusId'],

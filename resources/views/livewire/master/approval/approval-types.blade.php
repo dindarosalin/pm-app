@@ -71,6 +71,52 @@
             </table>
         </div>
     </div>
+
+    <!--CARD PERMISSION-->
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <p>List of Permission Type</p>
+                <button class="btn btn-sm-outline-primary">
+                    <span class="fa fa-plus">
+                        Create new Permission Type
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>name</td>
+                        <td>description</td>
+                        <td>
+                            <div class="d-flex gap-2 justify-content-center align-items-center">
+                                <!--Edit icon-->
+                                <p role="button" class="text-warning m-0 p-0" style="cursor: pointer;">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </p>
+
+                                <!--Delete icon-->
+                                <p role="button" class="text-danger m-0 p-0" style="cursor: pointer;">
+                                    <i class="fa-solid fa-trash"></i>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 @push('scripts')

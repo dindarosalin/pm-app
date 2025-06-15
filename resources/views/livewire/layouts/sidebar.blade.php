@@ -429,149 +429,10 @@
                         </div>
                     </div>
                 </div>
-            <!--end MENU RESPONSIBLE-->
+        <!--end MENU RESPONSIBLE-->
 
-        <div class="accordion-item">
-            {{-- <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#responsibleCollapse"
-                aria-expanded="true" aria-controls="responsibleCollapse">
-                <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
-                    <i class="fa-solid fa-person-circle-check"></i>
-                    Responsible
-                </p>
-                <button class="btn btn-sm text-white ms-auto p-0 border-0 text-end" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
-                        class="bi bi-chevron-down" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
-                    </svg> 
-                </button>
-            </li> --}}
-
-            {{-- <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
-                        <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.dashboard-responsible') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.dashboard-responsible') }}" wire:navigate.defer>
-                                <i class="fa-solid fa-person-circle-check"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                    @endif
-                </div>
-            </div> --}}
-
-            {{-- <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
-                        <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rules-responsible') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.rules-responsible') }}" wire:navigate.defer>
-                                <i class="fa-solid fa-hands-bound"></i>
-                                <span>Rules</span>
-                            </a>
-                        </li>
-                    @endif
-                </div>
-            </div> --}}
-
-            {{-- IZIN TIDAK TERENNCANA --}}
-            {{-- <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
-                        <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.permission-responsible') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.permission-responsible') }}" wire:navigate.defer>
-                                <i class="fa-solid fa-file-lines"></i>
-                                <span>Permission</span>
-                            </a>
-                        </li>
-                    @endif
-                </div>
-            </div> --}}
-
-            {{-- CUTI --}}
-            {{-- <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
-                        <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.absence-responsible') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.absence-responsible') }}" wire:navigate.defer>
-                                <i class="fa-solid fa-calendar-xmark"></i>
-                                <span>Leave of Absence</span>
-                            </a>
-                        </li>
-                    @endif
-                </div>
-            </div> --}}
-
-            {{-- <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
-                        <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rab-responsible') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.rab-responsible') }}" wire:navigate.defer>
-                                <i class="fa-solid fa-file-invoice"></i>
-                                <span>RAB</span>
-                            </a>
-                        </li>
-                    @endif
-                </div>
-            </div> --}}
-
-            {{-- <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
-                        <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.reimburse-responsible') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.reimburse-responsible') }}" wire:navigate.defer>
-                                <i class="fa-solid fa-money-check-dollar"></i>
-                                <span>Reimburse</span>
-                            </a>
-                        </li>
-                    @endif
-                </div>
-            </div> --}}
-
-            {{-- <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
-                        <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.project-procurement-responsible') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.project-procurement-responsible') }}"
-                                wire:navigate.defer>
-                                <i class="fa-solid fa-folder-plus"></i>
-                                <span>Project Procurement</span>
-                            </a>
-                        </li>
-                    @endif
-                </div>
-            </div> --}}
-        </div>
-
-
-        <div class="accordion-item">
+       <!--MENU ACCOUNTABLE-->
+        {{-- <div class="accordion-item">
             <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#accountableCollapse"
                 aria-expanded="true" aria-controls="accountableCollapse">
                 <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
@@ -584,10 +445,10 @@
                         <path fill-rule="evenodd"
                             d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
                     </svg> {{--  chevron down --}}
-                </button>
-            </li>
+                {{-- </button>
+            </li> --}}
 
-            <div wire:ignore id="accountableCollapse"
+            {{-- <div wire:ignore id="accountableCollapse"
                 class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
@@ -658,8 +519,141 @@
                     @endif
 
                 </div>
-            </div>
-        </div>
+            </div> --}}
+        {{-- </div>  --}}
+
+            <div class="accordion-item">
+                <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#accountableCollapse"
+                    aria-expanded="true" aria-controls="accountableCollapse">
+                    <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
+                        <i class="fa-solid fa-person-circle-check"></i>
+                        Accountable
+                    </p>
+                    <button class="btn btn-sm text-white ms-auto p-0 border-0 text-end" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                            class="bi bi-chevron-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
+                        </svg> 
+                    </button>
+                </li>
+
+                <!--DASHBOARD-->
+                <div wire:ignore id="accountableCollapse"
+                    class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        @if (App\Models\Base\BaseModel::isAuthorize('131', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.dashboard-accountable') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white"
+                                    href="{{ route('accountable.dashboard-accountable') }}" wire:navigate.defer.defer>
+                                    <i class="fa-solid fa-folder-plus"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                        @endif
+                    </div>
+                </div>
+
+                <!--IZIN-->
+                <div wire:ignore id="accountableCollapse"
+                    class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        @if (App\Models\Base\BaseModel::isAuthorize('132', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white"
+                                    href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer>
+                                    <i class="fa-solid fa-folder-plus"></i>
+                                    <span>Permission</span>
+                                </a>
+                            </li>
+                        @endif
+                    </div>
+                </div>
+
+                <!--CUTI-->
+                <div wire:ignore id="accountableCollapse"
+                    class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        @if (App\Models\Base\BaseModel::isAuthorize('133', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.permission-table-accountable*') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white"
+                                    href="{{ route('accountable.permission-table-accountable') }}" wire:navigate.defer>
+                                    <i class="fa-solid fa-folder-plus"></i>
+                                    <span>Leave Of Absence</span>
+                                </a>
+                            </li>
+                        @endif
+                    </div>
+                </div>
+
+                <!--RAB-->
+                <div wire:ignore id="accountableCollapse"
+                    class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        @if (App\Models\Base\BaseModel::isAuthorize('134', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.rab-table-accountable*') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white"
+                                    href="{{ route('accountable.rab-table-accountable') }}" wire:navigate.defer>
+                                    <i class="fa-solid fa-folder-plus"></i>
+                                    <span>RAB</span>
+                                </a>
+                            </li>
+                        @endif
+                    </div>
+                </div>
+
+                <!--REIMBURSE-->
+                <div wire:ignore id="accountableCollapse"
+                    class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        @if (App\Models\Base\BaseModel::isAuthorize('135', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.reimburse-table-accountable*') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white"
+                                    href="{{ route('accountable.reimburse-table-accountable') }}" wire:navigate.defer>
+                                    <i class="fa-solid fa-folder-plus"></i>
+                                    <span>Reimburse</span>
+                                </a>
+                            </li>
+                        @endif
+                    </div>
+                </div>
+
+                <!--PENGADAAN-->
+                <div wire:ignore id="accountableCollapse"
+                    class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        @if (App\Models\Base\BaseModel::isAuthorize('136', 'R'))
+                            <li
+                                class="sidebar-accordition sidebar-menu {{ request()->routeIs('accountable.project-procurement-table-accountable*') ? 'active' : '' }} ">
+                                <a class=" text-decoration-none text-white"
+                                    href="{{ route('accountable.project-procurement-table-accountable') }}" wire:navigate.defer>
+                                    <i class="fa-solid fa-folder-plus"></i>
+                                    <span>Project Procurement</span>
+                                </a>
+                            </li>
+                        @endif
+                    </div>
+                </div>
+            </div>  
+       <!--END MENU ACCOUNTABLE-->
+
+
+        
+            
+
+            
+       
 
         <div class="accordion-item">
             <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#masterCollapse"
@@ -970,3 +964,142 @@ $(document).ready(function () {
 
 });
 </script> --}}
+
+ {{-- <div class="accordion-item">
+            {{-- <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#responsibleCollapse"
+                aria-expanded="true" aria-controls="responsibleCollapse">
+                <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
+                    <i class="fa-solid fa-person-circle-check"></i>
+                    Responsible
+                </p>
+                <button class="btn btn-sm text-white ms-auto p-0 border-0 text-end" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                        class="bi bi-chevron-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
+                    </svg> 
+                </button>
+            </li> --}}
+
+            {{-- <div wire:ignore id="responsibleCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.dashboard-responsible') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('responsible.dashboard-responsible') }}" wire:navigate.defer>
+                                <i class="fa-solid fa-person-circle-check"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                    @endif
+                </div>
+            </div> --}}
+
+            {{-- <div wire:ignore id="responsibleCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rules-responsible') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('responsible.rules-responsible') }}" wire:navigate.defer>
+                                <i class="fa-solid fa-hands-bound"></i>
+                                <span>Rules</span>
+                            </a>
+                        </li>
+                    @endif
+                </div>
+            </div> --}}
+
+            {{-- IZIN TIDAK TERENNCANA --}}
+            {{-- <div wire:ignore id="responsibleCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.permission-responsible') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('responsible.permission-responsible') }}" wire:navigate.defer>
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>Permission</span>
+                            </a>
+                        </li>
+                    @endif
+                </div>
+            </div> --}}
+
+            {{-- CUTI --}}
+            {{-- <div wire:ignore id="responsibleCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.absence-responsible') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('responsible.absence-responsible') }}" wire:navigate.defer>
+                                <i class="fa-solid fa-calendar-xmark"></i>
+                                <span>Leave of Absence</span>
+                            </a>
+                        </li>
+                    @endif
+                </div>
+            </div> --}}
+
+            {{-- <div wire:ignore id="responsibleCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rab-responsible') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('responsible.rab-responsible') }}" wire:navigate.defer>
+                                <i class="fa-solid fa-file-invoice"></i>
+                                <span>RAB</span>
+                            </a>
+                        </li>
+                    @endif
+                </div>
+            </div> --}}
+
+            {{-- <div wire:ignore id="responsibleCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.reimburse-responsible') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('responsible.reimburse-responsible') }}" wire:navigate.defer>
+                                <i class="fa-solid fa-money-check-dollar"></i>
+                                <span>Reimburse</span>
+                            </a>
+                        </li>
+                    @endif
+                </div>
+            </div> --}}
+
+            {{-- <div wire:ignore id="responsibleCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.project-procurement-responsible') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('responsible.project-procurement-responsible') }}"
+                                wire:navigate.defer>
+                                <i class="fa-solid fa-folder-plus"></i>
+                                <span>Project Procurement</span>
+                            </a>
+                        </li>
+                    @endif
+                </div>
+            </div> --}}
+        {{-- </div>  --}}
