@@ -65,7 +65,7 @@ use App\Livewire\Report\ShowReport;
 use App\Livewire\StartWork;
 use App\Livewire\TableTrial;
 use App\Livewire\TimeCard\ShowTimeCard;
-use App\Livewire\Wfh\Monitoring;
+use App\Livewire\WFH\Monitoring;
 use App\Livewire\WFH\WorkFromHome;
 use App\Models\WfhSession;
 use Illuminate\Contracts\Queue\Monitor;
