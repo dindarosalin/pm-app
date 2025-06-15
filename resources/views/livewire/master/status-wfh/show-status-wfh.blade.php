@@ -1,8 +1,8 @@
-@section('title', 'Project Statuses')
+@section('title', 'Wfh Statuses')
 <div>
     <div class="offcanvas offcanvas-end"  data-bs-scroll="true" tabindex="-1" id="offCanvasFormProject" aria-labelledby="offCanvasFormProjectLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offCanvasFormProjectLabel">Form Project Statuses</h5>
+            <h5 class="offcanvas-title" id="offCanvasFormProjectLabel">Form Wfh Statuses</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -23,10 +23,10 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center my-2">
-            <p>List of Project Status</p>
+            <p>List of Wfh Status</p>
             <button class="btn btn-sm btn-outline-primary" wire:click="$dispatch('show-offcanvas-project')">
                 <span class="fa fa-plus"></span>
-                Create new project status
+                Create new wfh status
             </button>
         </div>
         </div>
@@ -41,7 +41,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($projectStatuses as $item)
+                {{-- @foreach ($projectStatuses as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->project_status }}</td>
@@ -70,7 +70,7 @@
                         </div>
                     </td>
                 </tr>
-                @endforeach
+                @endforeach --}}
             </tbody>
         </table>
         </div>

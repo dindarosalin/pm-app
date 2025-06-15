@@ -87,7 +87,23 @@ class Task extends BaseModel
             ->get();
     }
 
-    // Get project done for generate release notes
+    // GET All TASKS BY PROJECTS
+    public static function getAllTasks()
+    {
+        return DB::table('tasks')
+            ->whereNull('tasks.deleted_at')
+            ->join('projects', 'tasks.project_id', '=', 'projects.id')
+            ->join('task_statuses', 'tasks.status_id', '=', 'task_statuses.id')
+            ->select(
+            'tasks.project_id',
+            'projects.title as project_title',
+            DB::raw('count(tasks.id) as total_tasks')
+            )
+            ->groupBy('tasks.project_id', 'projects.title')
+            ->get();
+        }
+
+
     // GET PROJECT DONE FOR GENERATE RELEASE NOTES
     public static function getDoneProjectTasks($projectId, array $status)
     {
@@ -135,9 +151,31 @@ class Task extends BaseModel
                 'created_by_name',
                 'assign_to_name',
                 // 'task_flags.flag_name'
-                )
+            )
             ->get();
     }
+
+    public static function getDoneAllProjectTasks(array $status)
+    {
+        return DB::table('tasks')
+            ->whereIn('tasks.status_id', $status)
+            ->whereNull('tasks.deleted_at')
+            ->join('task_statuses', 'tasks.status_id', '=', 'task_statuses.id')
+            ->leftJoin('projects', 'tasks.project_id', '=', 'projects.id')
+            ->join('app_user as creators', 'tasks.created_by', '=', 'creators.user_id')
+            ->leftJoin('app_user as assignees', 'tasks.assign_to', '=', 'assignees.user_id')
+            ->leftJoin('task_flagging', 'tasks.id', '=', 'task_flagging.task_id')
+            ->leftJoin('task_flags', 'task_flagging.flag_id', '=', 'task_flags.id')
+            ->leftJoin('task_labeling', 'tasks.id', '=', 'task_labeling.task_id')
+            ->leftJoin('task_labels', 'task_labeling.label_id', '=', 'task_labels.id')
+            ->select(
+            'tasks.project_id',
+            'projects.title as project_title',
+            DB::raw('count(tasks.project_id) as total_tasks_done')
+            )
+            ->groupBy('tasks.project_id', 'projects.title')
+            ->get();
+        }
 
     // CREATE TASK
     public static function create(array $storeData)
@@ -335,20 +373,20 @@ class Task extends BaseModel
                 'tasks.id',
                 'creators.user_name',
                 'assignees.user_name'
-                )
+            )
             ->first();
     }
 
     public static function getArchivedTasks($projectId)
     {
         return DB::table('tasks')
-        ->whereNotNull('deleted_at')
-        ->join('task_statuses', 'tasks.status_id', '=', 'task_statuses.id')
-        ->select(
-            'tasks.*',
-            'task_statuses.task_status as status_name',
-        )
-        ->get();
+            ->whereNotNull('deleted_at')
+            ->join('task_statuses', 'tasks.status_id', '=', 'task_statuses.id')
+            ->select(
+                'tasks.*',
+                'task_statuses.task_status as status_name',
+            )
+            ->get();
     }
 
     public static function softDelete($id)
@@ -367,7 +405,7 @@ class Task extends BaseModel
         DB::table('time_cards')->where('task_id', $id)->delete();
         DB::table('tasks')->where('id', $id)->delete();
     }
-    
+
     // ======================================================================== KEBUTUHAN REPORT ========================================================================
 
     // GET ALL REPORT
@@ -379,10 +417,10 @@ class Task extends BaseModel
             ->leftJoin('app_user', 'tasks.assign_to', '=', 'app_user.user_id')
             ->leftJoin('task_statuses', 'tasks.status_id', '=', 'task_statuses.id')
             ->select(
-                'tasks.*', 
+                'tasks.*',
                 'projects.title as project_title',
                 'projects.completion',
-                'task_statuses.task_status', 
+                'task_statuses.task_status',
                 'app_user.*'
             )
             ->get();
@@ -396,7 +434,7 @@ class Task extends BaseModel
         // dd($parent);
         $current = $parent->parent;
         $atasan = [];
-        while($current!=null){
+        while ($current != null) {
             $parentEmployee = EmployeeHierarchy::where('user_id', $current->user_id)->first();
             $paramAtasan = [
                 'id' => $parentEmployee->user_id,
@@ -406,24 +444,26 @@ class Task extends BaseModel
             array_push($atasan, $paramAtasan);
             $current = $current->parent;
         }
-        
+
         return $atasan;
     }
 
+
     private static function getHierarchyDown($auth) 
+
     {
         $dataBawahanLangsung = [];
         // Get bawahan dari user login
         $employee = EmployeeHierarchy::where('user_id', $auth)->whereHas('child')->first();
 
         if ($employee) {
-            foreach($employee->child as $e){
+            foreach ($employee->child as $e) {
                 $param = [
                     'id' => $e->user_id,
                     'name' => $e->getEmploye()->user_name,
                     'email' => $e->getEmploye()->user_email
                 ];
-    
+
                 $dataBawahanLangsung[] = $param;
             }
 
@@ -432,7 +472,7 @@ class Task extends BaseModel
             $dataSemuaBawahan = [];
             $no = 1;
 
-            while(count($usr) > 0){
+            while (count($usr) > 0) {
                 $nextUsr = [];
                 foreach ($usr as $c) {
                     $param = [
@@ -441,12 +481,12 @@ class Task extends BaseModel
                         'email' => $c->getEmploye()->user_email
                     ];
                     array_push($dataSemuaBawahan, $param);
-                    $nextUsr = array_merge($nextUsr, $c->child->all()); 
+                    $nextUsr = array_merge($nextUsr, $c->child->all());
                 }
                 $no++;
                 $usr = $nextUsr;
             }
-            
+
             return $dataSemuaBawahan;
         }
 
@@ -476,7 +516,7 @@ class Task extends BaseModel
             $assignToIds = array_merge([$auth], $allUser);
         }elseif (!$dataSemuaBawahan) {
             $assignToIds = [$auth];
-        }else {
+        } else {
             $bawahanIds = array_column($dataSemuaBawahan, 'id');
             // Tambahkan ID auth saat ini ke dalam daftar ID bawahan
             $assignToIds = array_merge([$auth], $bawahanIds);
@@ -495,7 +535,7 @@ class Task extends BaseModel
             ->leftJoin('task_labeling', 'tasks.id', '=', 'task_labeling.task_id')
             ->leftJoin('task_labels', 'task_labeling.label_id', '=', 'task_labels.id')
             ->leftJoin('task_categories', 'tasks.category_id', '=', 'task_categories.id')
-            ->where(function($query) use ($assignToIds) {
+            ->where(function ($query) use ($assignToIds) {
                 $query->whereIn('tasks.assign_to', $assignToIds)
                     ->orWhere('tasks.status_id', 1);
             })
@@ -534,7 +574,8 @@ class Task extends BaseModel
                 'assign_to_name',
                 // 'task_flags.flag_name',
                 'creators.user_name',
-                'assignees.user_name')
+                'assignees.user_name'
+            )
             ->get();
     }
 
@@ -544,7 +585,7 @@ class Task extends BaseModel
         $dataSemuaBawahan = Task::getHierarchyDown($auth);
         if (!$dataSemuaBawahan) {
             $assignToIds = [$auth];
-        }else {
+        } else {
             $bawahanIds = array_column($dataSemuaBawahan, 'id');
             $assignToIds = array_merge([$auth], $bawahanIds);
         }
@@ -564,7 +605,7 @@ class Task extends BaseModel
             ->leftJoin('task_labeling', 'tasks.id', '=', 'task_labeling.task_id')
             ->leftJoin('task_labels', 'task_labeling.label_id', '=', 'task_labels.id')
             ->leftJoin('task_categories', 'tasks.category_id', '=', 'task_categories.id')
-            ->where(function($query) use ($assignToIds) {
+            ->where(function ($query) use ($assignToIds) {
                 $query->whereIn('tasks.assign_to', $assignToIds)
                     ->orWhere('tasks.status_id', 1);
             })
@@ -595,14 +636,14 @@ class Task extends BaseModel
                 'tasks.category_id',
                 'tasks.use_holiday',
                 'tasks.use_weekend',
-                'tasks.deleted_at', 
+                'tasks.deleted_at',
                 'status_name',
                 'project_title',
                 'created_by_name',
                 'assign_to_name',
                 'category_name',
                 // 'task_flags.flag_name'
-                )
+            )
             ->get();
     }
     // ================================================================KEBUTUHAN CALENDAR================================================================
@@ -658,7 +699,7 @@ class Task extends BaseModel
     public static function scopeFilterByTimeFrame($query, $column, $timeFrame)
     {
         $currentDate = Carbon::now();
-        
+
         $query->each(function ($item) {
             $item->start_date_estimation = Carbon::parse($item->start_date_estimation);
             $item->end_date_estimation = Carbon::parse($item->end_date_estimation);
@@ -721,7 +762,7 @@ class Task extends BaseModel
         // dd($id);
         return DB::table('tasks')
             ->whereIn('id', $id)
-            ->select('id','tasks.title', 'tasks.summary')
+            ->select('id', 'tasks.title', 'tasks.summary')
             ->get();
     }
     // Task::whereIn('id', $this->selectedTasks)->get(['title', 'summary']);
@@ -757,12 +798,12 @@ class Task extends BaseModel
     public static function taskPlanDay($taskId)
     {
         return DB::table('tasks')
-                ->where('tasks.id', $taskId)
-                ->whereNull('tasks.deleted_at')
-                ->select(DB::raw('DATEDIFF(end_date_estimation, start_date_estimation) AS total_days'))
-                ->get();
+            ->where('tasks.id', $taskId)
+            ->whereNull('tasks.deleted_at')
+            ->select(DB::raw('DATEDIFF(end_date_estimation, start_date_estimation) AS total_days'))
+            ->get();
     }
-    
+
 
     // DASHBOARD - PROGRESS
     public static function allGroupTasks($projectId)
@@ -774,7 +815,8 @@ class Task extends BaseModel
             ->whereNotNull('t.category_id')
             ->where('project_id', $projectId)
             ->groupBy(
-                't.category_id', 'categories.category_name'
+                't.category_id',
+                'categories.category_name'
             )
             ->get();
     }
@@ -805,12 +847,12 @@ class Task extends BaseModel
                 't.category_id',
                 't.use_holiday',
                 't.use_weekend',
-                )
+            )
             ->get();
     }
 
-    
-   // ================================================================RESOURCES TRACK================================================================
+
+    // ================================================================RESOURCES TRACK================================================================
 
 
     // WORKLOAD
@@ -831,8 +873,10 @@ class Task extends BaseModel
     "), DB::raw('count(*) as total'))
             ->where('tasks.project_id', $projectId)
             ->groupBy(
-                'tasks.assign_to', 'user_name', 'task_status'
-                )
+                'tasks.assign_to',
+                'user_name',
+                'task_status'
+            )
             ->get();
 
         // Group tasks by user and status
@@ -851,8 +895,8 @@ class Task extends BaseModel
         });
 
         return $taskCounts;
-
     }
 
     // =============================== SISTEM PENDUKUNG KEPUTUSAN ======================================
+
 }

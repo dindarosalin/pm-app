@@ -74,6 +74,7 @@ class Dashboard extends Component
         return task::getAllProjectTasks($this->projectId);
     }
 
+
     public function totalTasks()
     {
         try {
@@ -200,18 +201,25 @@ class Dashboard extends Component
 
         // HEALTH
         $this->spi = (float)Dashboard::spi();
-        if ($this->spi == 1.0) {
+        switch (true) {
+            case $this->spi == 1.0:
             $this->spiMessage = "On Track";
-        } else if ($this->spi == 0.0) {
+            break;
+            case $this->spi == 0.0:
             $this->spiMessage = "NA";
-        } else if ($this->spi > 1.0) {
+            break;
+            case $this->spi > 1.0:
             $this->spiMessage = "Faster";
-        } else if ($this->spi < 1.0){
+            break;
+            case $this->spi < 1.0:
             $this->spiMessage = "Delay";
-        } else if ($this->project->status = 'Hold') {
+            break;
+            case $this->project->status == 'Hold':
             $this->spiMessage = "Hold";
-        }else {
+            break;
+            default:
             $this->spiMessage = "NA";
+            break;
         }
         
 
