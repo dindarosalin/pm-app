@@ -17,6 +17,9 @@ use App\Models\Projects\Master\TaskLabel;
 use App\Models\Employee\EmployeeHierarchy;
 use App\Models\Projects\Master\TaskCategory;
 use App\Models\Projects\Master\TaskStatuses;
+use App\Models\Settings\Role;
+use Illuminate\Support\Facades\DB;
+
 
 class ShowTask extends Component
 {
@@ -32,6 +35,8 @@ class ShowTask extends Component
     public $selectedLabels = [];
     public $employees, $flags, $categories, $labels;
 
+    public $tasks;
+
     public $status = 1;
 
     public $statuses;
@@ -44,21 +49,35 @@ class ShowTask extends Component
     public $comment;
     public $countComment;
 
+    // FILTER VAR
+    public $search = '';
+    public $sortColumn = null;
+    public $sortDirection = 'asc';
+    public $filters = [];
+
+    public $timeFrame = [];
+    public $fromToDate;
+
+    public $fromDate = [];
+    public $toDate = [];
+
+    public $fromNumber = [];
+    public $toNumber = [];
+
+    public $scores;
+
     public function render()
     {
-        $this->auth = Auth::user()->user_id; // -> 1
-        // $this->auth = '16825598905258'; // -> 2
-        // $this->auth = '16838855416673'; // -> 3
-        // $this->auth = '1672385124827'; // -> 4
+        $this->auth = Auth::user()->user_id;
 
         $this->totalTask = Task::getAllProjectTasksByAuth($this->projectId, $this->auth)->count();
         $this->projectDetail = Project::getById($this->projectId);
         $this->employees = collect($this->getEmployeesTask());
-        
-        // if role admin
-        // $user = User::select('user_id AS id', 'user_name AS name', 'user_email AS email')->get()->toArray();
-        // $this->employees = collect($user);
+        $this->getAllTasks();
 
+        // $this->filter($this->tasks);
+        $this->tasks = $this->filter($this->tasks)->sortBy('status_id');
+        // dd($this->tasks);
         return view('livewire.projects.tasks.show-task', [
             'totalTask' => $this->totalTask,
             'employees' => $this->employees,
@@ -66,6 +85,19 @@ class ShowTask extends Component
             'categories' => $this->categories,
             'labels' => $this->labels,
         ]);
+    }
+
+    public function getAllTasks(){
+        // $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
+        $t = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
+        $ranking = collect($this->scores);
+        // dd($this->scores);
+
+        $this->tasks = $t->map(function ($task) use ($ranking) {
+            $score = optional($ranking->firstWhere('task_id', $task->id))['score'] ?? null;
+            $task->score = $score;
+            return $task;
+        });
     }
 
     #[On('updateTaskCount')]
@@ -102,8 +134,6 @@ class ShowTask extends Component
             $this->taskCounts[$status->id] = 0;
         }
     }
-
-
 
     public function save()
     {
@@ -246,6 +276,10 @@ class ShowTask extends Component
 
     public function getEmployeesTask()
     {
+        $isAdmin = DB::table('app_role_user')->where('user_id', $this->auth)->where('role_id', 20)->value('user_id');
+
+        // dd($isAdmin, $this->auth);
+
         $dataBawahanLangsung = [];
         // Get bawahan dari user login
         $employee = EmployeeHierarchy::where('user_id', $this->auth)->whereHas('child')->first();
@@ -282,7 +316,99 @@ class ShowTask extends Component
             }
 
             return $dataSemuaBawahan;
+
+            // manage assign_to untuk admin
+        } elseif ($this->auth == $isAdmin) { 
+            $allUser = DB::table('app_user')
+            ->select([
+                'user_id as id',
+                'user_name as name',
+                'user_email as email'
+            ])
+            ->get()
+            ->map(function ($user) {
+                return (array) $user;
+            })
+            ->toArray();
+
+            // $allUser = EmployeeHierarchy::getAllEmployees();
+
+            // dd($allUser);
+            return $allUser;
         }
+    }
+
+    public function filter($tasks)
+    {
+        // dd('kefilter');
+        // Pencarian
+        if ($this->search) {
+            $tasks = Task::scopeSearch($tasks, $this->search);
+        }
+
+        // Sorting
+        if ($this->sortColumn) {
+            $tasks = Project::scopeSorting($tasks, $this->sortColumn, $this->sortDirection);
+        }
+
+        // Filter berdasarkan kolom
+        if ($this->filters) {
+            foreach ($this->filters as $column => $value) {
+                if (!empty($value)) {
+                    $tasks = Project::scopeFilter($tasks, $column, $value);
+                }
+            }
+        }
+
+        // Filter berdasarkan time frame dan date range
+        if ($this->timeFrame) {
+            foreach ($this->timeFrame as $column => $this->fromToDate) {
+                if ($this->fromToDate === 'custom-start-date' || $this->fromToDate === 'custom-start' || $this->fromToDate === 'custom-end') {
+                    $tasks = Task::scopeFilterByDateRange($tasks, $this->fromDate, $this->toDate, $column);
+                } else {
+                    $tasks = Task::scopeFilterByTimeFrame($tasks, $column, $this->fromToDate);
+                }
+            }
+        }
+
+        foreach ($this->fromNumber as $column => $fromValue) {
+            $toValue = $this->toNumber[$column] ?? null;
+            $tasks = Task::scopeFilterByNumberRange($tasks, $column, $fromValue, $toValue);
+        }
+
+        return $tasks;
+    }
+
+    public function sortBy($column)
+    {
+        if ($this->sortColumn === $column) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortColumn = $column;
+            $this->sortDirection = 'asc';
+        }
+    }
+
+    public function resetFilter()
+    {
+        // $this->reset();
+        $this->filters = [];
+        $this->search = '';
+        $this->timeFrame = [];
+        $this->sortColumn = null;
+    }
+
+    #[On('update-task-score')]
+    public function applyRanking($scoresData)
+    {
+        $this->scores = collect($scoresData);
+        
+        // dd($this->scores);
+    }
+
+    public function updatedScores()
+    {
+        $this->getAllTasks();
     }
 
     // public function sendComment()

@@ -27,4 +27,8 @@ class EmployeeHierarchy extends Model
             ->where('user_id', $this->user_id)
             ->first();
     }
+
+    public function getAllEmployees(){
+        return DB::table('app_user')->get();
+    }
 }

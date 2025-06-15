@@ -32,7 +32,10 @@ use App\Livewire\Master\Holiday\ShowHoliday;
 use App\Livewire\Master\ProjectStatus\ShowProjectStatus;
 use App\Livewire\Master\StatusWfh\ShowStatusWfh;
 //TASK
+
 use App\Livewire\Master\TaskCategory\ShowTaskCategory;
+use App\Livewire\Master\TaskFlag\ShowTaskFlag;
+use App\Livewire\Master\TaskCriteria\ShowTaskCriteria;
 
 //REPORT
 use App\Livewire\Master\TaskFlag\ShowTaskFlag;
@@ -176,6 +179,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/task-status', ShowTaskStatus::class)->name('task-status');
         Route::get('/task-flag', ShowTaskFlag::class)->name('task-flag');
         Route::get('/task-label', ShowTaskLabel::class)->name('task-label');
+        Route::get('/task-criteria', ShowTaskCriteria::class)->name('task-criteria');
         Route::get('/task-category', ShowTaskCategory::class)->name('task-category');
         Route::get('/budget-category', ShowBudgetCategory::class)->name('budget-category');
         Route::get('/budget-subcategory', ShowBudgetSubCategory::class)->name('budget-subcategory');
