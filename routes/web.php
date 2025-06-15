@@ -26,6 +26,16 @@ use App\Livewire\Approval\Accountable\AccountableRab\AccountableDetailRab;
 use App\Livewire\Approval\Accountable\AccountableRab\AccountableTableRab;
 use App\Livewire\Approval\Accountable\AccountableReimburse\AccountableDetailReimburse;
 use App\Livewire\Approval\Accountable\AccountableReimburse\AccountableTableReimburse;
+use App\Livewire\Approval\Consulted\ConsultAbsence\AbsenceDetail;
+use App\Livewire\Approval\Consulted\ConsultAbsence\AbsenceTable;
+use App\Livewire\Approval\Consulted\ConsultDashboard;
+use App\Livewire\Approval\Consulted\ConsultPermission\PermissionDetail;
+use App\Livewire\Approval\Consulted\ConsultPermission\PermissionTable;
+use App\Livewire\Approval\Consulted\ConsultProjectProcurement\ProjectTable;
+use App\Livewire\Approval\Consulted\ConsultRab\RabDetail;
+use App\Livewire\Approval\Consulted\ConsultRab\RabTable;
+use App\Livewire\Approval\Consulted\ConsultReimburse\ReimburseDetail;
+use App\Livewire\Approval\Consulted\ConsultReimburse\ReimburseTable;
 use App\Livewire\Approval\Responsible\ResponsibleRabDetail;
 use App\Livewire\Approval\Responsible\ResponsibleReimburseDetail;
 use App\Livewire\Approved\Approval;
@@ -219,6 +229,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reimburse-table-accountable/{reimburseId}', AccountableDetailReimburse::class)->name('reimburse-table-accountable-detail');
         Route::get('project-procurement-table-accountable', AccountableTableProject::class)->name('project-procurement-table-accountable');
         Route::get('project-procurement-table-accountable/{projectId}', AccountableDetailProject::class)->name('project-procurement-table-accountable-detail');
+    });
+
+    Route::prefix('consult')->name('consult.')->group(function(){
+        Route::get('dashboard-consult', ConsultDashboard::class)->name('dashboard-consult');
+        Route::get('permission-consult', PermissionTable::class)->name('permission-consult');
+        Route::get('permission-consult/{permissionId}', PermissionDetail::class)->name('permission-consult-detail');
+        Route::get('absence-consult', AbsenceTable::class)->name('absence-consult');
+        Route::get('absence-consult/{absenceId}', AbsenceDetail::class)->name('absence-consult-detail');
+        Route::get('rab-consult', RabTable::class)->name('rab-consult');
+        Route::get('rab-consult/{rabId}', RabDetail::class)->name('rab-consult-detail');
+        Route::get('reimburse-consult', ReimburseTable::class)->name('reimburse-consult');
+        Route::get('reimburse-consult/{reimburseId}', ReimburseDetail::class)->name('reimburse-consult-detail');
+        Route::get('project-procurement-consult', ProjectTable::class)->name('project-consult');
+        Route::get('project-procurement-consult/{projectId}', \App\Livewire\Approval\Consulted\ConsultProjectProcurement\ProjectDetail::class)->name('project-consult-detail');
     });
 
     Route::prefix('master')->name('master.')->group(function () {

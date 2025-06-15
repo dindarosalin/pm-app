@@ -10,7 +10,7 @@ class ApprovalRab extends BaseModel
     public static function getAll()
     {
         return DB::table('approval_rab')
-        ->join('app_user', 'approval_rab.user_id_rab', '=', 'app_user.user_id')
+        ->join('app_user', 'approval_rab.user_id', '=', 'app_user.user_id')
         ->join('approval_statuses', 'approval_rab.status_id', '=', 'approval_statuses.code')
         ->join('approval_types', 'approval_rab.approval_id', '=', 'approval_types.id' )
         ->select(

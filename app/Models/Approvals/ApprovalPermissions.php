@@ -10,9 +10,18 @@ class ApprovalPermissions extends BaseModel
     public static function getAll()
     {
         return DB::table('approval_permission')
-            ->join('approval_permission_types', 'approval_permission.subject', '=', 'approval_permission_types.id')
-            ->select('approval_permission.*', 'approval_permission_types.name as subject_name')
-            ->get();
+        ->join('app_user', 'approval_permission.user_id', '=', 'app_user.user_id')
+        ->join('approval_permission_types', 'approval_permission.subject', '=', 'approval_permission_types.id')
+        ->join('approval_statuses', 'approval_permission.status_id', '=', 'approval_statuses.code')
+        ->join('approval_types', 'approval_permission.approval_id', '=', 'approval_types.id' )
+        ->select(
+            'approval_permission.*',
+            'app_user.user_name as user_name',
+            'approval_permission_types.name as subject_name',
+            'approval_statuses.name as status_name',
+            'approval_types.name as approval_name'
+            )
+        ->get();
     }
 
     public static function getAllByUserId($auth)
@@ -133,6 +142,16 @@ class ApprovalPermissions extends BaseModel
         ->where('id', $id)
         ->update([
             'status_id' => $statusCode,
+            'last_updated' => now(),
+            'note' => $note
+        ]);
+    }
+
+    public static function updateNote($id, $note)
+    {
+        DB::table('approval_permission')
+        ->where('id', $id)
+        ->update([
             'last_updated' => now(),
             'note' => $note
         ]);
