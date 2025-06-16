@@ -82,7 +82,7 @@
         <div id="content">
             @include('components.layouts.navbar')
             <section class="main-content">
-                <div class="navbar mt-0">
+                <div class="card">
                     @livewire('layouts.breadcrumbs')
                 </div>
                 {{ $slot }}

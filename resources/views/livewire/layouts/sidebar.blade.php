@@ -319,6 +319,17 @@
                         </li>
                     @endif
 
+                    @if (App\Models\Base\BaseModel::isAuthorize('116', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-criteria') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.task-criteria') }}"
+                                wire:navigate.defer.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Task Criteria</span>
+                            </a>
+                        </li>
+                    @endif
+
                     @if (App\Models\Base\BaseModel::isAuthorize('104', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.budget-category') ? 'active' : '' }} ">

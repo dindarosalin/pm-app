@@ -82,6 +82,11 @@ class ShowProject extends Component
             }
         }
 
+        // Sorting
+        if ($this->sortColumn) {
+            $projects = Project::scopeSorting($projects, $this->sortColumn, $this->sortDirection);
+        }
+
         // Filter berdasarkan time frame dan date range
         if ($this->timeFrame) {
             foreach ($this->timeFrame as $column => $this->fromToDate) {
@@ -96,11 +101,6 @@ class ShowProject extends Component
         foreach ($this->fromNumber as $column => $fromValue) {
             $toValue = $this->toNumber[$column] ?? null;
             $projects = Project::scopeFilterByNumberRange($projects, $column, $fromValue, $toValue);
-        }
-
-        // Sorting
-        if ($this->sortColumn) {
-            $projects = Project::scopeSorting($projects, $this->sortColumn, $this->sortDirection);
         }
 
         return $projects;
