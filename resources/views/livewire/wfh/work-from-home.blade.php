@@ -1,8 +1,5 @@
 <div>
-    @section('title')
-        More actions
-        Work From Home
-    @endsection
+    @section('title', 'Work From Home')
 
     @push('styles')
         <style>
@@ -98,9 +95,9 @@
         });
 
         peer = new Peer({
-            host: 'pm-app.test',
-            port: 9000,
-            path: '/peerjs',
+            // host: 'pm-app.test',
+            // port: 9000,
+            // path: '/peerjs',
             secure: true, // Changed to false to avoid HTTPS issues
             debug: 3,
             config: {
@@ -122,9 +119,9 @@
         startPeerBtn.addEventListener('click', async () => {
             try {
                 peer = new Peer({
-                    host: 'pm-app.test',
-                    port: 9000,
-                    path: '/peerjs',
+                    // host: 'pm-app.test',
+                    // port: 9000,
+                    // path: '/peerjs',
                     secure: true, // Changed to false to avoid HTTPS issues
                     debug: 3,
                     config: {
@@ -261,15 +258,14 @@
         //     }
         // });
 
-
         peer.on('call', call => {
-            log('Incoming call from:', call.peer);
+            console.log('Incoming call from:', call.peer);
             if (localStream) {
                 call.answer(localStream);
             } else {
                 navigator.mediaDevices.getUserMedia({
                     video: true,
-                    audio: false
+                    audio: true
                 }).then(stream => {
                     localStream = stream;
                     localVideo.srcObject = localStream;
@@ -277,5 +273,21 @@
                 });
             }
         });
+
+        // peer.on('call', call => {
+        //     log('Incoming call from:', call.peer);
+        //     if (localStream) {
+        //         call.answer(localStream);
+        //     } else {
+        //         navigator.mediaDevices.getUserMedia({
+        //             video: true,
+        //             audio: false
+        //         }).then(stream => {
+        //             localStream = stream;
+        //             localVideo.srcObject = localStream;
+        //             call.answer(localStream);
+        //         });
+        //     }
+        // });
     </script>
 </div>

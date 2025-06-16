@@ -419,4 +419,32 @@ class Project extends BaseModel
             ->groupBy('tasks.project_id', 'projects.budget', 'project_title', 'track_summary.ac')
             ->get();
     }
+
+    /**
+     * Menghitung jumlah project berdasarkan status yang diberikan.
+     * 
+     * @param array|null $statusMap Array dengan key bebas dan value array/list id status, 
+     *        atau null untuk mengambil semua status dari tabel master.
+     *        Contoh: ['onProgress' => [3,4], 'done' => [5,6]]
+     *        Jika null, akan return count untuk semua status di master.
+     * @return array
+     */
+    public static function projectsCountByStatus()
+    {
+
+        // Ambil semua status dari tabel master
+        $statuses = DB::table('project_statuses')->pluck('id', 'project_status')->toArray();
+        $result = [];
+        foreach ($statuses as $name => $id) {
+            $result[$name] = DB::table('projects')->where('status_id', $id)->count();
+        }
+        return $result;
+
+
+        $result = [];
+        foreach ($statusMap as $key => $statusIds) {
+            $result[$key] = DB::table('projects')->whereIn('status_id', (array)$statusIds)->count();
+        }
+        return $result;
+    }
 }

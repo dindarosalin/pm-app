@@ -21,6 +21,10 @@ class DashboardAll extends Component
     // data collection for the tasks dounats
     public $tasks;
 
+    // projects count by status
+    public $projectsCountByStatus;
+
+
 
 
     public function getDataOnsite() {}
@@ -48,6 +52,12 @@ class DashboardAll extends Component
         return ['notStart' => $taskNotStarted, 'onProgress' => $taskOnProgress, 'done' => $taskDone, 'hold' => $taskHold, 'cancel' => $taskCancel];
     }
 
+    // Count projects by status id
+    public function projectsCountByStatus()
+    {
+        return project::projectsCountByStatus();
+    }
+
 
 
     // PROJECT PROGESS
@@ -57,6 +67,7 @@ class DashboardAll extends Component
             return [
                 'title' => $project->title,
                 'completion' => $project->completion,
+                'status' => $project->status,
             ];
         });
         // dd($this->percentagesProgress);
@@ -92,6 +103,22 @@ class DashboardAll extends Component
         // return [$evAll, $taskDone];
     }
 
+    // COST
+    public function costProjects()
+    {
+        return Project::getAll()->map(function ($projectCosts) {
+            return [
+                'id' => $projectCosts->id,
+                'title' => $projectCosts->title,
+                'budget' => $projectCosts->budget,
+            ];
+        });
+
+
+        // Get the actual cost from the related table/column
+
+    }
+
 
 
     public function mount()
@@ -104,13 +131,19 @@ class DashboardAll extends Component
         });
 
         // TASKS DOUNATS
-        $this->tasks = $this->tasksAll();
+        $this->projectsCountByStatus = $this->projectsCountByStatus();
+        // dd($this->projectsCountByStatus());
 
-        //
+        // PROGRESS
         $this->percentagesProgress = $this->projectProgress();
 
+        // TIME
         // dd($this->timeData());
         $this->time();
+
+        // COST
+        $this->costProjects();
+        // dd($projects);
     }
 
 
