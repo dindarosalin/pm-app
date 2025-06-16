@@ -108,6 +108,8 @@ class ShowStatusWfh extends Component
 
     public function render()
     {
+        $this->resetForm();
+
         $this->statuses = $this->getStatusesProperty();
         // dd($this->statuses);
         if ($this->statuses && $this->statuses->isEmpty()) {
