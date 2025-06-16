@@ -87,7 +87,8 @@ class ShowTask extends Component
         ]);
     }
 
-    public function getAllTasks(){
+    public function getAllTasks()
+    {
         // $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
         $t = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
         $ranking = collect($this->scores);
@@ -318,18 +319,18 @@ class ShowTask extends Component
             return $dataSemuaBawahan;
 
             // manage assign_to untuk admin
-        } elseif ($this->auth == $isAdmin) { 
+        } elseif ($this->auth == $isAdmin) {
             $allUser = DB::table('app_user')
-            ->select([
-                'user_id as id',
-                'user_name as name',
-                'user_email as email'
-            ])
-            ->get()
-            ->map(function ($user) {
-                return (array) $user;
-            })
-            ->toArray();
+                ->select([
+                    'user_id as id',
+                    'user_name as name',
+                    'user_email as email'
+                ])
+                ->get()
+                ->map(function ($user) {
+                    return (array) $user;
+                })
+                ->toArray();
 
             // $allUser = EmployeeHierarchy::getAllEmployees();
 
@@ -402,7 +403,7 @@ class ShowTask extends Component
     public function applyRanking($scoresData)
     {
         $this->scores = collect($scoresData);
-        
+
         // dd($this->scores);
     }
 
@@ -442,6 +443,5 @@ class ShowTask extends Component
     {
         // dd($this->taskShow->id);
         return Comment::countByTask($this->taskShow->id);
-
     }
 }
