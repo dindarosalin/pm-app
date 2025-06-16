@@ -99,9 +99,10 @@
             <div class="col-xl-6 col-md-12 col-sm-12">
                 <div class="card card-switch p-3" style="max-height: 40vh;">
                     <h5>Work Hours/month</h5>
-                    <div class="scroll overflow-y-scroll" style="max-height: 100%">
-                        <canvas id="workHoursChart"></canvas>
+                    <div class="scroll overflow-y-scroll" style="max-height: 70%">
+                        <canvas id="workHoursChart" class="overflow-y-scroll" style="max-height:100%"></canvas>
                     </div>
+
                 </div>
             </div>
             <!-- Work Hours End -->
@@ -132,8 +133,8 @@
             <div class="col-xl-6 col-md-12 col-sm-12">
                 <div class="card card-switch p-3" style="max-height: 40vh;">
                     <h5>Cost</h5>
-                    <div class="scroll overflow-scroll" style="max-height: 100%">
-                        <canvas id="costChart"></canvas>
+                    <div class="scroll overflow-scroll" style="max-height: 70%">
+                        <canvas id="costChart" style="max-height: 100%"></canvas>
                     </div>
                 </div>
             </div>
@@ -320,6 +321,16 @@
                     title: {
                         display: false,
                         text: 'Cost'
+                    },
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x',
+                        },
+                        zoom: {
+                            enabled: true,
+                            mode: 'x',
+                        }
                     }
                 },
                 scales: {
