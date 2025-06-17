@@ -13,18 +13,23 @@
                     <select class="form-select form-select-sm" wire:model='subject'>
                         <option value="">Select Subject</option>
                         @foreach ($subjectList as $item)
-                            <option wire:key='{{ $item->id }}' value="{{ $item->id }}">{{ $item->name }}</option>
+                            <option wire:key='{{ $item->id }}' value="{{ $item->id }}">{{ $item->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
 
-                <div class="mb-3">
-                    <select class="form-select form-select-sm" wire:model='accountableList'>
-                        @foreach ($accountableList as $item)
-                            <option wire:key='{{ $item['id'] }}' value="{{ $item['id'] }}">{{ $item['name'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                @if ($accountableList)
+                    <div class="mb-3">
+                        <select class="form-select form-select-sm" wire:model='accountable'>
+                            <option value="">select Accountable</option>
+                            @foreach ($accountableList as $item)
+                                <option wire:key='{{ $item['id'] }}' value="{{ $item['id'] }}">{{ $item['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
 
                 <div class="mb-3 form-floating">
                     <textarea class="form-control" wire:model='absDetail' placeholder="Leave of Absence Detail" id="floatingTextarea2"></textarea>
@@ -70,13 +75,15 @@
                 </div>
 
                 <div class="mb-3 form-floating">
-                    <textarea class="form-control" wire:model='noteDelegation' placeholder="note for delegate description" id="floatingTextarea2"></textarea>
+                    <textarea class="form-control" wire:model='noteDelegation' placeholder="note for delegate description"
+                        id="floatingTextarea2"></textarea>
                     <label for="floatingTextarea2">Note For Delegation:</label>
                 </div>
 
                 <div class="mb-3">
                     <label for="formFileSm" class="form-label">Upload File:</label>
-                    <input class="form-control form-control-sm" id="formFileSm" wire:model.defer='file' type="file" accept="application/pdf">
+                    <input class="form-control form-control-sm" id="formFileSm" wire:model.defer='file' type="file"
+                        accept="application/pdf">
                     <span wire:loading wire:target='file'>Uploading...</span>
                 </div>
                 <button type="submit" class="btn btn-sm btn-primary">Save</button>
@@ -99,7 +106,8 @@
                         </li>
                         @foreach ($absenceRules as $item)
                             <li>
-                                <a href="{{ asset('storage/' .$item->file_path) }}" target="_blank" class="text-primary">
+                                <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank"
+                                    class="text-primary">
                                     {{ $item->file_name }}
                                 </a>
                             </li>
@@ -129,17 +137,39 @@
                         <tr>
                             <td>{{ $item->subject_name }}</td>
                             <td>{{ $item->submission_date }}</td>
-                            <td>{{ $item->status_id }}</td>
+                            <td>
+                                <span
+                                        class="badge
+                                @switch($item->status_id)
+                                    @case('1')
+                                        text-bg-primary
+                                        @break
+                                    @case('2')
+                                        text-bg-info
+                                        @break
+                                    @case('3')
+                                        text-bg-warning
+                                        @break
+                                    @case('4')
+                                        text-bg-success
+                                        @break
+                                    @case('5')
+                                        text-bg-danger
+                                        @break
+                                @endswitch ">{{ $item->status_name }}
+                            </td>
                             <td>{{ $item->last_updated }}</td>
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <!-- Edit -->
-                                    <p role="button" wire:click='edit({{ $item->id }})' class="text-warning m-0 p-0" style="cursor: pointer;">
+                                    <p role="button" wire:click='edit({{ $item->id }})'
+                                        class="text-warning m-0 p-0" style="cursor: pointer;">
                                         <i class="fa fa-pen-to-square"></i>
                                     </p>
 
                                     <!-- Delete -->
-                                    <p role="button" wire:click='alertConfirm({{ $item->id }})' class="text-danger m-0 p-0" style="cursor: pointer;">
+                                    <p role="button" wire:click='alertConfirm({{ $item->id }})'
+                                        class="text-danger m-0 p-0" style="cursor: pointer;">
                                         <i class="fa fa-trash"></i>
                                     </p>
                                 </div>

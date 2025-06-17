@@ -30,6 +30,8 @@ class ResponsibleAbsence extends Component
     public function render()
     {
         $this->loadData();
+        // dd($this->accountableList);
+        // dd($this->auth);
         return view('livewire.approval.responsible.responsible-absence');
     }
 
@@ -48,6 +50,7 @@ class ResponsibleAbsence extends Component
 
     public function save()
     {
+        // dd($this->all());
         $this->uploadFile();
 
         if ($this->absenceId) {
@@ -59,10 +62,15 @@ class ResponsibleAbsence extends Component
 
         $this->reset();
         $this->dispatch('close-offcanvas');
+        $this->dispatch('swal:modal', [
+            'type' => 'success',
+            'message' => 'Data Saved',
+            'text' => 'It will list on the table.',
+        ]);
     }
 
     public function uploadFile()
-    {
+{
         if ($this->file) {
             // hapus file lama jika ada dan sedang update
             if ($this->filePath && Storage::disk('public')->exists($this->filePath)) {
@@ -84,6 +92,7 @@ class ResponsibleAbsence extends Component
         $this->absenceId = $a->id;
         $this->subject = $a->subject;
         $this->accountable = $a->accountable;
+        $this->approvalId = $a->approval_id;
         $this->absDetail = $a->absence_detail;
         $this->startDate = $a->start_date;
         $this->endDate = $a->end_date;

@@ -44,7 +44,7 @@
                             <td>{{ $item->last_updated }}</td>
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
-                                    <p role="button" wire:navigate href="/accountable/permission-table-accountable/{{ $item->id }}"
+                                    <p role="button" wire:navigate href="/accountable/absence-table-accountable/{{ $item->id }}"
                                         class="text-primary m-0 p-0" style="cursor: pointer;">
                                         <i class="fa-solid fa-eye"></i>
                                     </p>

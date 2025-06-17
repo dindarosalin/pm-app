@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Approval\Responsible;
 
+use App\Models\Approvals\ApprovalAbsences;
 use App\Models\Approvals\ApprovalPermissions;
 use App\Models\Approvals\ApprovalProjectProcurement;
 use App\Models\Approvals\ApprovalRab;
@@ -35,6 +36,11 @@ class ResponsibleDashboard extends Component
             return $item;
         });
 
+        $this->absences = ApprovalAbsences::getAllByUserId($this->auth)->map(function ($item) {
+            $item->subject_name = $item->subject_name ?? ($item->subject ?? '-');
+            return $item;
+        });
+
         $this->rabs = ApprovalRab::getAllByUserId($this->auth)->map(function ($item) {
             $item->subject_name = $item->subject_name ?? ($item->subject ?? '-');
             return $item;
@@ -52,7 +58,7 @@ class ResponsibleDashboard extends Component
 
         // dd($this->permissions, $this->rabs, $this->reimburses, $this->projects);
 
-        $this->approvals = collect()->merge($this->permissions)->merge($this->rabs)->merge($this->reimburses)->merge($this->projects);
+        $this->approvals = collect()->merge($this->permissions)->merge($this->absences)->merge($this->rabs)->merge($this->reimburses)->merge($this->projects);
         $this->approvalTotal = $this->approvals->count();
     }
 }

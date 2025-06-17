@@ -14,52 +14,58 @@ class EmployeeHierarchy extends Model
 
     protected $fillable = ['parent_id', 'user_id'];
 
-    public function parent(){
+    public function parent()
+    {
         return $this->belongsTo('App\Models\Employee\EmployeeHierarchy', 'parent_id', 'user_id');
     }
 
-    public function child(){
+    public function child()
+    {
         return $this->hasMany('App\Models\Employee\EmployeeHierarchy', 'parent_id', 'user_id');
     }
 
-    public function getEmploye(){
-        return DB::table('app_user')
-            ->where('user_id', $this->user_id)
-            ->first();
+    public function getEmploye()
+    {
+        return DB::table('app_user')->where('user_id', $this->user_id)->first();
     }
 
-    public static function getHierarchyUp($auth){
+    public static function getHierarchyUp($auth)
+    {
         // dd($auth);
         $parent = EmployeeHierarchy::where('user_id', $auth)->whereHas('parent')->first();
         // dd($parent);
-        $current = $parent->parent;
-        $atasan = [];
-        while($current!=null){
-            $parentEmployee = EmployeeHierarchy::where('user_id', $current->user_id)->first();
-            $paramAtasan = [
-                'id' => $parentEmployee->user_id,
-                'name' => $parentEmployee->getEmploye()->user_name,
-                'email' => $parentEmployee->getEmploye()->user_email
-            ];
-            array_push($atasan, $paramAtasan);
-            $current = $current->parent;
+        if ($parent) {
+            $current = $parent->parent;
+            $atasan = [];
+            while ($current != null) {
+                $parentEmployee = EmployeeHierarchy::where('user_id', $current->user_id)->first();
+                $paramAtasan = [
+                    'id' => $parentEmployee->user_id,
+                    'name' => $parentEmployee->getEmploye()->user_name,
+                    'email' => $parentEmployee->getEmploye()->user_email,
+                ];
+                array_push($atasan, $paramAtasan);
+                $current = $current->parent;
+
+                return $atasan;
+            }
         }
 
         // dd($atasan);
-        return $atasan;
     }
 
-    public static function getHierarchyDown($auth) {
+    public static function getHierarchyDown($auth)
+    {
         $dataBawahanLangsung = [];
         // Get bawahan dari user login
         $employee = EmployeeHierarchy::where('user_id', $auth)->whereHas('child')->first();
 
         if ($employee) {
-            foreach($employee->child as $e){
+            foreach ($employee->child as $e) {
                 $param = [
                     'id' => $e->user_id,
                     'name' => $e->getEmploye()->user_name,
-                    'email' => $e->getEmploye()->user_email
+                    'email' => $e->getEmploye()->user_email,
                 ];
 
                 $dataBawahanLangsung[] = $param;
@@ -70,13 +76,13 @@ class EmployeeHierarchy extends Model
             $dataSemuaBawahan = [];
             $no = 1;
 
-            while(count($usr) > 0){
+            while (count($usr) > 0) {
                 $nextUsr = [];
                 foreach ($usr as $c) {
                     $param = [
                         'id' => $c->user_id,
                         'name' => $c->getEmploye()->user_name,
-                        'email' => $c->getEmploye()->user_email
+                        'email' => $c->getEmploye()->user_email,
                     ];
                     array_push($dataSemuaBawahan, $param);
                     $nextUsr = array_merge($nextUsr, $c->child->all());

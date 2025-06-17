@@ -37,6 +37,24 @@ class ApprovalReimburse extends BaseModel
         ->get();
     }
 
+    public static function getAllByFinance($auth)
+    {
+        $finance = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', '08')->value('user_id');
+
+        if ($auth == $finance) {
+            return DB::table('approval_reimburses')
+                ->join('approval_statuses', 'approval_reimburses.status_id', '=', 'approval_statuses.code')
+                ->join('approval_types', 'approval_reimburses.approval_id', '=', 'approval_types.id' )
+                ->select(
+                    'approval_reimburses.*',
+                    'approval_statuses.name as status_name',
+                    'approval_types.name as approval_name'
+                )
+                ->get();
+        }
+
+    }
+
     public static function getById($id)
     {
         return DB::table('approval_reimburses')->where('id', $id)->first();

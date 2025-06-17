@@ -9,9 +9,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Consectetur adipiscing elit quisque faucibus ex
-                sapien vitae. Ex sapien vitae pellentesque sem placerat in id. Placerat in id cursus mi pretium tellus
-                duis.</p>
             <form wire:submit.prevent='save'>
                 {{-- SECTION 1 FOR RAB --}}
                 <div class="mb-3">

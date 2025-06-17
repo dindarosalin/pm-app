@@ -36,6 +36,7 @@ use App\Livewire\Approval\Consulted\ConsultRab\RabDetail;
 use App\Livewire\Approval\Consulted\ConsultRab\RabTable;
 use App\Livewire\Approval\Consulted\ConsultReimburse\ReimburseDetail;
 use App\Livewire\Approval\Consulted\ConsultReimburse\ReimburseTable;
+use App\Livewire\Approval\Informed\InformedDashboard;
 use App\Livewire\Approval\Responsible\ResponsibleRabDetail;
 use App\Livewire\Approval\Responsible\ResponsibleReimburseDetail;
 use App\Livewire\Approved\Approval;
@@ -206,7 +207,7 @@ Route::middleware(['auth'])->group(function () {
     // RESPONSIBLE
     Route::prefix('responsible')->name('responsible.')->group(function(){
         Route::get('dashboard-responsible', ResponsibleDashboard::class)->name('dashboard-responsible');
-        Route::get('rules-responsible', ResponsibleRules::class)->name('rules-responsible');
+        // Route::get('rules-responsible', ResponsibleRules::class)->name('rules-responsible');
         Route::get('permission-responsible', ResponsiblePermission::class)->name('permission-responsible');
         Route::get('absence-responsible', ResponsibleAbsence::class)->name('absence-responsible');
         Route::get('rab-responsible', ResponsibleRab::class)->name('rab-responsible');
@@ -231,6 +232,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('project-procurement-table-accountable/{projectId}', AccountableDetailProject::class)->name('project-procurement-table-accountable-detail');
     });
 
+    // CONSULTED
     Route::prefix('consult')->name('consult.')->group(function(){
         Route::get('dashboard-consult', ConsultDashboard::class)->name('dashboard-consult');
         Route::get('permission-consult', PermissionTable::class)->name('permission-consult');
@@ -243,6 +245,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reimburse-consult/{reimburseId}', ReimburseDetail::class)->name('reimburse-consult-detail');
         Route::get('project-procurement-consult', ProjectTable::class)->name('project-consult');
         Route::get('project-procurement-consult/{projectId}', \App\Livewire\Approval\Consulted\ConsultProjectProcurement\ProjectDetail::class)->name('project-consult-detail');
+    });
+    // INFORMED
+    Route::prefix('informed')->name('informed.')->group(function() {
+        Route::get('dashboard-informed', InformedDashboard::class)->name('dashboard-informed');
     });
 
     Route::prefix('master')->name('master.')->group(function () {
@@ -258,6 +264,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jobdesk', Jabatan::class)->name('jobdesk');
         Route::get('/atasan', Atasan::class)->name('atasan');
         Route::get('/jenis-approval', JenisApproval::class)->name('jenis-approval');
+        Route::get('/approval-rules', ResponsibleRules::class)->name('approval-rules');
         //  Route::get('/track/{title}/detail-nota/{id}', DetailNota::class)->name('detail.nota');
 
         Route::get('/approval-types', ApprovalTypes::class)->name('approval-types');
