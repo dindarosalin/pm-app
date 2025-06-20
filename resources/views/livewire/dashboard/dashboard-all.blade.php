@@ -66,14 +66,14 @@
                             {{-- @dd($data['cpi']) --}}
                             <span>{{ $data['project_title'] }}</span>
                             <span
-                                class="{{ $data['cpi'] == 1 ? 'text-primary' : ($data['cpi'] > 1 ? 'text-success' : 'text-danger') }}">
+                                class="{{ $data['cpi'] == 1 ? 'text-primary' : ($data['cpi'] > 1 ? 'text-success' : 'text-danger') }}">{{ $data['cpi'] }}
                                 <i class="bi bi-circle-fill" data-bs-toggle="tooltip"
                                     title="{{ $data['cpi'] == 1 ? 'Proyek sesuai anggaran' : ($data['cpi'] > 1 ? 'Di bawah rencana anggaran' : 'Biaya melebihi perencanaan') }}"></i>
                             </span>
                             <span
-                                class="{{ $data['spi'] == 1 ? 'text-primary' : ($data['spi'] > 1 ? 'text-success' : 'text-danger') }}">
+                                class="{{ $data['spi'] == 1 ? 'text-primary' : ($data['spi'] > 1 ? 'text-success' : 'text-danger') }}">{{ $data['spi'] }}
                                 <i class="bi bi-circle-fill" data-bs-toggle="tooltip"
-                                    title="{{ $data['spi'] == 1 ? 'Proyek sesuai rencana' : ($data['spi'] > 1 ? 'Proyek lebih cepat' : 'Proyek terlambat') }}"></i>
+                                    title="{{ $data['spi'] == 1 ? 'Proyek sesuai rencana' : ($data['spi'] > 1 ? 'Proyek lebih cepat' . $data['spi'] : 'Proyek terlambat' . $data['spi']) }}"></i>
                             </span>
                         @endforeach
 

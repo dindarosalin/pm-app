@@ -10,6 +10,8 @@ class WfhStatuses extends BaseModel
     protected $table = 'status_wfh';
     protected $primaryKey = 'id';
 
+
+
     protected $fillable = [
         'status_name',
         'description',

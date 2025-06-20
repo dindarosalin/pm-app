@@ -8,16 +8,22 @@
                 data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <form wire:submit='store'>
+            <form wire:submit.prevent='store'>
                 <div class="mb-3">
-                    <label class="form-label">Status Name:</label>
+                    <label class="form-label">Status Name:<span class="text-danger">*</span></label>
                     <input wire:model='statusName' class="form-control form-control-sm" type="text"
                         placeholder="Status Name">
+                    @error('statusName')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Status Code:</label>
+                    <label class="form-label">Status Code:<span class="text-danger">*</span></label>
                     <input wire:model='statusCode' class="form-control form-control-sm" type="text"
                         placeholder="Status Code">
+                    @error('statusCode')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
                 </div>
                 <button type="submit" class="btn btn-sm btn-primary">Save</button>
             </form>

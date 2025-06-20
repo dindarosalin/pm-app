@@ -1,8 +1,7 @@
 <div>
     @section('title', 'Monitoring')
-    <div id="monitoring-video-container"></div>
     <video id="video-remote" autoplay playsinline style="width: 400px;"></video>
-    <button id="call-btn">Panggil Peer</button>
+    <button class="btn btn-success" id="call-btn">Panggil</button>
 
     @push('scripts')
         <script type="module">
@@ -10,17 +9,16 @@
                 Peer
             } from "https://esm.sh/peerjs@1.5.4?bundle-deps";
 
-            // PeerID tujuan (yang ingin Anda panggil)
-            const targetPeerId = '017d8098-7280-4013-b939-25c3f6287f76';
-            const container = document.getElementById('monitoring-video-container');
+            // PeerID tujuan 
+            const targetPeerId = 'dc572aac-3ca8-4610-9776-889b5756dfc3';
 
-            // Buat peer tanpa ID (biar dapat random ID)
+            // Buat peer tanpa ID
             const peer = new Peer({
                 // host: 'pm-app.test',
                 // port: 9000,
                 // path: '/peerjs',
                 secure: true,
-                debug: 3,
+                debug: 0,
                 config: {
                     'iceServers': [{
                             urls: 'stun:stun.l.google.com:19302'
@@ -37,137 +35,31 @@
                 }
             });
 
-            // Fungsi untuk mengambil data peer_id dengan status ongoing
-            async function fetchOngoingPeerIds() {
-                try {
-                    const response = await fetch('/ongoing-peer-ids');
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch ongoing peer IDs');
-                    }
-                    const data = await response.json();
-                    console.log('Ongoing peer IDs:', data.peer_ids);
-                    return data.peer_ids;
-                } catch (error) {
-                    console.error('Error fetching ongoing peer IDs:', error);
-                    return [];
-                }
-            }
-
-            // Fungsi untuk melakukan panggilan ke peer lain
-            // async function callPeers() {
-            //     const peerIds = await fetchOngoingPeerIds();
-            //     console.log('Calling peers:', peerIds);
-
-            //     // Membuat stream video kosong (black video)
-            //     const canvas = document.createElement('canvas');
-            //     canvas.width = 640;
-            //     canvas.height = 480;
-            //     const ctx = canvas.getContext('2d');
-            //     ctx.fillStyle = 'black';
-            //     ctx.fillRect(0, 0, canvas.width, canvas.height);
-            //     const stream = canvas.captureStream(15); // 15 fps
-
-            // Kirim stream video kosong ke peer
-            // peerIds.forEach(targetPeerId => {
-            //     console.log('Calling peer:', targetPeerId);
-
-            //     const call = peer.call(targetPeerId, stream);
-
-            //     call.on('stream', function(remoteStream) {
-            //         console.log('Received remoteStream from:', targetPeerId);
-
-            //     });
-
-
-            // });
-            //     peerIds.forEach(peerId => {
-            //         const call = peer.call(peerId, stream);
-            //         call.answer(stream);
-            //         call.on('stream', function(remoteStream) {
-            //             console.log('Received remoteStream:', remoteStream);
-            //             const video = document.getElementById(`video-${peerId}`) || document.createElement(
-            //                 'video');
-            //             video.id = `video-${peerId}`;
-            //             video.autoplay = true;
-            //             video.playsInline = true;
-            //             video.style.width = '400px';
-            //             video.srcObject = remoteStream;
-            //             if (!document.getElementById(`video-${peerId}`)) {
-            //                 document.getElementById('monitoring-video-container').appendChild(video);
-            //             }
-            //             video.play();
-            //         });
-            //         call.on('error', error => console.error(`Error with call to peer: ${peerId}`, error));
-            //     });
-            // }
-
-            // Tombol untuk memulai panggilan
-            // document.getElementById('call-btn').addEventListener('click', callPeers);
-
-            // Polling untuk memperbarui peer IDs setiap 5 detik
-            // setInterval(callPeers, 5000);
-
-            // Memulai panggilan otomatis saat halaman dimuat
-
-
-
             // Fungsi untuk melakukan panggilan ke peer lain
             async function callPeer() {
-                    // Ambil daftar peer ID ongoing dari backend Livewire
-                    const targetPeerIds = await fetchOngoingPeerIds();
-                    console.log('Target peer IDs:', targetPeerIds);
-                    if (!targetPeerIds.length) {
-                        console.warn('No ongoing peer IDs found.');
-                        return;
+                // Membuat stream video kosong (black video)
+                const canvas = document.createElement('canvas');
+                canvas.width = 640;
+                canvas.height = 480;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                const stream = canvas.captureStream(15); // 15 fps
+
+                // Kirim stream video kosong ke peer
+                const call = peer.call(targetPeerId, stream);
+
+                call.on('stream', function(remoteStream) {
+                    const video = document.getElementById('video-remote');
+                    if (video) {
+                        video.srcObject = remoteStream;
+                        video.play();
                     }
+                });
+            }
 
-                    // Membuat stream video kosong (black video)
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 640;
-                    canvas.height = 480;
-                    const ctx = canvas.getContext('2d');
-                    ctx.fillStyle = 'black';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    const stream = canvas.captureStream(); // 15 fps
-
-                    // Kirim stream video kosong ke semua peer yang ongoing
-                    console.log('Calling peers:', targetPeerIds);
-
-                    targetPeerIds.forEach((peerId) => {
-                                if (peerId !== peer.id) {
-                                    const call = peer.call(peerId, myStream);
-                                    call.on('stream', (remoteStream) => {
-                                        addRemoteStream(call.peer, remoteStream);
-                                    });
-                                }
-
-                                //     targetPeerIds.forEach(targetPeerId => {
-                                //         const call = peer.call(targetPeerId, stream);
-
-                                //         call.on('stream', function(remoteStream) {
-                                //             console.log('Received remoteStream from:', targetPeerId);
-                                //             let video = document.getElementById(`video-${targetPeerId}`);
-                                //             if (!video) {
-                                //                 video = document.createElement('video');
-                                //                 video.id = `video-${targetPeerId}`;
-                                //                 video.autoplay = true;
-                                //                 video.playsInline = true;
-                                //                 video.style.width = '400px';
-                                //                 document.getElementById('monitoring-video-container').appendChild(
-                                //                     video);
-                                //             }
-                                //             video.srcObject = remoteStream;
-                                //             video.play();
-                                //         });
-
-                                //         call.on('error', error => {
-                                //             console.error(`Error with call to peer: ${targetPeerId}`, error);
-                                //         });
-                                //     });
-                            }
-
-                            // Tombol untuk memulai panggilan
-                            document.getElementById('call-btn').addEventListener('click', callPeer); callPeer();
+            // Tombol untuk memulai panggilan
+            document.getElementById('call-btn').addEventListener('click', callPeer);
         </script>
     @endpush
 </div>

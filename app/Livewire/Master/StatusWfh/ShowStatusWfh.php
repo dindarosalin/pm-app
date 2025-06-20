@@ -13,8 +13,25 @@ class ShowStatusWfh extends Component
     public $statusName;
     public $statusCode;
 
+    protected $rules = [
+        'statusName' => 'required',
+        'statusCode' => 'required',
+    ];
+
+    protected $messages = [
+        'statusName.required' => 'Status name required.',
+        'statusCode.required' => 'Status code required.',
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function store()
     {
+        $this->validate();
+
         $storeData = [
 
             'status_wfh' => $this->statusName,
@@ -108,7 +125,6 @@ class ShowStatusWfh extends Component
 
     public function render()
     {
-        $this->resetForm();
 
         $this->statuses = $this->getStatusesProperty();
         // dd($this->statuses);

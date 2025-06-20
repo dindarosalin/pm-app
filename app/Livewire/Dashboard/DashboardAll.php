@@ -130,6 +130,8 @@ class DashboardAll extends Component
             return EvmService::calculateEVM($project);
         });
 
+        // dd($this->evmData);
+
         // TASKS DOUNATS
         $this->projectsCountByStatus = $this->projectsCountByStatus();
         // dd($this->projectsCountByStatus());
