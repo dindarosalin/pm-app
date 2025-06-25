@@ -579,7 +579,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('131', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('140', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.dashboard-consult') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -597,7 +597,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('132', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('141', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.permission-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -615,7 +615,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('133', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('142', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.absence-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -633,7 +633,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('134', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('143', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.rab-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -651,7 +651,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('135', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('144', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.reimburse-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -669,7 +669,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('136', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('145', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.project-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"

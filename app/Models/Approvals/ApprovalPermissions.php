@@ -24,6 +24,24 @@ class ApprovalPermissions extends BaseModel
         ->get();
     }
 
+    public static function getAllByRole($auth)
+    {
+        $hr = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', '10')->value('user_id');
+
+        if ($auth == $hr) {
+            return DB::table('approval_permission')
+                ->join('approval_statuses', 'approval_permission.status_id', '=', 'approval_statuses.code')
+                ->join('approval_types', 'approval_permission.approval_id', '=', 'approval_types.id' )
+                ->select(
+                    'approval_reimburses.*',
+                    'approval_statuses.name as status_name',
+                    'approval_types.name as approval_name'
+                )
+                ->get();
+        }
+
+    }
+
     public static function getAllByUserId($auth)
     {
         return DB::table('approval_permission')

@@ -4,7 +4,7 @@ namespace App\Livewire\Approval\Responsible;
 
 use App\Models\Approvals\ApprovalRab;
 use App\Models\Approvals\ApprovalRabDetail;
-use App\Models\master\uom;
+use App\Models\Master\Uom;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -28,7 +28,7 @@ class ResponsibleRabDetail extends Component
     public function loadData()
     {
         $this->data = ApprovalRabDetail::getByRabIdAll($this->rabId);
-        $this->uoms = uom::getAll();
+        $this->uoms = Uom::getAll();
         $this->rab = ApprovalRab::getById($this->rabId);
     }
 

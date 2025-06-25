@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\master;
+namespace App\Models\Master;
 
 use App\Models\Base\BaseModel;
 use Illuminate\Support\Facades\DB;
 
-class uom extends BaseModel
+class Uom extends BaseModel
 {
     public static function getAll()
     {

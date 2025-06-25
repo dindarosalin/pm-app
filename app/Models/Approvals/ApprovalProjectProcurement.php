@@ -26,6 +26,25 @@ class ApprovalProjectProcurement extends BaseModel
         ->get();
     }
 
+    public static function getAllByRole($auth)
+    {
+        $finance = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', '03')->value('user_id');
+
+        if ($auth == $finance) {
+            return DB::table('approval_project_procurements')
+                ->join('approval_statuses', 'approval_project_procurements.status_id', '=', 'approval_statuses.code')
+                ->join('approval_types', 'approval_project_procurements.approval_id', '=', 'approval_types.id' )
+                ->select(
+                    'approval_project_procurements.*',
+                    'approval_statuses.name as status_name',
+                    'approval_types.name as approval_name'
+                )
+                ->get();
+        }
+
+    }
+
+
     public static function getByAccountable($auth)
     {
         return DB::table('approval_project_procurements')
