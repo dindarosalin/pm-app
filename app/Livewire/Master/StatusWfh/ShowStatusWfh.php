@@ -30,7 +30,6 @@ class ShowStatusWfh extends Component
 
     public function store()
     {
-        $this->validate();
 
         $storeData = [
 
@@ -41,22 +40,22 @@ class ShowStatusWfh extends Component
         try {
             // dd($storeData);
             if ($this->statusId) {
-                WfhStatuses::update($storeData, $this->statusId);
+                $status = WfhStatuses::update($storeData, $this->statusId);
             } else {
-                WfhStatuses::create($storeData);
+                $status = WfhStatuses::create($storeData);
                 $this->updatedProjectStatus($this->projectId);
             }
 
+            dd($status);
             $this->resetForm();
-            $this->dispatch('close-offcanvas');
-            $this->dispatch('status-updated');
+            // $this->dispatch('close-offcanvas');
             $this->dispatch('swal:modal', [
                 'type' => 'success',
-                'message' => 'Data Saved',
-                'text' => 'It will list on the table soon.'
+                'message' => 'Data Added',
+                'text' => 'It will not list on the table.'
             ]);
 
-            $this->dispatch('success');
+            // $this->dispatch('success');
         } catch (\Throwable $th) {
             session()->flash('error', $th);
             $th->getMessage();
