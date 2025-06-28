@@ -72,13 +72,13 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Start Date Estimation<span class="text-sm text-danger">*</span></label>
-                    <input type="date" wire:model="start_date_estimation" class="form-control form-control-sm"
-                        required>
+                    <input name="startDate" id="from" type="text" wire:model="start_date_estimation"
+                        class="form-control form-control-sm" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">End Date Estimation<span class="text-sm text-danger">*</span></label>
-                    <input type="date" wire:model="end_date_estimation" class="form-control form-control-sm"
-                        required>
+                    <input name="endDate" id="to" type="text" wire:model="end_date_estimation"
+                        class="form-control form-control-sm" required>
                 </div>
                 <div class="form-check form-switch mb-3">
                     <input wire:model='use_holiday' class="form-check-input" type="checkbox" role="switch"
@@ -231,8 +231,8 @@
                         </tbody>
                     </table>
                 </div>
-            
-            {{-- <div class="p-3">
+
+                {{-- <div class="p-3">
                 <form>
                     @csrf
                     <p class="fw-bold">Comments ({{ $countComment > 0 ? $countComment : 0 }})</p>
@@ -266,7 +266,8 @@
             <button wire:click="$dispatch('show-create-offcanvas')" class="btn btn-success btn-sm col"><i
                     class="fa-solid fa-plus"></i></button>
             {{-- @dd($projectId); --}}
-            <a href="{{ route('projects.tasks.archived', $projectId) }}" role="button" class="btn btn-danger btn-sm col text-white" wire:navigate> 
+            <a href="{{ route('projects.tasks.archived', $projectId) }}" role="button"
+                class="btn btn-danger btn-sm col text-white" wire:navigate>
                 <i class="fa-solid fa-box-archive"></i></a>
         </div>
     </div>
@@ -276,7 +277,7 @@
 
         <div class="card-body table-responsive px-0">
             <livewire:projects.tasks.priorities :projectId="$projectId" :auth="$auth" :tasks="$tasks" />
-            <table class="table table-sm table-bordered table-hover text-center" >
+            <table class="table table-sm table-bordered table-hover text-center">
                 <thead>
                     <tr>
                         <th role="button" wire:click="sortBy('score')">Priority
@@ -316,7 +317,8 @@
                             <td>{{ $task->assign_to_name }}</td>
                             <td>{{ $task->category_name }}</td>
                             <td>
-                                <span class="badge
+                                <span
+                                    class="badge
                                     @switch($task->status_name)
                                         @case('New')
                                             text-bg-primary
@@ -365,20 +367,20 @@
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <!-- View icon -->
-                                    <btn wire:click="$dispatch('showById', {id: {{ $task->id }}})" class="text-primary m-0">
+                                    <btn wire:click="$dispatch('showById', {id: {{ $task->id }}})"
+                                        class="text-primary m-0">
                                         <i class="fa-regular fa-eye"></i>
                                     </btn>
-    
+
                                     <!-- Edit icon -->
-                                    <btn role="button" wire:click="$dispatch('edit', {id: {{ $task->id }} })" class="text-warning m-0">
+                                    <btn role="button" wire:click="$dispatch('edit', {id: {{ $task->id }} })"
+                                        class="text-warning m-0">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </btn>
-    
+
                                     <!-- Delete icon -->
                                     <btn role="button" wire:click="alertConfirm({{ $task->id }})"
-    
-                                    {{-- <p role="button" wire:click="$dispatch('alertConfirm', {id: {{ $task->id }}})"  --}}
-                                        class="text-danger m-0">
+                                        {{-- <p role="button" wire:click="$dispatch('alertConfirm', {id: {{ $task->id }}})"  --}} class="text-danger m-0">
                                         <i class="fa-solid fa-box-archive"></i>
                                     </btn>
                                 </div>
@@ -408,9 +410,47 @@
             </div>
         @endforeach
     </div> --}}
+    {{-- @dd($projectDetail->start_date) --}}
 </div>
 
 @push('scripts')
+    // DATE VALIDATE
+    <script>
+        let projectDate = new Date("{{ \Carbon\Carbon::parse($projectDetail->start_date)->format('Y-m-d') }}")
+        $(function() {
+            var dateFormat = "mm/dd/yy",
+                from = $("#from")
+                .datepicker({
+                    defaultDate: "",
+                    changeMonth: true,
+                    numberOfMonths: 2,
+                    minDate: projectDate,
+                })
+                .on("change", function() {
+                    to.datepicker("option", "minDate", getDate(this));
+                }),
+                to = $("#to").datepicker({
+                    defaultDate: "",
+                    changeMonth: true,
+                    numberOfMonths: 2
+                })
+                .on("change", function() {
+                    from.datepicker("option", "maxDate", getDate(this));
+                });
+
+            function getDate(element) {
+                var date;
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+        });
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.min.js"></script>
     <script>
         document.addEventListener('livewire:init', () => {
