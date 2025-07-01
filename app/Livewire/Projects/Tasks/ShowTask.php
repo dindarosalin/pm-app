@@ -20,7 +20,6 @@ use App\Models\Projects\Master\TaskStatuses;
 use App\Models\Settings\Role;
 use Illuminate\Support\Facades\DB;
 
-
 class ShowTask extends Component
 {
     public $totalTask, $projectDetail;
@@ -51,15 +50,18 @@ class ShowTask extends Component
 
     // FILTER VAR
     public $search = '';
-    public $sortColumn = null;
+    public $sortColumn = 'status_id';
     public $sortDirection = 'asc';
     public $filters = [];
 
     public $timeFrame = [];
     public $fromToDate;
 
-    public $fromDate = [];
-    public $toDate = [];
+    public $startFromDate = [];
+    public $startToDate = [];
+
+    public $endFromDate = [];
+    public $endToDate = [];
 
     public $fromNumber = [];
     public $toNumber = [];
@@ -76,7 +78,7 @@ class ShowTask extends Component
         $this->getAllTasks();
 
         // $this->filter($this->tasks);
-        $this->tasks = $this->filter($this->tasks)->sortBy('status_id');
+        $this->tasks = $this->filter($this->tasks);
         // dd($this->tasks);
         return view('livewire.projects.tasks.show-task', [
             'totalTask' => $this->totalTask,
@@ -178,10 +180,15 @@ class ShowTask extends Component
             $this->dispatch('swal:modal', [
                 'type' => 'success',
                 'message' => 'Data Saved',
-                'text' => 'It will list on the table soon.'
+                'text' => 'It will list on the table soon.',
             ]);
         } catch (\Throwable $th) {
             session()->flash('error', $th);
+            // $this->dispatch('swal:modal', [
+            //     'type' => 'error',
+            //     'message' => 'Error',
+            //     'text' => 'It not list on the table.'
+            // ]);
             $th->getMessage();
         }
     }
@@ -257,8 +264,8 @@ class ShowTask extends Component
         $this->created_by = $task->created_by;
         $this->assign_to = $task->assign_to;
         $this->status = $task->status_id;
-        $this->use_holiday = $task->use_holiday;
-        $this->use_weekend = $task->use_weekend;
+        $this->use_holiday = (bool) $task->use_holiday;
+        $this->use_weekend = (bool) $task->use_weekend;
 
         $this->dispatch('show-edit-offcanvas');
     }
@@ -290,7 +297,7 @@ class ShowTask extends Component
                 $param = [
                     'id' => $e->user_id,
                     'name' => $e->getEmploye()->user_name,
-                    'email' => $e->getEmploye()->user_email
+                    'email' => $e->getEmploye()->user_email,
                 ];
 
                 $dataBawahanLangsung[] = $param;
@@ -307,7 +314,7 @@ class ShowTask extends Component
                     $param = [
                         'id' => $c->user_id,
                         'name' => $c->getEmploye()->user_name,
-                        'email' => $c->getEmploye()->user_email
+                        'email' => $c->getEmploye()->user_email,
                     ];
                     array_push($dataSemuaBawahan, $param);
                     $nextUsr = array_merge($nextUsr, $c->child->all());
@@ -321,11 +328,7 @@ class ShowTask extends Component
             // manage assign_to untuk admin
         } elseif ($this->auth == $isAdmin) {
             $allUser = DB::table('app_user')
-                ->select([
-                    'user_id as id',
-                    'user_name as name',
-                    'user_email as email'
-                ])
+                ->select(['user_id as id', 'user_name as name', 'user_email as email'])
                 ->get()
                 ->map(function ($user) {
                     return (array) $user;
@@ -363,11 +366,13 @@ class ShowTask extends Component
 
         // Filter berdasarkan time frame dan date range
         if ($this->timeFrame) {
-            foreach ($this->timeFrame as $column => $this->fromToDate) {
-                if ($this->fromToDate === 'custom-start-date' || $this->fromToDate === 'custom-start' || $this->fromToDate === 'custom-end') {
-                    $tasks = Task::scopeFilterByDateRange($tasks, $this->fromDate, $this->toDate, $column);
+            foreach ($this->timeFrame as $column => $value) {
+                if ($value === 'custom-start-date' && $column === 'start_date_estimation') {
+                    $tasks = Project::scopeFilterByDateRange($tasks, $this->startFromDate, $this->startToDate, $column);
+                } elseif ($value === 'custom-end-date' && $column === 'end_date_estimation') {
+                    $tasks = Project::scopeFilterByDateRange($tasks, $this->endFromDate, $this->endToDate, $column);
                 } else {
-                    $tasks = Task::scopeFilterByTimeFrame($tasks, $column, $this->fromToDate);
+                    $tasks = Task::scopeFilterByTimeFrame($tasks, $column, $value);
                 }
             }
         }
@@ -396,7 +401,29 @@ class ShowTask extends Component
         $this->filters = [];
         $this->search = '';
         $this->timeFrame = [];
-        $this->sortColumn = null;
+        $this->sortColumn = 'status_id';
+    }
+
+    public function alertConfirm($id)
+    {
+        $this->dispatch('swal:confirm', [
+            'type' => 'warning',
+            'message' => 'Are you sure?',
+            'text' => 'This will archive task',
+            'id' => $id,
+            'dispatch' => 'archive-task',
+        ]);
+    }
+
+    #[On('archive-task')]
+    public function archive($id)
+    {
+        Task::softDelete($id);
+        $this->dispatch('swal:modal', [
+            'type' => 'success',
+            'message' => 'Data Archived',
+            'text' => 'It will not list on the table.',
+        ]);
     }
 
     #[On('update-task-score')]
