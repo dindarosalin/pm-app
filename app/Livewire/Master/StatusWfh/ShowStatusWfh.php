@@ -41,19 +41,33 @@ class ShowStatusWfh extends Component
             // dd($storeData);
             if ($this->statusId) {
                 $status = WfhStatuses::update($storeData, $this->statusId);
+
+                // SWEET ALERT
+                $this->dispatch('swal:modal', [
+                    'type' => 'success',
+                    'message' => 'Data Updated',
+                    'text' => 'the data has been updated successfully.'
+                ]);
             } else {
                 $status = WfhStatuses::create($storeData);
-                $this->updatedProjectStatus($this->projectId);
+
+                // SWEET ALERT
+                $this->dispatch('swal:modal', [
+                    'type' => 'success',
+                    'message' => 'Data Added',
+                    'text' => 'The data has been added successfully.'
+                ]);
+                // $this->updatedProjectStatus($this->projectId);
             }
 
-            dd($status);
+            // dd($status);
             $this->resetForm();
             // $this->dispatch('close-offcanvas');
-            $this->dispatch('swal:modal', [
-                'type' => 'success',
-                'message' => 'Data Added',
-                'text' => 'It will not list on the table.'
-            ]);
+            // $this->dispatch('swal:modal', [
+            //     'type' => 'success',
+            //     'message' => 'Data Added',
+            //     'text' => 'It will not list on the table.'
+            // ]);
 
             // $this->dispatch('success');
         } catch (\Throwable $th) {
@@ -89,7 +103,7 @@ class ShowStatusWfh extends Component
         $this->dispatch('swal:confirm', [
             'type' => 'warning',
             'message' => 'Are you sure?',
-            'text' => 'You won\'t be able to revert this!',
+            'text' => 'You will delete this status.',
             'id' => $id,
             'dispatch' => 'delete-project-status'
         ]);
@@ -102,7 +116,7 @@ class ShowStatusWfh extends Component
         $this->dispatch('swal:modal', [
             'type' => 'success',
             'message' => 'Data Deleted',
-            'text' => 'It will not list on the table.'
+            'text' => 'The data has been deleted successfully.'
         ]);
     }
 
