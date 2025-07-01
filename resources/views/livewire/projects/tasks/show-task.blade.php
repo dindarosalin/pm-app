@@ -418,7 +418,7 @@
     <script>
         let projectDate = new Date("{{ \Carbon\Carbon::parse($projectDetail->start_date)->format('Y-m-d') }}")
         $(function() {
-            var dateFormat = "mm/dd/yy",
+            var dateFormat = "yy/mm/dd",
                 from = $("#from")
                 .datepicker({
                     defaultDate: "",
@@ -428,6 +428,7 @@
                 })
                 .on("change", function() {
                     to.datepicker("option", "minDate", getDate(this));
+                    // $wire.start_date_estimation = $(this).val();
                 }),
                 to = $("#to").datepicker({
                     defaultDate: "",
@@ -436,7 +437,25 @@
                 })
                 .on("change", function() {
                     from.datepicker("option", "maxDate", getDate(this));
+                    // $wire.end_date_estimation = $(this).val();
                 });
+
+            $('form').on('submit', function(e) {
+                let fromVal = $('#from').val();
+                let toVal = $('#to').val();
+
+                // Ubah format mm/dd/yyyy ke yyyy/mm/dd
+                function toYMD(dateStr) {
+                    if (!dateStr) return '';
+                    let parts = dateStr.split('/');
+                    if (parts.length !== 3) return dateStr;
+                    return `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+                }
+
+                @this.set('start_date_estimation', toYMD(fromVal));
+                @this.set('end_date_estimation', toYMD(toVal));
+            });
+
 
             function getDate(element) {
                 var date;
