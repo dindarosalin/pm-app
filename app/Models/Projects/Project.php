@@ -410,10 +410,11 @@ class Project extends BaseModel
             ->select(
                 'tasks.project_id',
                 'projects.title as project_title',
-                'projects.budget as bac',
+                DB::raw("CAST(REPLACE(projects.budget, ',', '') AS UNSIGNED) as bac"),
                 DB::raw('COUNT(*) as total_task'),
                 DB::raw("SUM(CASE WHEN end_date_estimation <= '$now' THEN 1 ELSE 0 END) as planned_done_task"),
-                DB::raw("SUM(CASE WHEN tasks.status_id = 5 THEN 1 ELSE 0 END) as actual_done_task"),
+                // DB::raw("SUM(CASE WHEN tasks.status_id = 5 THEN 1 ELSE 0 END) as actual_done_task"),
+                DB::raw("SUM(CASE WHEN tasks.status_id = 5 AND DATE(tasks.completion_time) <= DATE(tasks.end_date_estimation) THEN 1 ELSE 0 END) as actual_done_task"),
                 'track_summary.ac'
             )
             ->groupBy('tasks.project_id', 'projects.budget', 'project_title', 'track_summary.ac')
