@@ -30,10 +30,10 @@ class EvmServiceTest extends TestCase
         $project = (object)[
             'project_id' => 1,
             'project_title' => 'Test Project',
-            'total_task' => 10, // actual_done_task = 12, planned_done_task = 10
+            'total_task' => 120, // actual_done_task = 12, planned_done_task = 10
             'planned_done_task' => 100, // PV = 100
             'actual_done_task' => 120,  // EV = 120
-            'bac' => 200,              // BAC digunakan sebagai PV dasar
+            'bac' => 120,              // BAC digunakan sebagai PV dasar
             'ac' => 100
         ];
         $result = EvmService::calculateEVM($project);
