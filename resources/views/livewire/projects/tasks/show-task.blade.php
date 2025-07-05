@@ -416,9 +416,10 @@
 @push('scripts')
     // DATE VALIDATE
     <script>
-        let projectDate = new Date("{{ \Carbon\Carbon::parse($projectDetail->start_date)->format('Y-m-d') }}")
+        let projectDate = new Date("{{ \Carbon\Carbon::parse($projectDetail->start_date)->format('Y-m-d') }}");
+        let projectEndDate = new Date("{{ \Carbon\Carbon::parse($projectDetail->due_date_estimation)->format('Y-m-d') }}");
         $(function() {
-            var dateFormat = "yy/mm/dd",
+            var dateFormat = "mm/dd/yy",
                 from = $("#from")
                 .datepicker({
                     defaultDate: "",
@@ -433,7 +434,8 @@
                 to = $("#to").datepicker({
                     defaultDate: "",
                     changeMonth: true,
-                    numberOfMonths: 2
+                    numberOfMonths: 2,
+                    maxDate: projectEndDate,
                 })
                 .on("change", function() {
                     from.datepicker("option", "maxDate", getDate(this));

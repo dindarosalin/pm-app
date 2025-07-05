@@ -47,12 +47,13 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Start Date<span class="text-sm text-danger">*</span></label>
-                    <input type="date" wire:model="start_date" class="form-control form-control-sm" required>
+                    <input type="text" wire:model="start_date" id="from" class="form-control form-control-sm"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Due Date Estimation<span class="text-sm text-danger">*</span></label>
-                    <input type="date" wire:model="due_date_estimation" class="form-control form-control-sm"
-                        required>
+                    <input type="text" wire:model="due_date_estimation" id="to"
+                        class="form-control form-control-sm" required>
                 </div>
 
                 <div class="mb-3">
@@ -150,7 +151,7 @@
                                 <td>
                                     {{-- <span class="badge text-bg-success">{{ $projectShow->status_name }}</span></strong> --}}
                                     <span
-                                    class="badge 
+                                        class="badge 
                                 @switch($projectShow->status)
                                     @case('New')
                                         text-bg-primary
@@ -345,7 +346,8 @@
                 </button>
                 <button wire:click="$dispatch('show-create-offcanvas')" class="btn btn-success btn-sm col me-1"><i
                         class="fa-solid fa-plus"></i></button>
-                <a href="{{ route('projects.project.archived') }}" role="button" class="btn btn-danger btn-sm col text-white" wire:navigate> 
+                <a href="{{ route('projects.project.archived') }}" role="button"
+                    class="btn btn-danger btn-sm col text-white" wire:navigate>
                     <i class="fa-solid fa-box-archive"></i></a>
             </div>
         </div>
@@ -445,21 +447,24 @@
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <!-- View icon -->
-                                    <button class="btn btn-outline-primary btn-sm" wire:click='showById({{ $project->id }})'>
+                                    <button class="btn btn-outline-primary btn-sm"
+                                        wire:click='showById({{ $project->id }})'>
                                         <p class="m-0 p-0">
                                             <i class="fa-regular fa-eye"></i>
                                         </p>
                                     </button>
 
                                     <!-- Edit icon -->
-                                    <button class="btn btn-outline-warning btn-sm" wire:click='edit({{ $project->id }})'>
+                                    <button class="btn btn-outline-warning btn-sm"
+                                        wire:click='edit({{ $project->id }})'>
                                         <p class="m-0 p-0">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </p>
                                     </button>
 
                                     <!-- Delete icon -->
-                                    <button class="btn btn-outline-danger btn-sm" wire:click="alertConfirm({{ $project->id }})">
+                                    <button class="btn btn-outline-danger btn-sm"
+                                        wire:click="alertConfirm({{ $project->id }})">
                                         <p class="m-0 p-0">
                                             <i class="fa-solid fa-box-archive"></i>
                                         </p>
@@ -483,6 +488,58 @@
 </div>
 
 @push('scripts')
+    // DATE VALIDATE
+    <script>
+        $(function() {
+            var dateFormat = "mm/dd/yy",
+                from = $("#from")
+                .datepicker({
+                    defaultDate: "",
+                    changeMonth: true,
+                    numberOfMonths: 2
+                })
+                .on("change", function() {
+                    to.datepicker("option", "minDate", getDate(this));
+                }),
+                to = $("#to").datepicker({
+                    defaultDate: "",
+                    changeMonth: true,
+                    numberOfMonths: 2
+                })
+                .on("change", function() {
+                    from.datepicker("option", "maxDate", getDate(this));
+                });
+
+            $('form').on('submit', function(e) {
+                let fromVal = $('#from').val();
+                let toVal = $('#to').val();
+
+                // Ubah format mm/dd/yyyy ke yyyy/mm/dd
+                function toYMD(dateStr) {
+                    if (!dateStr) return '';
+                    let parts = dateStr.split('/');
+                    if (parts.length !== 3) return dateStr;
+                    return `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+                }
+
+                @this.set('start_date', toYMD(fromVal));
+                @this.set('due_date_estimation', toYMD(toVal));
+            });
+
+
+            function getDate(element) {
+                var date;
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+        });
+    </script>
+
     <script>
         window.addEventListener('show-create-offcanvas', event => {
             const offcanvas = new bootstrap.Offcanvas('#projectForm');
