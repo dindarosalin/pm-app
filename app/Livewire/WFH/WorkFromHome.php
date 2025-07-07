@@ -2,6 +2,7 @@
 
 namespace App\Livewire\WFH;
 
+use App\Livewire\Master\StatusWfh\ShowStatusWfh;
 use App\Models\WfhSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,8 @@ use Livewire\Component;
 class WorkFromHome extends Component
 {
     public $userId;
+
+    public $statusList;
 
     protected $listeners = ['receiveSignal'];
 
@@ -65,6 +68,9 @@ class WorkFromHome extends Component
 
     public function render()
     {
+        $showStatusWfh = new ShowStatusWfh();
+        $statusList = $showStatusWfh->getStatusesProperty();
+        $this->statusList = $statusList->toArray();
         return view('livewire.wfh.work-from-home');
     }
 }
