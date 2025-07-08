@@ -241,6 +241,7 @@
         let localStream = null;
         let isCameraOn = false;
         let currentPeerId = null;
+        let conn = null; // global untuk komunikasi data (status)
 
         const localVideo = document.getElementById('localVideo');
         const statusText = document.getElementById('peerStatusText');
@@ -289,7 +290,7 @@
 
             peer = new Peer({
                 secure: true,
-                debug: 0,
+                debug: 3,
                 config: {
                     'iceServers': [{
                             urls: 'stun:stun.l.google.com:19302'
@@ -329,6 +330,38 @@
                 });
             });
 
+            // Get status WFH dari select
+            peer.on('connection', (connection) => {
+                conn = connection;
+
+                conn.on('open', () => {
+                    console.log('DataConnection opened from admin');
+
+                    // Optional: kirim status saat terkoneksi
+                    const select = document.getElementById('statusWfh');
+                    if (select && select.value !== 'Select status') {
+                        conn.send({
+                            status: select.value
+                        });
+                    }
+
+                    // Saat status dipilih (employee ubah select)
+                    document.getElementById('statusWfh').addEventListener('change', (e) => {
+                        const newStatus = e.target.value;
+                        if (conn && conn.open) {
+                            conn.send({
+                                status: newStatus
+                            });
+                        }
+                    });
+                });
+
+                conn.on('data', (data) => {
+                    console.log("Received from admin:", data);
+                    // Bisa dipakai jika admin ingin kirim instruksi
+                });
+            });
+
             peer.on('error', err => {
                 statusText.textContent = 'Error: ' + err.type;
             });
@@ -347,7 +380,7 @@
                 } else {
                     navigator.mediaDevices.getUserMedia({
                         video: true,
-                        audio: true
+                        audio: false
                     }).then(stream => {
                         localStream = stream;
                         localVideo.srcObject = localStream;
@@ -382,6 +415,7 @@
                 });
             }
         }
+
 
         // Button Event
         document.getElementById('startPeerBtn').addEventListener('click', startPeerConnection);
