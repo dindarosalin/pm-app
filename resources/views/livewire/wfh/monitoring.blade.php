@@ -5,18 +5,22 @@
     <div id="remote-container" wire:ignore class="row g-3">
         {{-- Video remote akan muncul di sini --}}
     </div>
-    {{-- <button class="btn btn-success" id="call-btn">Panggil</button> --}}
+    <button class="btn btn-success" id="call-btn">Panggil</button>
 
     @push('scripts')
+        <script>
+            window.targetPeerIds = @json($peerIds);
+        </script>
         <script type="module">
             import {
                 Peer
             } from "https://esm.sh/peerjs@1.5.4?bundle-deps";
 
             // PeerID tujuan 
-            const targetPeerId = ['19df274c-8a27-4ab4-a797-e6f0e5a25812', '96653d5c-bcb3-4130-ba51-bc04495d313d',
-                '7e6362f7-46a0-463b-82ac-72660ee167e2'
-            ];
+            // const targetPeerId = ['04d7d953-b605-46d1-a67c-777a560ac5b2'];
+
+            const targetPeerId = window.targetPeerIds ?? [];
+            console.log("Peer IDs from backend:", targetPeerId);
 
             // Buat peer tanpa ID
             const peer = new Peer({
@@ -122,13 +126,13 @@
             }
 
             // Tombol untuk memulai panggilan
-            // document.getElementById('call-btn').addEventListener('click', callPeer);
+            document.getElementById('call-btn').addEventListener('click', callPeer);
 
             peer.on('open', function(id) {
                 console.log('Peer connected with ID:', id);
                 setTimeout(() => {
                     callPeer();
-                }, 2000);
+                }, 0);
             });
         </script>
     @endpush

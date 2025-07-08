@@ -47,11 +47,15 @@ class Monitoring extends Component
     public function render()
     {
 
-        $this->sessions = $this->getSessionsProperty();
+        $this->sessions = $this->getSessionsProperty()->toArray();
+
+        $peerIds = array_column($this->sessions, 'peer_id');
 
 
 
         // $this->activeSessions = WfhSession::whereNull('end')->get();
-        return view('livewire.wfh.monitoring');
+        return view('livewire.wfh.monitoring', [
+            'peerIds' => $peerIds
+        ]);
     }
 }

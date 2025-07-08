@@ -240,6 +240,7 @@
         let peer = null;
         let localStream = null;
         let isCameraOn = false;
+        let currentPeerId = null;
 
         const localVideo = document.getElementById('localVideo');
         const statusText = document.getElementById('peerStatusText');
@@ -305,14 +306,16 @@
                 }
             });
 
+
             peer.on('open', async id => {
                 statusText.textContent = 'Open';
                 peerIdText.textContent = id;
+                currentPeerId = id;
 
                 await enableCamera(); // nyalakan kamera saat koneksi terbuka
 
                 // Kirim ke backend (ubah URL sesuai Laravel route-mu)
-                fetch('/work-from-home/', {
+                fetch('/store-peer-id', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -366,14 +369,15 @@
                 disableCamera();
 
                 // Kirim ke backend (ubah URL sesuai Laravel route)
-                fetch('/wfh/end-mentoring', {
+                fetch('/update-peer-session', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
-                        status: 'disconnected'
+                        peer_id: currentPeerId,
+                        session_status: 'end'
                     })
                 });
             }
