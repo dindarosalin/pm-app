@@ -2,6 +2,7 @@
 
 namespace App\Livewire\WFH;
 
+use App\Models\Master\WfhStatuses;
 use App\Models\WfhSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,8 @@ class Monitoring extends Component
 
     public $sessions;
 
+    public $statusList = [];
+
 
     public function getListeners()
     {
@@ -22,6 +25,7 @@ class Monitoring extends Component
 
     public function mount()
     {
+        $this->statusList = WfhStatuses::getAllStatus()->pluck('status_wfh', 'id');
         // dd($this->storePeerId());
         // $this->activeSessions = WfhSession::whereNull('end')->get();
     }

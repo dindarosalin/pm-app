@@ -12,6 +12,7 @@
     @push('scripts')
         <script>
             window.targetPeerIds = @json($peerIds);
+            window.statusMap = @json($statusList);
         </script>
 
         {{-- <script type="module">
@@ -238,7 +239,10 @@
                         dataConn.on('data', (data) => {
                             const statusEl = document.getElementById(`status-overlay-${peerId}`);
                             if (statusEl && data.status) {
-                                statusEl.textContent = `Status: ${data.status}`;
+                                const statusName = window.statusMap?.[data.status] ??
+                                    `Status ID: ${data.status}`;
+                                statusEl.textContent = `Status: ${statusName}`;
+                                // statusEl.textContent = `Status: ${data.status}`;
                             }
                         });
                     });

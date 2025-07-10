@@ -81,6 +81,15 @@ Route::middleware(['auth'])->group(function () {
         return response()->json(['status' => 'ok']);
     });
 
+    Route::post('/update-status-session', function (Request $request) {
+        WorkFromHome::sessionPeerUpdate(
+            $request->input('peer_id'),
+            $request->input('status_wfh_id')
+        );
+
+        return response()->json(['status' => 'ok']);
+    });
+
     Route::get('ongoing-peer-ids', [\App\Livewire\WFH\Monitoring::class, 'getOngoingPeerIds']);
 
 

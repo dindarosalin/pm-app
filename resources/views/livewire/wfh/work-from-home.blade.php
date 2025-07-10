@@ -5,8 +5,12 @@
         <div class="card">
             <div class="row">
                 <div class="col-md-8 mt-3 position-relative">
-                    <video id="localVideo" autoplay playsinline muted></video>
-                    <button id="toggleCameraBtn">Open camer a</button>
+                    <video id="localVideo" autoplay playsinline muted
+                        style="width:100%;aspect-ratio:16/9;object-fit:cover;background:#222;border-radius:8px;"></video>
+                    <button id="toggleCameraBtn" class="btn btn-secondary mx-auto d-block">
+                        <span id="cameraIcon" class="bi bi-camera-video"></span>
+                        <span id="cameraText">On Cam</span>
+                    </button>
                     <div class="text-center mt-2"></div>
                     <div id="peerStatus">Status: <span id="peerStatusText">Connecting...</span></div>
                     <div>ID: <span id="peerIdText">-</span></div>
@@ -232,6 +236,9 @@
         document.getElementById('endPeerBtn').addEventListener('click', endPeerConnection);
     </script> --}}
 
+    <script></script>
+
+    {{-- Module peerjs --}}
     <script type="module">
         import {
             Peer
@@ -242,6 +249,11 @@
         let isCameraOn = false;
         let currentPeerId = null;
         let conn = null; // global untuk komunikasi data (status)
+
+
+        window.statusMap = @json($statusList);
+        const statusWfh = document.getElementById('statusWfh');
+
 
         const localVideo = document.getElementById('localVideo');
         const statusText = document.getElementById('peerStatusText');
@@ -258,19 +270,26 @@
             }
             localVideo.srcObject = localStream;
             isCameraOn = true;
-            toggleCameraBtn.textContent = 'Off Camera';
+            toggleCameraBtn.classList.remove('btn-danger');
+            toggleCameraBtn.classList.add('btn-secondary');
+            cameraIcon.className = 'bi bi-camera-video'; // icon on cam
+            cameraText.textContent = 'Off Cam';
         }
 
         // Fungsi mematikan kamera tanpa memutus koneksi peer
-        function disableCamera() {
+        async function disableCamera() {
             if (localStream) {
                 localStream.getTracks().forEach(track => {
                     if (track.kind === 'video') track.stop();
                 });
+                localStream = null;
             }
             localVideo.srcObject = null;
             isCameraOn = false;
-            toggleCameraBtn.textContent = 'Open Camera';
+            toggleCameraBtn.classList.remove('btn-secondary');
+            toggleCameraBtn.classList.add('btn-danger');
+            cameraIcon.className = 'bi bi-camera-video-off'; // icon off cam
+            cameraText.textContent = 'On Cam';
         }
 
         toggleCameraBtn.addEventListener('click', async () => {
@@ -314,6 +333,17 @@
                 currentPeerId = id;
 
                 await enableCamera(); // nyalakan kamera saat koneksi terbuka
+                document.getElementById('startPeerBtn').disabled = true;
+
+                const kerjaStatus = window.statusMap.find(item => item.status_wfh && item.status_wfh
+                    .toLowerCase() === 'kerja');
+                if (kerjaStatus) {
+                    // Set option select ke "kerja"
+                    statusWfh.value = kerjaStatus.id;
+                    statusWfh.dispatchEvent(new Event('change'));
+                    // console.log('Status set to Kerja:', kerjaStatus.id);
+                    // updateStatusSession(); // Update tombol kamera sesuai status
+                }
 
                 // Kirim ke backend (ubah URL sesuai Laravel route-mu)
                 fetch('/store-peer-id', {
@@ -398,6 +428,11 @@
                 peerIdText.textContent = '-';
                 statusText.textContent = 'Disconnected';
 
+                updateStatusSession();
+                document.getElementById('startPeerBtn').disabled = false;
+                statusWfh.selectedIndex = 0;
+                statusWfh.dispatchEvent(new Event('change'));
+
                 // Matikan kamera
                 disableCamera();
 
@@ -406,7 +441,8 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
                     },
                     body: JSON.stringify({
                         peer_id: currentPeerId,
@@ -416,6 +452,73 @@
             }
         }
 
+        // Cek status wfh
+        function isRapatStatus(selectedId) {
+            // statusMap adalah array of object, cari object dengan id == selectedId
+            // Pastikan tipe data id sama (biasanya integer)
+            const statusObj = window.statusMap.find(item => String(item.id) === String(selectedId));
+            return statusObj && statusObj.status_wfh && statusObj.status_wfh.toLowerCase() === 'rapat';
+        }
+
+        function updateCameraButtonState() {
+            const selectedId = statusWfh.value;
+            if (isRapatStatus(selectedId)) {
+                if (isCameraOn) {
+                    disableCamera();
+                }
+                toggleCameraBtn.disabled = true;
+            } else {
+                if (!isCameraOn) {
+                    enableCamera();
+                }
+                toggleCameraBtn.disabled = false;
+            }
+        }
+
+        // statusWfh.addEventListener('change', updateCameraButtonState);
+        // Panggil juga saat halaman load
+        // updateCameraButtonState();
+
+        statusWfh.addEventListener('change', function() {
+            updateCameraButtonState();
+            updateStatusSession();
+
+            // Kirim status ke Livewire via AJAX (fetch)
+            // fetch('/update-status-session', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+            //             'content'),
+            //         'Accept': 'application/json',
+            //         'X-Livewire': 'true'
+            //     },
+            //     body: JSON.stringify({
+            //         peer_id: currentPeerId, // kirim id peer
+            //         status_wfh_id: statusWfh.value, // kirim id status yang dipilih
+            //     })
+            // });
+        });
+
+        function updateStatusSession() {
+            // Cek apakah ada peer yang aktif
+            // Kirim status ke Livewire via AJAX (fetch)
+            // console.log(statusWfh.value);
+            fetch('/update-status-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content'),
+                    'Accept': 'application/json',
+                    'X-Livewire': 'true'
+                },
+                body: JSON.stringify({
+                    peer_id: currentPeerId, // kirim id peer
+                    status_wfh_id: statusWfh.value, // kirim id status yang dipilih
+                })
+            });
+        }
 
         // Button Event
         document.getElementById('startPeerBtn').addEventListener('click', startPeerConnection);

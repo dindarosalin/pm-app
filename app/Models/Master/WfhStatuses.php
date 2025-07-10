@@ -53,6 +53,7 @@ class WfhStatuses extends BaseModel
             ->where('id', $id)
             ->first();
     }
+
     public static function deleteBy($id)
     {
         return DB::table('status_wfh')
