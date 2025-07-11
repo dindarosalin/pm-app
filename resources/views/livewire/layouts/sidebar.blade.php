@@ -165,7 +165,7 @@
         @endif
 
         {{-- MENU APPROVAL --}}
-        <div class="accordion-item">
+        {{-- <div class="accordion-item"> --}}
             {{-- <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#approvalCollapse"
                 aria-expanded="true" aria-controls="approvalCollapse">
                 <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
@@ -272,7 +272,7 @@
                 @endif
             </div> --}}
 
-        </div>
+        {{-- </div> --}}
         {{-- end coba --}}
         {{-- @if (App\Models\Base\BaseModel::isAuthorize('114', 'R'))
             <li class="sidebar-menu {{ request()->routeIs('approval.*') ? 'active' : '' }}">
@@ -319,24 +319,6 @@
                     @endif
                 </div>
             </div>
-
-            <!-- RULES-->
-            {{-- <div wire:ignore id="responsibleCollapse"
-                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('124', 'R'))
-                        <li
-                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rules-responsible') ? 'active' : '' }} ">
-                            <a class=" text-decoration-none text-white"
-                                href="{{ route('responsible.rules-responsible') }}" wire:navigate.defer.defer>
-                                <i class="fa-solid fa-hands-bound"></i>
-                                <span>Rules</span>
-                            </a>
-                        </li>
-                    @endif
-                </div>
-            </div> --}}
 
             {{-- IZIN TIDAK TERENNCANA --}}
             <div wire:ignore id="responsibleCollapse"
@@ -431,6 +413,26 @@
         </div>
         <!--end MENU RESPONSIBLE-->
 
+            <!-- RULES-->
+            {{-- <div wire:ignore id="responsibleCollapse"
+                class="accordion-collapse collapse {{ Request::segment(1) == 'responsible' ? 'show' : '' }}"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (App\Models\Base\BaseModel::isAuthorize('124', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('responsible.rules-responsible') ? 'active' : '' }} ">
+                            <a class=" text-decoration-none text-white"
+                                href="{{ route('responsible.rules-responsible') }}" wire:navigate.defer.defer>
+                                <i class="fa-solid fa-hands-bound"></i>
+                                <span>Rules</span>
+                            </a>
+                        </li>
+                    @endif
+                </div>
+            </div> --}}
+
+            
+
         <!--MENU ACCOUNTABLE-->
         <div class="accordion-item">
             <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#accountableCollapse"
@@ -444,9 +446,10 @@
                         class="bi bi-chevron-down" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
                             d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
-                    </svg> {{--  chevron down --}}
+                    </svg> 
                 </button>
             </li>
+
             <!--DASHBOARD-->
             <div wire:ignore id="accountableCollapse"
                 class="accordion-collapse collapse {{ Request::segment(1) == 'accountable' ? 'show' : '' }}"
@@ -558,7 +561,7 @@
         </div>
         <!--END MENU ACCOUNTABLE-->
 
-        <!--MENU Consult-->
+        <!--MENU CONSULT-->
         <div class="accordion-item">
             <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#consulteCollapse"
                 aria-expanded="true" aria-controls="consulteCollapse">
@@ -571,15 +574,16 @@
                         class="bi bi-chevron-down" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
                             d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
-                    </svg> {{--  chevron down --}}
+                    </svg> 
                 </button>
             </li>
+
             <!--DASHBOARD-->
             <div wire:ignore id="consulteCollapse"
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('140', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('138', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.dashboard-consult') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -597,7 +601,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('141', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('140', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.permission-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -615,7 +619,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('142', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('141', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.absence-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -633,7 +637,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('143', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('142', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.rab-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -651,7 +655,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('144', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('143', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.reimburse-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -669,7 +673,7 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'consult' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('145', 'R'))
+                    @if (App\Models\Base\BaseModel::isAuthorize('144', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('consult.project-consult*') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -683,6 +687,7 @@
                 </div>
             </div>
         </div>
+        <!--END MENU CONSULTED-->
 
         <!--MENU INFORMED-->
         <div class="accordion-item">
@@ -706,7 +711,8 @@
                 class="accordion-collapse collapse {{ Request::segment(1) == 'informed' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    @if (App\Models\Base\BaseModel::isAuthorize('138', 'R'))
+                    {{-- @if (App\Models\Base\BaseModel::isAuthorize('138', 'R')) --}}
+                    @if (App\Models\Base\BaseModel::isAuthorize('146', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('informed.dashboard-informed') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
@@ -738,7 +744,7 @@
             </li>
 
             <!--RULES-->
-            <div wire:ignore id="masterCollapse"
+            {{-- <div wire:ignore id="masterCollapse"
                 class="accordion-collapse collapse {{ Request::segment(1) == 'master' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
@@ -753,13 +759,14 @@
                         </li>
                     @endif
                 </div>
-            </div>
+            </div> --}}
             <!--END RULES-->
 
             <div wire:ignore id="masterCollapse"
                 class="accordion-collapse collapse {{ Request::segment(1) == 'master' ? 'show' : '' }}"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
+
                     <!--MASTER APPROVAL-->
                     @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
                         <li
@@ -803,6 +810,15 @@
                                 <span>Absence Types</span>
                             </a>
                         </li>
+                    @endif
+
+                    @if (App\Models\Base\BaseModel::isAuthorize('98', 'R'))
+                        <li
+                            class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.approval-rules') ? 'active' : '' }}">
+                            <a class=" text-decoration-none text-white" href="{{ route('master.approval-rules') }}" wire:navigative.defer>
+                                <i class="fa-solid fa-database"></i>
+                                <span>Rules Approval</span>
+                            </a></li>
                     @endif
                     <!--END MASTER APPROVAL-->
 
@@ -907,7 +923,7 @@
 
                     <!--MENU for APPROVAL-->
                     {{-- taruh untuk create jobdesk --}}
-                    @if (App\Models\Base\BaseModel::isAuthorize('108', 'R'))
+                    {{-- @if (App\Models\Base\BaseModel::isAuthorize('108', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.jobdesk') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.jobdesk') }}"
@@ -916,10 +932,10 @@
                                 <span>Jabatan</span>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
 
                     {{-- taruh create atasan --}}
-                    @if (App\Models\Base\BaseModel::isAuthorize('109', 'R'))
+                    {{-- @if (App\Models\Base\BaseModel::isAuthorize('109', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.atasan') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.atasan') }}"
@@ -928,9 +944,9 @@
                                 <span>Atasan</span>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
 
-                    @if (App\Models\Base\BaseModel::isAuthorize('109', 'R'))
+                    {{-- @if (App\Models\Base\BaseModel::isAuthorize('109', 'R'))
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.jenis-approval') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.jenis-approval') }}"
@@ -939,7 +955,7 @@
                                 <span>Jenis Approval</span>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </div>
