@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class WorkFromHome extends Component
@@ -18,7 +19,6 @@ class WorkFromHome extends Component
 
     public $statusList;
 
-    protected $listeners = ['receiveSignal'];
 
     public static function storePeerId($request)
     {
@@ -35,9 +35,7 @@ class WorkFromHome extends Component
                     'peer_id' => $request,
                 ]
             );
-
-
-
+            // $this->dispatch('refreshComponent'); // Cannot use $this in static context
 
             Log::info('Store session success with peer_id: ' . $request);
         } else {
@@ -79,6 +77,11 @@ class WorkFromHome extends Component
             ->orderByDesc('start_at')
             ->first();
 
+        if ($lastSession && $lastSession->status_wfh_id == $status) {
+            // Status tidak berubah, tidak perlu update apa-apa
+            return response()->json(['message' => 'Status unchanged, no action taken.']);
+        }
+
         if ($lastSession) {
             DB::table('status_wfh_has_wfh_session')
                 ->where('wfh_session_id', $lastSession->wfh_session_id)
@@ -95,6 +98,13 @@ class WorkFromHome extends Component
             'start_at' => now(),
             'end_at' => null,
         ]);
+
+        // SWEET ALERT
+        // $this->dispatch('swal:modal', [
+        //     'type' => 'success',
+        //     'message' => 'Data Added',
+        //     'text' => 'The data has been added successfully.'
+        // ]);
 
         Log::info('New session created for peer_id: ' . $peerId . ', status: ' . $status);
         // Log::debug('Updating session status for peer_id: ' . $request->input('peer_id'));
@@ -119,4 +129,12 @@ class WorkFromHome extends Component
     {
         $this->statusList = WfhStatuses::getAllStatus()->pluck('status_wfh', 'id');
     }
+
+    // protected $listeners = ['js-event' => 'handleJsEvent'];
+    // #[On('handleJsEvent')]
+    // public function handleJsEvent($message)
+    // {
+    //     // Handle the event data from JavaScript
+    //     Log::info('JS event received:', ['message' => $message]);
+    // }
 }

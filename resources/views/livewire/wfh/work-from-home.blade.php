@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <select class="form-select form-select-md mt-4" name="" id="statusWfh">
+                        <select class="form-select form-select-md mt-4" name="" id="statusWfh" disabled>
                             <option selected>Select status</option>
                             @foreach ($statusList as $status)
                                 <option value="{{ $status->id }}">{{ $status->status_wfh }}</option>
@@ -236,7 +236,12 @@
         document.getElementById('endPeerBtn').addEventListener('click', endPeerConnection);
     </script> --}}
 
-    <script></script>
+    {{-- @livewireScripts --}}
+    {{-- <script>
+        document.addEventListener("livewire:load", () => {
+            window.Livewire = Livewire;
+        });
+    </script> --}}
 
     {{-- Module peerjs --}}
     <script type="module">
@@ -334,6 +339,7 @@
 
                 await enableCamera(); // nyalakan kamera saat koneksi terbuka
                 document.getElementById('startPeerBtn').disabled = true;
+                document.getElementById('statusWfh').disabled = false;
 
                 const kerjaStatus = window.statusMap.find(item => item.status_wfh && item.status_wfh
                     .toLowerCase() === 'kerja');
@@ -384,10 +390,15 @@
                             });
                         }
                     });
+
+
+                    // Livewire.dispatch('js-event', {
+                    //     message: 'Hello from JS!'
+                    // });
                 });
 
                 conn.on('data', (data) => {
-                    console.log("Received from admin:", data);
+                    // console.log("Received from admin:", data);
                     // Bisa dipakai jika admin ingin kirim instruksi
                 });
             });
@@ -430,6 +441,7 @@
 
                 updateStatusSession();
                 document.getElementById('startPeerBtn').disabled = false;
+                document.getElementById('statusWfh').disabled = false;
                 statusWfh.selectedIndex = 0;
                 statusWfh.dispatchEvent(new Event('change'));
 

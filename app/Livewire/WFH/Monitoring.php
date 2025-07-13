@@ -6,6 +6,8 @@ use App\Models\Master\WfhStatuses;
 use App\Models\WfhSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Monitoring extends Component
@@ -18,9 +20,12 @@ class Monitoring extends Component
     public $statusList = [];
 
 
-    public function getListeners()
+
+    #[On('js-event')]
+    public function handleJsEvent($message)
     {
-        return ['refreshComponent' => '$refresh'];
+        // Handle the event data from JavaScript
+        Log::info('JS event received:', ['message' => $message]);
     }
 
     public function mount()
