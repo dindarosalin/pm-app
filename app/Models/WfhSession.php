@@ -18,36 +18,27 @@ class WfhSession extends BaseModel
         );
     }
 
-    public static function storeNewSession($peerId)
+    public static function store($peer)
     {
-        Log::withContext(['user' => Auth::user()->user_name]);
+        Log::withContext([Auth::user()->user_name]);
+        Log::info('Storing session with peer_id: ' . $peer);
 
-        if (!$peerId) {
+        $status = "ongoing";
+        // $peerId = $peer;
+
+        if (isset($peer)) {
+            DB::table('wfh_session')->insert([
+                'app_user_user_id' => Auth::user()->user_id,
+                'start' => now(),
+                'end' => null,
+                'status' => $status,
+                'peer_id' => $peer,
+            ]);
+            Log::info('Store session success with peer_id: ' . $peer);
+            // Monitoring::getListeners();
+            // dispatch('getListeners'); // Trigger event to refresh monitoring
+        } else {
             Log::error('Failed to store session: peer_id is null');
-            return;
         }
-
-        $userId = Auth::user()->user_id;
-
-        // Cegah sesi ganda yang masih ongoing
-        $hasOngoing = DB::table('wfh_session')
-            ->where('app_user_user_id', $userId)
-            ->where('status', 'ongoing')
-            ->exists();
-
-        if ($hasOngoing) {
-            Log::warning("User $userId already has an ongoing session.");
-            return;
-        }
-
-        DB::table('wfh_session')->insert([
-            'app_user_user_id' => $userId,
-            'start' => now(),
-            'end' => null,
-            'status' => 'ongoing',
-            'peer_id' => $peerId,
-        ]);
-
-        Log::info('Store session success with peer_id: ' . $peerId);
     }
 }

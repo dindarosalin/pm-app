@@ -1,7 +1,7 @@
 <div>
     @section('title', 'Work From Home')
 
-    <div class="col-xl-12 col-md-12 col-sm-12">
+    <div class="col-xl-12 col-md-12 col-sm-12" wire:ignore>
         <div class="card">
             <div class="row">
                 <div class="col-md-8 mt-3 position-relative">
@@ -243,6 +243,19 @@
         });
     </script> --}}
 
+    <script>
+        //Swal alert
+        document.addEventListener('DOMContentLoaded', function() {
+            window.livewire.on('swal:modal', data => {
+                Swal.fire({
+                    icon: data.type,
+                    title: data.message,
+                    text: data.text,
+                });
+            });
+        });
+    </script>
+
     {{-- Module peerjs --}}
     <script type="module">
         import {
@@ -266,20 +279,72 @@
         const toggleCameraBtn = document.getElementById('toggleCameraBtn');
 
         // Fungsi menyalakan kamera
+        // async function enableCamera() {
+        //     if (!localStream) {
+        //         localStream = await navigator.mediaDevices.getUserMedia({
+        //             video: true,
+        //             audio: false
+        //         });
+        //     }
+        //     localVideo.srcObject = localStream;
+
+        //     // Replace video track pada koneksi yang aktif
+        //     peer.connections && Object.values(peer.connections).forEach(connectionArray => {
+        //         connectionArray.forEach(conn => {
+        //             if (conn.peerConnection) {
+        //                 const senders = conn.peerConnection.getSenders();
+        //                 const videoTrack = localStream.getVideoTracks()[0];
+        //                 const videoSender = senders.find(sender => sender.track && sender.track.kind ===
+        //                     'video');
+        //                 if (videoSender && videoTrack) {
+        //                     videoSender.replaceTrack(videoTrack);
+        //                 }
+        //             }
+        //         });
+        //     });
+
+
+        //     isCameraOn = true;
+        //     toggleCameraBtn.classList.remove('btn-danger');
+        //     toggleCameraBtn.classList.add('btn-secondary');
+        //     cameraIcon.className = 'bi bi-camera-video'; // icon on cam
+        //     cameraText.textContent = 'Off Cam';
+        // }
+
         async function enableCamera() {
-            if (!localStream) {
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: false
+            // Selalu minta stream baru dari kamera
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: false
+            });
+
+            localStream = stream;
+            localVideo.srcObject = localStream;
+
+            // Replace video track pada koneksi peer yang aktif
+            if (peer && peer.connections) {
+                Object.values(peer.connections).forEach(connectionArray => {
+                    connectionArray.forEach(conn => {
+                        if (conn.peerConnection) {
+                            const senders = conn.peerConnection.getSenders();
+                            const videoTrack = localStream.getVideoTracks()[0];
+                            const videoSender = senders.find(sender => sender.track?.kind === 'video');
+                            if (videoSender && videoTrack) {
+                                videoSender.replaceTrack(videoTrack);
+                            }
+                        }
+                    });
                 });
             }
-            localVideo.srcObject = localStream;
+
             isCameraOn = true;
             toggleCameraBtn.classList.remove('btn-danger');
             toggleCameraBtn.classList.add('btn-secondary');
-            cameraIcon.className = 'bi bi-camera-video'; // icon on cam
+            cameraIcon.className = 'bi bi-camera-video';
             cameraText.textContent = 'Off Cam';
         }
+
+
 
         // Fungsi mematikan kamera tanpa memutus koneksi peer
         async function disableCamera() {
@@ -287,14 +352,41 @@
                 localStream.getTracks().forEach(track => {
                     if (track.kind === 'video') track.stop();
                 });
-                localStream = null;
             }
-            localVideo.srcObject = null;
+            localStream = getBlackVideoStream();
+            localVideo.srcObject = localStream;
+
+            // Kirim ulang stream ke semua panggilan yang sedang aktif
+            peer.connections && Object.values(peer.connections).forEach(connectionArray => {
+                connectionArray.forEach(conn => {
+                    if (conn.peerConnection) {
+                        const senders = conn.peerConnection.getSenders();
+                        const videoTrack = localStream.getVideoTracks()[0];
+                        const videoSender = senders.find(sender => sender.track && sender.track.kind ===
+                            'video');
+                        if (videoSender && videoTrack) {
+                            videoSender.replaceTrack(videoTrack);
+                        }
+                    }
+                });
+            });
+
+
             isCameraOn = false;
             toggleCameraBtn.classList.remove('btn-secondary');
             toggleCameraBtn.classList.add('btn-danger');
             cameraIcon.className = 'bi bi-camera-video-off'; // icon off cam
             cameraText.textContent = 'On Cam';
+        }
+
+        function getBlackVideoStream() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 640;
+            canvas.height = 360; // Sesuai rasio 16:9
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            return canvas.captureStream(15); // 15 fps
         }
 
         toggleCameraBtn.addEventListener('click', async () => {
@@ -352,18 +444,23 @@
                 }
 
                 // Kirim ke backend (ubah URL sesuai Laravel route-mu)
-                fetch('/store-peer-id', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        peer_id: id,
-                        status: 'connected'
-                    })
+                Livewire.dispatch('storePeer', {
+                    request: id
                 });
+
+                // fetch('/store-peer-id', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                //             .getAttribute('content')
+                //     },
+                //     body: JSON.stringify({
+                //         peer_id: id,
+                //         status: 'connected'
+                //     })
+                // });
+
             });
 
             // Get status WFH dari select
@@ -390,11 +487,6 @@
                             });
                         }
                     });
-
-
-                    // Livewire.dispatch('js-event', {
-                    //     message: 'Hello from JS!'
-                    // });
                 });
 
                 conn.on('data', (data) => {
@@ -486,6 +578,8 @@
                 toggleCameraBtn.disabled = false;
             }
         }
+
+
 
         // statusWfh.addEventListener('change', updateCameraButtonState);
         // Panggil juga saat halaman load

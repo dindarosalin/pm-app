@@ -7,12 +7,21 @@
     <div id="remote-container" wire:ignore class="row g-3">
         {{-- Video remote akan muncul di sini --}}
     </div>
-    <button class="btn btn-success" id="call-btn">Panggil</button>
+    <button class="btn btn-success" id="call-btn" hidden>Panggil</button>
 
     @push('scripts')
         <script>
             window.targetPeerIds = @json($peerIds);
             window.statusMap = @json($statusList);
+            const calledPeers = new Set();
+
+
+            // Event listener untuk menerima event dari Livewire
+            // window.addEventListener('refreshMonitoring', function() {
+            //     if (window.Livewire) {
+            //         Livewire.dispatch('refreshMonitoring');
+            //     }
+            // });
         </script>
 
         {{-- <script type="module">
@@ -162,6 +171,122 @@
                 }
             });
 
+            let existingPeers = [...targetPeerId]; // dari backend
+
+            async function pollPeerIds() {
+                try {
+                    const res = await fetch('/api/peer-ids');
+                    const peerIds = await res.json();
+
+                    const newPeers = peerIds.filter(id => !existingPeers.includes(id));
+                    newPeers.forEach(peerId => {
+                        existingPeers.push(peerId);
+                        console.log('Peer baru ditemukan:', peerId);
+                        callPeerById(peerId);
+                    });
+
+                    // 🚨 Hapus peer yang tidak aktif
+                    const removedPeers = existingPeers.filter(id => !peerIds.includes(id));
+                    removedPeers.forEach(peerId => {
+                        console.log('Peer tidak aktif, hapus:', peerId);
+                        const el = document.getElementById(`remote-card-${peerId}`);
+                        if (el) el.remove();
+                    });
+
+                    // Perbarui list existing dengan yang aktif saja
+                    existingPeers = peerIds;
+
+                } catch (error) {
+                    console.error('Gagal polling peer:', error);
+                }
+            }
+
+            setInterval(pollPeerIds, 3000); // ⏱ Jalankan setiap 3 detik
+
+            function callPeerById(peerId) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 640;
+                canvas.height = 480;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                const stream = canvas.captureStream(15);
+
+                const call = peer.call(peerId, stream);
+                call.on('stream', (remoteStream) => {
+                    const container = document.getElementById('remote-container');
+                    const existingCard = document.getElementById(`remote-card-${peerId}`);
+
+                    if (!existingCard && container) {
+                        const cardCol = document.createElement('div');
+                        cardCol.className = 'col-md-6 col-lg-4';
+                        cardCol.id = `remote-card-${peerId}`;
+
+                        const card = document.createElement('div');
+                        card.className = 'card shadow rounded-3';
+
+                        const cardBody = document.createElement('div');
+                        cardBody.className = 'card-body';
+
+                        const overlay = document.createElement('div');
+                        overlay.id = `status-overlay-${peerId}`;
+                        overlay.className =
+                            'position-absolute top-0 start-0 bg-dark bg-opacity-75 text-white px-2 py-1 rounded-end';
+                        overlay.style.zIndex = '10';
+                        overlay.style.fontSize = '0.8rem';
+                        overlay.textContent = 'Status: -';
+
+                        const title = document.createElement('h6');
+                        title.className = 'card-title text-muted small';
+                        title.textContent = `Peer ID: ${peerId}`;
+
+                        const aspectWrapper = document.createElement('div');
+                        aspectWrapper.style.position = 'relative';
+                        aspectWrapper.style.width = '100%';
+                        aspectWrapper.style.paddingTop = '56.25%'; // 16:9 aspect ratio
+
+                        const video = document.createElement('video');
+                        video.id = `remote-video-${peerId}`;
+                        video.autoplay = true;
+                        video.playsInline = true;
+                        video.controls = false;
+                        video.className = 'rounded';
+                        video.style.position = 'absolute';
+                        video.style.top = 0;
+                        video.style.left = 0;
+                        video.style.width = '100%';
+                        video.style.height = '100%';
+                        video.style.objectFit = 'cover'; // Atau 'contain' jika ingin menyesuaikan video
+
+                        video.srcObject = remoteStream;
+
+                        aspectWrapper.appendChild(video);
+                        cardBody.appendChild(title);
+                        cardBody.appendChild(aspectWrapper);
+
+                        cardBody.appendChild(title);
+                        cardBody.appendChild(video);
+                        card.appendChild(overlay);
+                        card.appendChild(cardBody);
+                        cardCol.appendChild(card);
+                        container.appendChild(cardCol);
+                    }
+                });
+
+                const dataConn = peer.connect(peerId);
+                dataConn.on('open', () => {
+                    dataConn.on('data', (data) => {
+                        const statusEl = document.getElementById(`status-overlay-${peerId}`);
+                        if (statusEl && data.status) {
+                            const statusName = window.statusMap?.[data.status] ?? `Status ID: ${data.status}`;
+                            statusEl.textContent = `Status: ${statusName}`;
+                        }
+                    });
+                });
+            }
+
+            //=============================================
+
             // Fungsi untuk melakukan panggilan ke peer lain
             async function callPeer() {
 
@@ -214,13 +339,29 @@
                             title.textContent = `Peer ID: ${peerId}`;
 
                             // Video element
+                            const aspectWrapper = document.createElement('div');
+                            aspectWrapper.style.position = 'relative';
+                            aspectWrapper.style.width = '100%';
+                            aspectWrapper.style.paddingTop = '56.25%'; // 16:9 aspect ratio
+
                             const video = document.createElement('video');
                             video.id = `remote-video-${peerId}`;
                             video.autoplay = true;
                             video.playsInline = true;
                             video.controls = false;
-                            video.className = 'w-100 rounded';
+                            video.className = 'rounded';
+                            video.style.position = 'absolute';
+                            video.style.top = 0;
+                            video.style.left = 0;
+                            video.style.width = '100%';
+                            video.style.height = '100%';
+                            video.style.objectFit = 'cover'; // Atau 'contain' jika ingin menyesuaikan video
+
                             video.srcObject = remoteStream;
+
+                            aspectWrapper.appendChild(video);
+                            cardBody.appendChild(title);
+                            cardBody.appendChild(aspectWrapper);
 
                             // Gabungkan elemen
                             cardBody.appendChild(title);

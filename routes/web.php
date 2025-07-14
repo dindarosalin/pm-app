@@ -3,10 +3,10 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Settings\RoleController;
-use App\Http\Controllers\Settings\MenuController;
 use App\Http\Controllers\Settings\AccountsController;
 use App\Http\Controllers\Settings\HierarchyController;
+use App\Http\Controllers\Settings\MenuController;
+use App\Http\Controllers\Settings\RoleController;
 use App\Livewire\Availability\AvailabilityTracking;
 use App\Livewire\Availability\Performa;
 use App\Livewire\Dashboard\Dashboard as Dashboard;
@@ -41,8 +41,10 @@ use App\Livewire\TimeCard\ShowTimeCard;
 use App\Livewire\WFH\Monitoring;
 use App\Livewire\WFH\WorkFromHome;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
+
 
 
 
@@ -89,6 +91,13 @@ Route::middleware(['auth'])->group(function () {
 
         return response()->json(['status' => 'ok']);
     });
+
+    Route::get('/api/peer-ids', function () {
+        return DB::table('wfh_session')
+            ->where('status', 'ongoing')
+            ->pluck('peer_id');
+    });
+
 
     Route::get('ongoing-peer-ids', [\App\Livewire\WFH\Monitoring::class, 'getOngoingPeerIds']);
 

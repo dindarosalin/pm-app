@@ -19,27 +19,24 @@ class WorkFromHome extends Component
 
     public $statusList;
 
-
-    public static function storePeerId($request)
+    #[On('storePeer')]
+    public function storePeerId($request)
     {
         Log::withContext([Auth::user()->user_name]);
         $status = "ongoing";
         Log::info('Storing session with peer_id: ' . $request);
-        if (isset($request)) {
-            $query = DB::table('wfh_session')->insert(
-                [
-                    'app_user_user_id' => Auth::user()->user_id,
-                    'start' => now(),
-                    'end' => null,
-                    'status' => $status,
-                    'peer_id' => $request,
-                ]
-            );
-            // $this->dispatch('refreshComponent'); // Cannot use $this in static context
+        if ($request) {
+            WfhSession::store($request);
+            $this->dispatch('swal:modal', [
+                'type' => 'success',
+                'message' => 'Session Started',
+                'text' => 'The session has been started successfully.'
+            ]);
 
-            Log::info('Store session success with peer_id: ' . $request);
+            $this->dispatch('refreshMonitoring')->to('WFH.Monitoring');
+            Log::info('Send session success with peer_id: ' . $request);
         } else {
-            Log::error('Failed to store session: peer_id is null');
+            Log::error('Failed send to store session: peer_id is null');
         }
     }
 
@@ -54,8 +51,6 @@ class WorkFromHome extends Component
                 'end' => now(),
                 'status' => $status,
             ]);
-
-
 
 
         if ($updated) {
@@ -129,12 +124,4 @@ class WorkFromHome extends Component
     {
         $this->statusList = WfhStatuses::getAllStatus()->pluck('status_wfh', 'id');
     }
-
-    // protected $listeners = ['js-event' => 'handleJsEvent'];
-    // #[On('handleJsEvent')]
-    // public function handleJsEvent($message)
-    // {
-    //     // Handle the event data from JavaScript
-    //     Log::info('JS event received:', ['message' => $message]);
-    // }
 }

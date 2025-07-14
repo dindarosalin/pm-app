@@ -20,17 +20,20 @@ class Monitoring extends Component
     public $statusList = [];
 
 
+    // protected $listeners = ['getListeners' => 'render'];
+    // public function getListeners()
+    // {
+    //     Log::info('getListeners called in Monitoring component');
+    //     return [
+    //         'refreshMonitoring' => '$refresh',
+    //     ];
+    // }
 
-    #[On('js-event')]
-    public function handleJsEvent($message)
-    {
-        // Handle the event data from JavaScript
-        Log::info('JS event received:', ['message' => $message]);
-    }
 
     public function mount()
     {
         $this->statusList = WfhStatuses::getAllStatus()->pluck('status_wfh', 'id');
+        Log::info('Mounting Monitoring component');
         // dd($this->storePeerId());
         // $this->activeSessions = WfhSession::whereNull('end')->get();
     }
@@ -52,6 +55,7 @@ class Monitoring extends Component
         // dd($peerIds);
         return response()->json(['peer_ids' => $peerIds]);
     }
+
 
     public function render()
     {
