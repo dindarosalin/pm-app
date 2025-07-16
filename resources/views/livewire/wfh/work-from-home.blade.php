@@ -2,14 +2,17 @@
     @section('title', 'Work From Home')
 
     <div class="col-xl-12 col-md-12 col-sm-12" wire:ignore>
+        <div id="alertStart" class="alert alert-warning mt-3" role="alert">
+            Silakan klik tombol Start terlebih dahulu!
+        </div>
         <div class="card">
             <div class="row">
                 <div class="col-md-8 mt-3 position-relative">
                     <video id="localVideo" autoplay playsinline muted
                         style="width:100%;aspect-ratio:16/9;object-fit:cover;background:#222;border-radius:8px;"></video>
-                    <button id="toggleCameraBtn" class="btn btn-secondary mx-auto d-block">
-                        <span id="cameraIcon" class="bi bi-camera-video"></span>
-                        <span id="cameraText">On Cam</span>
+                    <button id="toggleCameraBtn" class="btn btn-danger mx-auto d-block">
+                        <span id="cameraIcon" class="bi bi-camera-video-off"></span>
+                        <span id="cameraText">Off Cam</span>
                     </button>
                     <div class="text-center mt-2"></div>
                     <div id="peerStatus">Status: <span id="peerStatusText">Connecting...</span></div>
@@ -18,7 +21,7 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <select class="form-select form-select-md mt-4" name="" id="statusWfh" disabled>
-                            <option selected>Select status</option>
+                            <option selected>-</option>
                             @foreach ($statusList as $status)
                                 <option value="{{ $status->id }}">{{ $status->status_wfh }}</option>
                             @endforeach
@@ -29,7 +32,7 @@
                     </div>
                     <div class="vstack gap-3">
                         <button type="button" id="startPeerBtn" class="btn btn-success col-12">Start</button>
-                        <button type="button" id="endPeerBtn" class="btn btn-danger col-12">End</button>
+                        <button type="button" id="endPeerBtn" class="btn btn-danger col-12" disabled>End</button>
                     </div>
                 </div>
             </div>
@@ -267,6 +270,9 @@
         let isCameraOn = false;
         let currentPeerId = null;
         let conn = null; // global untuk komunikasi data (status)
+        let wasCameraManuallyOff = false;
+        let isPeerEnded = false;
+
 
 
         window.statusMap = @json($statusList);
@@ -312,16 +318,66 @@
         // }
 
         async function enableCamera() {
-            // Selalu minta stream baru dari kamera
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false
-            });
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                });
 
-            localStream = stream;
+                wasCameraManuallyOff = false;
+                localStream = stream;
+                localVideo.srcObject = localStream;
+
+                // Replace track ke peer
+                if (peer && peer.connections) {
+                    Object.values(peer.connections).forEach(connectionArray => {
+                        connectionArray.forEach(conn => {
+                            if (conn.peerConnection) {
+                                const senders = conn.peerConnection.getSenders();
+                                const videoTrack = localStream.getVideoTracks()[0];
+                                const videoSender = senders.find(sender => sender.track?.kind ===
+                                    'video');
+                                if (videoSender && videoTrack) {
+                                    videoSender.replaceTrack(videoTrack);
+                                }
+                            }
+                        });
+                    });
+                }
+
+                isCameraOn = true;
+                toggleCameraBtn.classList.remove('btn-danger');
+                toggleCameraBtn.classList.add('btn-secondary');
+                cameraIcon.className = 'bi bi-camera-video';
+                cameraText.textContent = 'On Cam';
+            } catch (err) {
+                console.warn("Gagal mengakses kamera:");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Mengakses Kamera',
+                    text: err.message || 'Silakan periksa izin kamera pada browser Anda.'
+                });
+            }
+        }
+
+
+
+
+
+        // Fungsi mematikan kamera tanpa memutus koneksi peer
+        async function disableCamera() {
+            wasCameraManuallyOff = true;
+
+            if (localStream) {
+                localStream.getTracks().forEach(track => {
+                    if (track.kind === 'video') track.stop();
+                });
+            }
+
+            localStream = getBlackVideoStream();
             localVideo.srcObject = localStream;
 
-            // Replace video track pada koneksi peer yang aktif
+            // Replace video track ke koneksi aktif
             if (peer && peer.connections) {
                 Object.values(peer.connections).forEach(connectionArray => {
                     connectionArray.forEach(conn => {
@@ -337,47 +393,13 @@
                 });
             }
 
-            isCameraOn = true;
-            toggleCameraBtn.classList.remove('btn-danger');
-            toggleCameraBtn.classList.add('btn-secondary');
-            cameraIcon.className = 'bi bi-camera-video';
-            cameraText.textContent = 'Off Cam';
-        }
-
-
-
-        // Fungsi mematikan kamera tanpa memutus koneksi peer
-        async function disableCamera() {
-            if (localStream) {
-                localStream.getTracks().forEach(track => {
-                    if (track.kind === 'video') track.stop();
-                });
-            }
-            localStream = getBlackVideoStream();
-            localVideo.srcObject = localStream;
-
-            // Kirim ulang stream ke semua panggilan yang sedang aktif
-            peer.connections && Object.values(peer.connections).forEach(connectionArray => {
-                connectionArray.forEach(conn => {
-                    if (conn.peerConnection) {
-                        const senders = conn.peerConnection.getSenders();
-                        const videoTrack = localStream.getVideoTracks()[0];
-                        const videoSender = senders.find(sender => sender.track && sender.track.kind ===
-                            'video');
-                        if (videoSender && videoTrack) {
-                            videoSender.replaceTrack(videoTrack);
-                        }
-                    }
-                });
-            });
-
-
             isCameraOn = false;
             toggleCameraBtn.classList.remove('btn-secondary');
             toggleCameraBtn.classList.add('btn-danger');
-            cameraIcon.className = 'bi bi-camera-video-off'; // icon off cam
-            cameraText.textContent = 'On Cam';
+            cameraIcon.className = 'bi bi-camera-video-off';
+            cameraText.textContent = 'Off Cam';
         }
+
 
         function getBlackVideoStream() {
             const canvas = document.createElement('canvas');
@@ -399,6 +421,8 @@
 
         // Start Peer + kirim peerId ke server
         async function startPeerConnection() {
+            isPeerEnded = false;
+
             if (peer) peer.destroy();
 
             statusText.textContent = 'Connecting...';
@@ -425,13 +449,23 @@
 
 
             peer.on('open', async id => {
+                if (isPeerEnded) return;
+
                 statusText.textContent = 'Open';
                 peerIdText.textContent = id;
                 currentPeerId = id;
 
-                await enableCamera(); // nyalakan kamera saat koneksi terbuka
+                if (!wasCameraManuallyOff) {
+                    await enableCamera();
+                } else {
+                    localStream = getBlackVideoStream();
+                    localVideo.srcObject = localStream;
+                }
+                // nyalakan kamera saat koneksi terbuka
                 document.getElementById('startPeerBtn').disabled = true;
+                document.getElementById('endPeerBtn').disabled = false;
                 document.getElementById('statusWfh').disabled = false;
+                document.getElementById('alertStart').hidden = true;
 
                 const kerjaStatus = window.statusMap.find(item => item.status_wfh && item.status_wfh
                     .toLowerCase() === 'kerja');
@@ -508,24 +542,36 @@
             });
 
             peer.on('call', call => {
+                if (isPeerEnded) return; // <- cegah kamera hidup saat sesi sudah diakhiri
+
                 if (localStream) {
                     call.answer(localStream);
-                } else {
+                } else if (!isPeerEnded) {
                     navigator.mediaDevices.getUserMedia({
                         video: true,
                         audio: false
                     }).then(stream => {
+                        if (isPeerEnded) {
+                            stream.getTracks().forEach(track => track.stop());
+                            return;
+                        }
+
                         localStream = stream;
                         localVideo.srcObject = localStream;
                         call.answer(localStream);
+                    }).catch(err => {
+                        console.warn("Gagal akses kamera:", err);
                     });
                 }
+
             });
+
         }
 
         // End Peer + kirim info ke backend
         function endPeerConnection() {
             if (peer) {
+                isPeerEnded = true;
                 peer.destroy();
                 peer = null;
                 peerIdText.textContent = '-';
@@ -533,20 +579,32 @@
 
                 updateStatusSession();
                 document.getElementById('startPeerBtn').disabled = false;
-                document.getElementById('statusWfh').disabled = false;
+                document.getElementById('endPeerBtn').disabled = true;
+                document.getElementById('statusWfh').disabled = true;
+                document.getElementById('alertStart').hidden = false;
                 statusWfh.selectedIndex = 0;
                 statusWfh.dispatchEvent(new Event('change'));
 
-                // Matikan kamera
-                disableCamera();
+                // Jangan ganti stream ke black stream kalau sudah end
+                // Just stop semua track
+                if (localStream && isCameraOn) {
+                    localStream.getTracks().forEach(track => track.stop());
+                    localStream = null;
+                    localVideo.srcObject = null;
+                }
+
+                isCameraOn = false;
+                toggleCameraBtn.classList.remove('btn-secondary');
+                toggleCameraBtn.classList.add('btn-danger');
+                cameraIcon.className = 'bi bi-camera-video-off';
+                cameraText.textContent = 'Off Cam';
 
                 // Kirim ke backend (ubah URL sesuai Laravel route)
                 fetch('/update-peer-session', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content')
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
                         peer_id: currentPeerId,
@@ -555,6 +613,7 @@
                 });
             }
         }
+
 
         // Cek status wfh
         function isRapatStatus(selectedId) {
@@ -607,24 +666,37 @@
         });
 
         function updateStatusSession() {
-            // Cek apakah ada peer yang aktif
-            // Kirim status ke Livewire via AJAX (fetch)
-            // console.log(statusWfh.value);
             fetch('/update-status-session', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content'),
-                    'Accept': 'application/json',
-                    'X-Livewire': 'true'
-                },
-                body: JSON.stringify({
-                    peer_id: currentPeerId, // kirim id peer
-                    status_wfh_id: statusWfh.value, // kirim id status yang dipilih
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                        'X-Livewire': 'true'
+                    },
+                    body: JSON.stringify({
+                        peer_id: currentPeerId, // kirim id peer
+                        status_wfh_id: statusWfh.value // kirim id status yang dipilih
+                    })
+                }).then(response => {
+                    if (!response.ok) {
+                        // Kalau status HTTP bukan 200-299
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
                 })
-            });
+                .then(data => {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: 'success',
+                        title: 'Status Updated',
+                        text: data.message || 'Status berhasil diperbarui.',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                });
         }
+
 
         // Button Event
         document.getElementById('startPeerBtn').addEventListener('click', startPeerConnection);
