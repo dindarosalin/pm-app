@@ -98,6 +98,7 @@ class ApprovalPermissions extends BaseModel
             'file_name' => $storeData['fileName'],
             'file_path' => $storeData['filePath'],
             'note' => $storeData['noteDelegation'],
+            'note_consult' => $storeData['noteConsult'],
         ]);
     }
 
@@ -126,6 +127,7 @@ class ApprovalPermissions extends BaseModel
                 'file_name' => $storeData['fileName'],
                 'file_path' => $storeData['filePath'],
                 'note' => $storeData['noteDelegation'],
+                'note_consult' => $storeData['noteConsult'],
             ]);
     }
 
@@ -153,6 +155,8 @@ class ApprovalPermissions extends BaseModel
             )
         ->get();
     }
+
+
 
     public static function updateStatus($id, $statusCode, $note)
     {

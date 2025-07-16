@@ -22,6 +22,7 @@ class ResponsiblePermission extends Component
     public $permissionId, $statusId;
     public $permissionRules;
     public $file;
+    public $userId;
 
     public $approvalId = 1; //PERMISSION
 
@@ -36,8 +37,6 @@ class ResponsiblePermission extends Component
     public function loadData()
     {
         $this->auth = Auth::user()->user_id;
-        // DATA ACCOUNTABLE ATAU ATASAN
-        // $this->accountableList = Role::getAll();
         $this->accountableList = EmployeeHierarchy::getHierarchyUp($this->auth);
         $this->delegationList = User::get();
         $this->subjectList = ApprovalPermissionTypes::getAll();
@@ -45,6 +44,9 @@ class ResponsiblePermission extends Component
         $this->permissions = ApprovalPermissions::getAllByUserId($this->auth);
         $this->permissionRules = ApprovalRules::getByType($this->approvalId);
     }
+
+     // DATA ACCOUNTABLE ATAU ATASAN
+        // $this->accountableList = Role::getAll();
 
     public function save()
     {
@@ -58,7 +60,7 @@ class ResponsiblePermission extends Component
         }
 
         $this->reset();
-        $this->dispatch('close-offcanvas');
+        // $this->dispatch('close-offcanvas');
         $this->dispatch('swal:modal', [
             'type' => 'success',
             'message' => 'Data Saved',
