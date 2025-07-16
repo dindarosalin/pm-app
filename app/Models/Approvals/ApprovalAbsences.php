@@ -98,6 +98,7 @@ class ApprovalAbsences extends BaseModel
             'file_name' => $storeData['fileName'],
             'file_path' => $storeData['filePath'],
             'note' => $storeData['noteDelegation'],
+            'note_consult' => $storeData['noteConsult'],
         ]);
     }
 
@@ -124,6 +125,7 @@ class ApprovalAbsences extends BaseModel
                 'file_name' => $storeData['fileName'],
                 'file_path' => $storeData['filePath'],
                 'note' => $storeData['noteDelegation'],
+                'note_consult' => $storeData['noteConsult'],
             ]);
     }
 

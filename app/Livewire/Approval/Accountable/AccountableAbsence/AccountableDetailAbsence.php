@@ -3,7 +3,7 @@
 namespace App\Livewire\Approval\Accountable\AccountableAbsence;
 
 use App\Models\Approvals\ApprovalAbsences;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class AccountableDetailAbsence extends Component

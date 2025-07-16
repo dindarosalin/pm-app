@@ -1,6 +1,6 @@
 @section('title', 'Leave Of Absence')
 <div>
-    <div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offCanvasForm"
+    <div wire:ignore.self class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offCanvasForm"
         aria-labelledby="offCanvasFormLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offCanvasFormLabel">Leave of Absence Form</h5>
@@ -53,7 +53,7 @@
                 <div class="mb-3 row">
                     <div class="col">
                         <label class="form-label">Emergency Contact:</label>
-                        <input wire:model='emergencyContact' class="form-control form-control-sm" type="text"
+                        <input wire:model='emergencyContact' class="form-control form-control-sm" type="number"
                             placeholder="Emergency Contact Number">
                     </div>
 

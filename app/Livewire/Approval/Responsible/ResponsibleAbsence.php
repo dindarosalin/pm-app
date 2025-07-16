@@ -61,7 +61,7 @@ class ResponsibleAbsence extends Component
         }
 
         $this->reset();
-        $this->dispatch('close-offcanvas');
+        // $this->dispatch('close-offcanvas');
         $this->dispatch('swal:modal', [
             'type' => 'success',
             'message' => 'Data Saved',
