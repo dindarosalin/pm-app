@@ -1,16 +1,14 @@
 @section('title', 'Reimburse Detail')
 
 <div>
-    <div class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offCanvasForm"
+    <div wire:ignore.self class="offcanvas offcanvas-end w-50" data-bs-scroll="true" tabindex="-1" id="offCanvasForm"
         aria-labelledby="offCanvasFormLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offCanvasFormLabel">Reimburse Form</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Consectetur adipiscing elit quisque faucibus ex
-                sapien vitae. Ex sapien vitae pellentesque sem placerat in id. Placerat in id cursus mi pretium tellus
-                duis.</p>
+            
             <form wire:submit.prevent='save'>
                 <div class="mb-3 row">
                     <div class="col">

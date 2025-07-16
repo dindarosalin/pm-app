@@ -10,6 +10,7 @@ use Livewire\Component;
 class AccountableDetailReimburse extends Component
 {
     public $reimburseId, $statusCode, $note;
+    public $auth, $data;
     public function render()
     {
         $this->loadData();

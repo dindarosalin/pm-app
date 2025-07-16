@@ -19,6 +19,8 @@ class Reimburse extends BaseModel
             'total_per_item' => $storeData['total_per_item'],
             'attachment' => $storeData['attachment'],
             'purchase_date' => $storeData['purchase_date'],
+            'note' => $storeData['note'],
+            'note_consult' => $storeData['note_consult'],
             'created_at' => now(),
         ]);
     }
@@ -35,6 +37,8 @@ class Reimburse extends BaseModel
                 'total_per_item' => $storeData['total_per_item'],
                 'attachment' => $storeData['attachment'],
                 'purchase_date' => $storeData['purchase_date'],
+                'note' => $storeData['note'],
+                'note_consult' => $storeData['note_consult'],
                 'updated_at' => now(),
             ]);
     }

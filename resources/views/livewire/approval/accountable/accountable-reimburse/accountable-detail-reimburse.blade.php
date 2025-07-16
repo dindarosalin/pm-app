@@ -49,6 +49,15 @@
                     <label for="floatingTextarea2">Note</label>
                 </div>
 
+                <div class="mb-3 form-floating">
+                    @foreach ($data as $item)
+                        <div class="col border p-2 rounded">
+                            <strong>Note Consulted: </strong> {{  $item->note_consult }}
+                        </div>
+                    @endforeach
+                    
+                </div>
+
                 <button type="submit" class="btn btn-sm btn-primary">Save</button>
             </form>
         </div>

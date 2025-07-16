@@ -5,6 +5,7 @@ namespace App\Livewire\Approval\Responsible;
 use App\Models\Approvals\ApprovalReimburse;
 use App\Models\Approvals\ApprovalRules;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -125,8 +126,8 @@ class ResponsibleReimburse extends Component
             ]);
 
             // Hapus file lama jika ada dan sedang update
-            if ($this->filePath && \Storage::disk('public')->exists($this->filePath)) {
-                \Storage::disk('public')->delete($this->filePath);
+            if ($this->filePath && Storage::disk('public')->exists($this->filePath)) {
+                Storage::disk('public')->delete($this->filePath);
             }
 
             $storedFile = $this->file->store('approval_files', 'public');
