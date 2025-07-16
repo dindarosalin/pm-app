@@ -146,8 +146,16 @@
                     <label for="floatingTextarea2">Note</label>
                 </div>
 
+                <div class="mb-3 form-floating">
+                    <div class="col border p-2 rounded">
+                        <strong>Note Consulted: </strong> {{  $permissionDetail->note_consult }}
+                    </div>
+                </div>
+                
                 <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            
             </form>
+            
         </div>
 
     </div>
