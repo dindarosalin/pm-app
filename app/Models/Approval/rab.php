@@ -97,6 +97,8 @@ class rab extends BaseModel
             'quantity' => $storeData['quantity'],
             'unit_price' => $storeData['unit_price'],
             'total_per_item' => $storeData['total_per_item'],
+            'note_consult' => $storeData['note_consult'],
+            'note' => $storeData['note'],
             'created_at' => now(),
         ]);
     }
@@ -113,6 +115,8 @@ class rab extends BaseModel
             'quantity' => $storeData['quantity'],
             'unit_price' => $storeData['unit_price'],
             'total_per_item' => $storeData['total_per_item'],
+            'note_consult' => $storeData['note_consult'],
+            'note' => $storeData['note'],
         ]);
     }
 

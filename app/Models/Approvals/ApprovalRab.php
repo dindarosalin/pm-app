@@ -40,7 +40,8 @@ class ApprovalRab extends BaseModel
 
     public static function getAllByFinance($auth)
     {
-        $finance = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', '08')->value('user_id');
+        // $finance = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', '08')->value('user_id');
+        $finance = DB::table('app_role_user')->where('user_id', $auth)->where('role_id', '08', '03')->value('user_id');
         // dd($finance);
 
         if ($auth == $finance) {
