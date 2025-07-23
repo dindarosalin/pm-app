@@ -426,6 +426,7 @@
                     changeMonth: true,
                     numberOfMonths: 2,
                     minDate: projectDate,
+                    maxDate: projectEndDate,
                 })
                 .on("change", function() {
                     to.datepicker("option", "minDate", getDate(this));
@@ -436,6 +437,7 @@
                     changeMonth: true,
                     numberOfMonths: 2,
                     maxDate: projectEndDate,
+                    minDate: projectDate,
                 })
                 .on("change", function() {
                     from.datepicker("option", "maxDate", getDate(this));
