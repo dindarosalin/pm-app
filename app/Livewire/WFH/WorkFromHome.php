@@ -19,6 +19,12 @@ class WorkFromHome extends Component
 
     public $statusList;
 
+    public $performance;
+    public $durationToday;
+    public $durationWeek;
+    public $durationMonth;
+
+
     #[On('storePeer')]
     public function storePeerId($request)
     {
@@ -112,16 +118,36 @@ class WorkFromHome extends Component
         //     ->update(['status' => $status]);
     }
 
+    public function mount()
+    {
+        $userId = Auth::user()->user_id; // Pastikan user login
+        $this->durationToday = gmdate('H:i:s', WfhSession::getTotalWorkDurationToday($userId));
+        $this->durationWeek = gmdate('H:i:s', WfhSession::getTotalDurationThisWeek($userId));
+        $this->durationMonth = gmdate('H:i:s', WfhSession::getTotalDurationThisMonth($userId));
+
+        $todaySeconds = WfhSession::getTotalWorkDurationToday($userId);
+        $this->performance = $this->evaluatePerformance($todaySeconds);
+
+
+        $this->statusList = WfhStatuses::getAllStatus()->pluck('status_wfh', 'id');
+    }
+
+    protected function evaluatePerformance($durationInSeconds)
+    {
+        return match (true) {
+            $durationInSeconds >= 27000 => 'Excellent', // 7.5 hours
+            $durationInSeconds >= 21600 => 'Good', // 6 hours
+            $durationInSeconds >= 14400 => 'Fair',  // 4 hours
+            $durationInSeconds >= 7200  => 'Poor', // 2 hours
+            default => 'Very Poor', // less than 2 hours
+        };
+    }
+
     public function render()
     {
         $showStatusWfh = new ShowStatusWfh();
         $statusList = $showStatusWfh->getStatusesProperty();
         $this->statusList = $statusList->toArray();
         return view('livewire.wfh.work-from-home');
-    }
-
-    public function mount()
-    {
-        $this->statusList = WfhStatuses::getAllStatus()->pluck('status_wfh', 'id');
     }
 }
