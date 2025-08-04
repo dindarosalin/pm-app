@@ -19,7 +19,7 @@ use App\Models\Projects\Master\TaskCategory;
 use App\Models\Projects\Master\TaskStatuses;
 use App\Models\Settings\Role;
 use Illuminate\Support\Facades\DB;
-
+use App\Livewire\Projects\Tasks\Priorities;
 
 class ShowTask extends Component
 {
