@@ -20,6 +20,7 @@ use App\Models\Projects\Master\TaskStatuses;
 use App\Models\Settings\Role;
 use Illuminate\Support\Facades\DB;
 
+
 class ShowTask extends Component
 {
     public $totalTask, $projectDetail;
@@ -252,7 +253,7 @@ class ShowTask extends Component
         $flags = $data['flags'];
         $labels = $data['labels'];
         $this->dispatch('load-summary', summary: $task->summary);
-        // dd($task->summary);
+        // dd($task);
         $this->taskId = $task->id;
         $this->selectedFlags = $flags->pluck('id')->toArray();
         $this->selectedLabels = $labels->pluck('id')->toArray();

@@ -9,7 +9,6 @@ use App\Models\ButtonStart;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 
-
 class StartWork extends Component
 {
 

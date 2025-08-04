@@ -51,13 +51,14 @@
                         <td>
                             <div class="d-flex gap-2 justify-content-center align-items-center">
                                 <!-- Restore icon -->
-                                <btn role="button" wire:click="restore({{ $t->id }})" class="btn btn-outline-warning btn-sm m-0">
+                                <btn role="button" data-bs-toggle="tooltip" title="Restore Task" wire:click="restore({{ $t->id }})" class="btn btn-outline-warning btn-sm m-0">
                                     <i class="fa-solid fa-arrow-rotate-left"></i>
                                 </btn>
 
                                 <!-- Delete icon -->
                                 <btn role="button" 
                                     {{-- wire:click="alertConfirm({{ $t->id }})" --}}
+                                    data-bs-toggle="tooltip" title="Delete Task Permanent"
                                     class="btn btn-outline-danger btn-sm m-0"
                                     wire:click="delete({{ $t->id }})"
                                     wire:confirm="Are you sure you want to delete this post?"

@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Employee\EmployeeHierarchy;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class HierarchyController extends Controller
 {
     public function index(){
-        $userLogin = '16723865912539';
+        // $userLogin = '16723865912539';
+        $userLogin = Auth::user()->user_id;
 
         $dataBawahanLangsung = [];
         // Get bawahan dari user login
@@ -48,7 +50,8 @@ class HierarchyController extends Controller
         // return $dataSemuaBawahan;
 
         // Get semua atasan
-        $usrLogin = '1672385124827';
+        // $usrLogin = '1672385124827';
+        $userLogin = Auth::user()->user_id;
         $parent = EmployeeHierarchy::where('user_id', $usrLogin)->first();
         // dd($parent);
         $current = $parent->parent;

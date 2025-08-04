@@ -1,6 +1,7 @@
 <div>
     <div class="card">
         <div>
+            <p class="fw-semibold">Task Recommendations</p>
             <div class="d-flex gap-2 overflow-auto" style="scroll-snap-type: x mandatory;">
                 @foreach ($taskScored as $s)
                     <div class="card flex-shrink-0 shadow-sm rounded p-0

@@ -54,7 +54,7 @@ use Livewire\Livewire;
 
 //Active this in dev or prod
 Livewire::setUpdateRoute(function ($handle) {
-    return Route::post('pm/livewire/update', $handle);
+    return Route::post('pm-app/livewire/update', $handle);
 });
 
 Route::get('/', [LoginController::class, 'index'])->middleware('guest');

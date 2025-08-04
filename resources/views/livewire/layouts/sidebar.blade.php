@@ -80,7 +80,7 @@
                             <li
                                 class="sidebar-accordition sidebar-menu {{ request()->routeIs('projects.dashboard.task') ? 'active' : '' }} ">
                                 <a class=" text-decoration-none text-white"
-                                    href="{{ route('projects.dashboard.task', $projectId) }}" wire:navigate.defer.defer>
+                                    href="{{ route('projects.dashboard.task', $projectId) }}" wire:navigate.defer>
                                     <i class="fa-solid fa-chart-simple"></i>
                                     <span>Dashboard Project</span>
                                 </a>
@@ -234,20 +234,22 @@
 
 
         <div class="accordion-item">
-            <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#masterCollapse"
-                aria-expanded="true" aria-controls="masterCollapse">
-                <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
-                    <i class="fa-solid fa-database"></i>
-                    Master
-                </p>
-                <button class="btn btn-sm text-white ms-auto p-0 border-0 text-end" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
-                        class="bi bi-chevron-down" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
-                    </svg> {{--  chevron down --}}
-                </button>
-            </li>
+            @if (App\Models\Base\BaseModel::isAuthorize('97', 'R'))
+                <li class="sidebar-menu d-flex" data-bs-toggle="collapse" data-bs-target="#masterCollapse"
+                    aria-expanded="true" aria-controls="masterCollapse">
+                    <p class=" text-white d-flex align-items-center justify-content-center p-0 m-0">
+                        <i class="fa-solid fa-database"></i>
+                        Master
+                    </p>
+                    <button class="btn btn-sm text-white ms-auto p-0 border-0 text-end" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                            class="bi bi-chevron-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
+                        </svg> {{--  chevron down --}}
+                    </button>
+                </li>
+            @endif
 
             <div wire:ignore id="masterCollapse"
                 class="accordion-collapse collapse {{ Request::segment(1) == 'master' ? 'show' : '' }}"
@@ -268,7 +270,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.project-status') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.project-status') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Project Status</span>
                             </a>
@@ -279,7 +281,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-status') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-status') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Status</span>
                             </a>
@@ -290,7 +292,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-flag') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-flag') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Flag</span>
                             </a>
@@ -301,7 +303,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-label') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-label') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Label</span>
                             </a>
@@ -312,7 +314,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-category') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-category') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Category </span>
                             </a>
@@ -323,7 +325,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.task-criteria') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.task-criteria') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Task Criteria</span>
                             </a>
@@ -334,7 +336,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.budget-category') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.budget-category') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Budget Category</span>
                             </a>
@@ -345,7 +347,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.budget-subcategory') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white"
-                                href="{{ route('master.budget-subcategory') }}" wire:navigate.defer.defer>
+                                href="{{ route('master.budget-subcategory') }}" wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span> Budget Sub Category</span>
                             </a>
@@ -356,7 +358,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.holidays') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.holidays') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Holiday</span>
                             </a>
@@ -367,7 +369,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('master.uom') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('master.uom') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-database"></i>
                                 <span>Unit Of Measure</span>
                             </a>
@@ -403,7 +405,7 @@
                         <li
                             class="sidebar-accordition sidebar-menu {{ request()->routeIs('settings.menu') ? 'active' : '' }} ">
                             <a class=" text-decoration-none text-white" href="{{ route('settings.menu') }}"
-                                wire:navigate.defer.defer>
+                                wire:navigate.defer>
                                 <i class="fa-solid fa-bars"></i>
                                 <span>Menu</span>
                             </a>
