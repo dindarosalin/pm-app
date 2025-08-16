@@ -79,8 +79,8 @@
                                         wire:navigate.defer>{{ $timeCard->task_title }} </a>
                                 </td>
                                 <td class="col-2">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        {{ $timeCard->duration }}
+                                    <div class="d-flex align-items-center justify-content-between" data-bs-toggle="tooltip" title="Input Duration">
+                                        {{ $timeCard->duration }} 
                                         <button class="btn btn-sm p-0 m-0 text-warning ms-auto" type="button"
                                             data-bs-toggle="collapse"
                                             data-bs-target="#inputDuration{{ $timeCard->id }}" aria-expanded="false"
@@ -96,7 +96,7 @@
                                         <input type="number" step="60" class="form-control form-control-sm"
                                             wire:change="update({{ $timeCard->id }})" wire:model.blur='duration'>
                                         <div class="form-check">
-                                            <input wire:model.blur='taskStatus' class="form-check-input" type="checkbox"
+                                            <input wire:model.blur='taskStatus' class="form-check-input" type="checkbox" data-bs-toggle="tooltip" title="Check When Task Is Done"
                                                 value="5" id="flexCheckDefault" wire:change="update({{ $timeCard->id }})">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 Done

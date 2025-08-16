@@ -45,6 +45,7 @@ class LoginController extends Controller
         if ($user && password_verify($request->password, $user->user_password)) {
             if ($user->user_active == 1) {
                 Auth::login($user);
+                // dd('Logged in', Auth::user(), session()->all());
                 $request->session()->regenerate();
                 return redirect()->route('start');
             }

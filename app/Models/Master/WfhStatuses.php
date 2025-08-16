@@ -10,6 +10,8 @@ class WfhStatuses extends BaseModel
     protected $table = 'status_wfh';
     protected $primaryKey = 'id';
 
+
+
     protected $fillable = [
         'status_name',
         'description',
@@ -51,6 +53,7 @@ class WfhStatuses extends BaseModel
             ->where('id', $id)
             ->first();
     }
+
     public static function deleteBy($id)
     {
         return DB::table('status_wfh')

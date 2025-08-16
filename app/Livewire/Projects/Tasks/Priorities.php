@@ -18,7 +18,7 @@ class Priorities extends Component
     {
         $this->loadData();
         // dd($this->tasks);
-        $this->calculateScores(); 
+        $this->calculateScores();
         return view('livewire.projects.tasks.priorities');
     }
 
@@ -27,7 +27,7 @@ class Priorities extends Component
         $this->projectId;
     }
 
-    public function loadData() 
+    public function loadData()
     {
         // $this->tasks = Task::getAllProjectTasksByAuth($this->projectId, $this->auth);
         // $this->tasks->filter(function ($task) {
@@ -38,61 +38,60 @@ class Priorities extends Component
     }
 
     // 3.7.2 Penentuan Rating Kecocokan
-    public function taskRating(){
-        
+    public function taskRating()
+    {
         $taskRatings = collect();
 
-        foreach ($this->tasks as $task) {
+        $t = $this->tasks->filter(function ($task) {
+            return $task->status_id <= 4;
+        });
+        // dd($t);
+
+        foreach ($t as $task) {
             $ratings = [];
             foreach ($this->criterias as $c) {
                 $cName = $c->c_name;
                 $rating = null;
 
                 if ($cName === 'use_holiday') {
-                    $sc = DB::table('task_subcriterias')
-                    ->where('criteria_id', $c->id)
-                    ->where('sc_label', $task->use_holiday)->first();
+                    $sc = DB::table('task_subcriterias')->where('criteria_id', $c->id)->where('sc_label', $task->use_holiday)->first();
 
                     $rating = $sc ? $sc->sc_value : null;
                 } elseif ($cName === 'use_weekend') {
-                    $sc = DB::table('task_subcriterias')
-                    ->where('criteria_id', $c->id)
-                    ->where('sc_label', $task->use_weekend)->first();
+                    $sc = DB::table('task_subcriterias')->where('criteria_id', $c->id)->where('sc_label', $task->use_weekend)->first();
 
                     $rating = $sc ? $sc->sc_value : null;
                 } elseif ($cName === 'flag') {
                     $flags = explode(',', $task->flag);
                     $tFlags = count($flags);
-                
+
                     $sc = DB::table('task_subcriterias')
                         ->where('criteria_id', $c->id)
                         ->where(function ($query) use ($tFlags) {
-                            $query->where(function ($q) use ($tFlags) {
-                                $q->where('sc_min', '<=', $tFlags)
-                                ->where('sc_max', '>=', $tFlags);
-                            })->orWhere(function ($q) use ($tFlags) {
-                                $q->where('sc_min', '=', $tFlags)
-                                ->where('sc_max', '=', $tFlags);
-                            });
+                            $query
+                                ->where(function ($q) use ($tFlags) {
+                                    $q->where('sc_min', '<=', $tFlags)->where('sc_max', '>=', $tFlags);
+                                })
+                                ->orWhere(function ($q) use ($tFlags) {
+                                    $q->where('sc_min', '=', $tFlags)->where('sc_max', '=', $tFlags);
+                                });
                         })
                         ->first();
 
                     $rating = $sc->sc_value ?? null;
-
                 } elseif ($cName === 'end_date_estimation') {
-                    $tDays = now()->startOfDay()->diffInDays(
-                        \Carbon\Carbon::parse($task->end_date_estimation)->startOfDay()
-                    );                    
-                
+                    $tDays = max(0,now()
+                            ->startOfDay()
+                            ->diffInDays(\Carbon\Carbon::parse($task->end_date_estimation)->startOfDay(), false),
+                    );
+
                     // dd($tDays);
                     $sc = DB::table('task_subcriterias')
                         ->where('criteria_id', $c->id)
                         ->where(function ($query) use ($tDays) {
                             $query->where(function ($q) use ($tDays) {
-                                $q->where('sc_min', '<=', $tDays)
-                                ->where(function ($qq) use ($tDays) {
-                                    $qq->where('sc_max', '>=', $tDays)
-                                        ->orWhereNull('sc_max');
+                                $q->where('sc_min', '<=', $tDays)->where(function ($qq) use ($tDays) {
+                                    $qq->where('sc_max', '>=', $tDays)->orWhereNull('sc_max');
                                 });
                             });
                         })
@@ -101,7 +100,7 @@ class Priorities extends Component
 
                     $rating = $sc ? $sc->sc_value : null;
                 }
-                
+
                 $ratings[$cName] = $rating;
             }
 
@@ -110,15 +109,10 @@ class Priorities extends Component
             //     'ratings' => $ratings,
             // ]);
 
-            $taskRatings->push(array_merge(
-                ['task_id' => $task->id],
-                $ratings
-            ));
-
+            $taskRatings->push(array_merge(['task_id' => $task->id], $ratings));
         }
 
         return $taskRatings;
-
     }
 
     public function normalizeMatrix()
@@ -135,9 +129,7 @@ class Priorities extends Component
             $values = $taskRatings->pluck($col)->filter();
             $criteriaValues[$col] = [
                 'attribute' => $c->c_attribute,
-                'value' => $c->c_attribute === 'benefit'
-                    ? $values->max()
-                    : $values->min(),
+                'value' => $c->c_attribute === 'benefit' ? $values->max() : $values->min(),
             ];
         }
 
@@ -151,11 +143,7 @@ class Priorities extends Component
                 $ref = $criteriaValues[$col]['value'];
                 $attribute = $criteriaValues[$col]['attribute'];
 
-                $normalizedRow[$col] = $ref == 0 ? 0 : (
-                    $attribute === 'benefit'
-                        ? $val / $ref
-                        : $ref / ($val == 0 ? 1 : $val)
-                );
+                $normalizedRow[$col] = $ref == 0 ? 0 : ($attribute === 'benefit' ? $val / $ref : $ref / ($val == 0 ? 1 : $val));
             }
 
             $normalized->push($normalizedRow);
@@ -178,15 +166,17 @@ class Priorities extends Component
             $score = 0;
             foreach ($criterias as $c) {
                 $col = $c->c_name;
-                $weight = $c->c_value/100;
+                $weight = $c->c_value / 100;
                 $score += ($row[$col] ?? 0) * $weight;
             }
 
-            $finalScores->push((object)[
-                'task_id' => $row['task_id'],
-                'task' => Task::getById($row['task_id']),
-                'score' => round($score, 4),
-            ]);
+            $finalScores->push(
+                (object) [
+                    'task_id' => $row['task_id'],
+                    'task' => Task::getById($row['task_id']),
+                    'score' => round($score, 3),
+                ],
+            );
         }
 
         // hasilnya atau urutkan
@@ -194,5 +184,4 @@ class Priorities extends Component
         $this->dispatch('update-task-score', $this->taskScored);
         // dd($this->taskScored);
     }
-
 }

@@ -14,15 +14,15 @@
             <option value="custom-start-date">Custom Date Range</option>
         </select>
 
-        @if ($fromToDate === 'custom-start-date')
+        @if (isset($timeFrame['start_date_estimation']) && $timeFrame['start_date_estimation'] === 'custom-start-date')
             <div id="custom-start-date">
                 <div class="col gap-2 mt-2">
                     <div class="my-1">
-                        <input type="date" wire:model.live.debounce="fromDate" id="fromDate"
+                        <input type="date" wire:model.live.debounce="startFromDate" id="startFromDate"
                             class="form-control form-control-sm" placeholder="From Date">
                     </div>
                     <div class="my-1">
-                        <input type="date" wire:model.live.debounce="toDate" id="toDate"
+                        <input type="date" wire:model.live.debounce="startToDate" id="startToDate"
                             class="form-control form-control-sm" placeholder="To Date">
                     </div>
                 </div>
@@ -44,15 +44,15 @@
             <option value="custom-end-date">Custom Date Range</option>
         </select>
 
-        @if ($fromToDate === 'custom-end-date')
+        @if (isset($timeFrame['end_date_estimation']) && $timeFrame['end_date_estimation'] === 'custom-end-date')
             <div id="custom-end-date">
                 <div class="col gap-2 mt-2">
                     <div class="my-1">
-                        <input type="date" wire:model.live.debounce="fromDate" id="fromDate"
+                        <input type="date" wire:model.live.debounce="endFromDate" id="endFromDate"
                             class="form-control form-control-sm" placeholder="From Date">
                     </div>
                     <div class="my-1">
-                        <input type="date" wire:model.live.debounce="toDate" id="toDate"
+                        <input type="date" wire:model.live.debounce="endToDate" id="endToDate"
                             class="form-control form-control-sm" placeholder="To Date">
                     </div>
                 </div>

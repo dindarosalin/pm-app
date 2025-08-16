@@ -4,6 +4,7 @@ namespace App\Livewire\Projects\Tasks;
 
 use App\Models\Projects\Task\Task;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class ArchivedTask extends Component
 {
@@ -17,7 +18,8 @@ class ArchivedTask extends Component
         return view('livewire.projects.tasks.archived-task');
     }
 
-    public function mount() {
+    public function mount()
+    {
         $this->projectId;
     }
 

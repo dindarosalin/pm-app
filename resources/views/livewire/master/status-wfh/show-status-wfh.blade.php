@@ -8,16 +8,24 @@
                 data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <form wire:submit='store'>
+            <form class="was-validated" validate wire:submit.prevent='store'>
                 <div class="mb-3">
-                    <label class="form-label">Status Name:</label>
-                    <input wire:model='statusName' class="form-control form-control-sm" type="text"
-                        placeholder="Status Name">
+                    <label for="validation1" class="form-label">Status Name:<span class="text-danger">*</span></label>
+                    <div class="input-group has-validation">
+                        <input wire:model='statusName' name="statusName" class="form-control form-control-sm"
+                            type="text" placeholder="Status Name" oninput="validateStatusName()" required>
+                        <div class="invalid-feedback" id="errorStatusName">
+                            Please fill status name.
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Status Code:</label>
+                    <label class="form-label">Status Code:<span class="text-danger">*</span></label>
                     <input wire:model='statusCode' class="form-control form-control-sm" type="text"
-                        placeholder="Status Code">
+                        placeholder="Status Code" oninput="validateStatusCode()" required>
+                    <div class="invalid-feedback" id="errorStatusName">
+                        Please fill status code.
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-sm btn-primary">Save</button>
             </form>
@@ -97,6 +105,56 @@
 </div>
 
 @push('scripts')
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+    {{-- <script>
+        function validateStatusName() {
+            const field = document.getElementById('statusName');
+            const error = document.getElementById('errorStatusName');
+
+            if (!field.value.trim()) {
+                error.innerText = 'Status name is required.';
+                field.classList.add('is-invalid');
+            } else {
+                error.innerText = '';
+                field.classList.remove('is-invalid');
+            }
+        }
+
+        function validateStatusCode() {
+            const field = document.getElementById('statusCode');
+            const error = document.getElementById('errorStatusCode');
+
+            if (!field.value.trim()) {
+                error.innerText = 'Status code is required.';
+                field.classList.add('is-invalid');
+            } else {
+                error.innerText = '';
+                field.classList.remove('is-invalid');
+            }
+        }
+    </script> --}}
+
+
     <script>
         window.addEventListener('show-offcanvas-project', event => {
             const offcanvas = new bootstrap.Offcanvas('#offCanvasFormProject');

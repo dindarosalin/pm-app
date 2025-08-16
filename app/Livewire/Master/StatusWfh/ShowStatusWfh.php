@@ -13,8 +13,24 @@ class ShowStatusWfh extends Component
     public $statusName;
     public $statusCode;
 
+    protected $rules = [
+        'statusName' => 'required',
+        'statusCode' => 'required',
+    ];
+
+    protected $messages = [
+        'statusName.required' => 'Status name required.',
+        'statusCode.required' => 'Status code required.',
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function store()
     {
+
         $storeData = [
 
             'status_wfh' => $this->statusName,
@@ -24,22 +40,36 @@ class ShowStatusWfh extends Component
         try {
             // dd($storeData);
             if ($this->statusId) {
-                WfhStatuses::update($storeData, $this->statusId);
+                $status = WfhStatuses::update($storeData, $this->statusId);
+
+                // SWEET ALERT
+                $this->dispatch('swal:modal', [
+                    'type' => 'success',
+                    'message' => 'Data Updated',
+                    'text' => 'the data has been updated successfully.'
+                ]);
             } else {
-                WfhStatuses::create($storeData);
-                $this->updatedProjectStatus($this->projectId);
+                $status = WfhStatuses::create($storeData);
+
+                // SWEET ALERT
+                $this->dispatch('swal:modal', [
+                    'type' => 'success',
+                    'message' => 'Data Added',
+                    'text' => 'The data has been added successfully.'
+                ]);
+                // $this->updatedProjectStatus($this->projectId);
             }
 
+            // dd($status);
             $this->resetForm();
-            $this->dispatch('close-offcanvas');
-            $this->dispatch('status-updated');
-            $this->dispatch('swal:modal', [
-                'type' => 'success',
-                'message' => 'Data Saved',
-                'text' => 'It will list on the table soon.'
-            ]);
+            // $this->dispatch('close-offcanvas');
+            // $this->dispatch('swal:modal', [
+            //     'type' => 'success',
+            //     'message' => 'Data Added',
+            //     'text' => 'It will not list on the table.'
+            // ]);
 
-            $this->dispatch('success');
+            // $this->dispatch('success');
         } catch (\Throwable $th) {
             session()->flash('error', $th);
             $th->getMessage();
@@ -73,7 +103,7 @@ class ShowStatusWfh extends Component
         $this->dispatch('swal:confirm', [
             'type' => 'warning',
             'message' => 'Are you sure?',
-            'text' => 'You won\'t be able to revert this!',
+            'text' => 'You will delete this status.',
             'id' => $id,
             'dispatch' => 'delete-project-status'
         ]);
@@ -86,7 +116,7 @@ class ShowStatusWfh extends Component
         $this->dispatch('swal:modal', [
             'type' => 'success',
             'message' => 'Data Deleted',
-            'text' => 'It will not list on the table.'
+            'text' => 'The data has been deleted successfully.'
         ]);
     }
 
@@ -108,7 +138,6 @@ class ShowStatusWfh extends Component
 
     public function render()
     {
-        $this->resetForm();
 
         $this->statuses = $this->getStatusesProperty();
         // dd($this->statuses);

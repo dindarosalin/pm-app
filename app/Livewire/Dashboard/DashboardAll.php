@@ -114,6 +114,8 @@ class DashboardAll extends Component
             ];
         });
 
+        // dd($cost);
+
 
         // Get the actual cost from the related table/column
 
@@ -125,10 +127,13 @@ class DashboardAll extends Component
     {
         // GET ALL PROJECTS DATA FOR HEALTH
         $projects = Project::getAllProjectsDashboard();
+        // dd($projects);
 
         $this->evmData = $projects->map(function ($project) {
             return EvmService::calculateEVM($project);
         });
+
+        // dd($this->evmData);
 
         // TASKS DOUNATS
         $this->projectsCountByStatus = $this->projectsCountByStatus();

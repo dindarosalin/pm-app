@@ -72,13 +72,13 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Start Date Estimation<span class="text-sm text-danger">*</span></label>
-                    <input type="date" wire:model="start_date_estimation" class="form-control form-control-sm"
-                        required>
+                    <input name="startDate" id="from" type="text" wire:model="start_date_estimation"
+                        class="form-control form-control-sm" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">End Date Estimation<span class="text-sm text-danger">*</span></label>
-                    <input type="date" wire:model="end_date_estimation" class="form-control form-control-sm"
-                        required>
+                    <input name="endDate" id="to" type="text" wire:model="end_date_estimation"
+                        class="form-control form-control-sm" required>
                 </div>
                 <div class="form-check form-switch mb-3">
                     <input wire:model='use_holiday' class="form-check-input" type="checkbox" role="switch"
@@ -92,9 +92,9 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Assign To</label>
-                    <select wire:model='assign_to' id="assign_to" class="form-select form-select-sm">
+                    {{-- <select wire:model='assign_to' id="assign_to" class="form-select form-select-sm">
                         @if ($employees->count() >= 1)
-                            <option value="" selected>Lihat Nanti</option>
+                            <option value="" selected>None</option>
                             <option value="{{ $auth }}" selected>{{ Auth::user()->user_name }}</option>
                             @foreach ($employees as $employee)
                                 <option wire:key='{{ $employee['id'] }}' value="{{ $employee['id'] }}">
@@ -102,8 +102,19 @@
                                 </option>
                             @endforeach
                         @else
-                            <option value="{{ $auth }}" selected>{{ $auth }}</option>
+                            <option value="{{ $auth }}" selected>{{ Auth::user()->user_name }}</option>
                         @endif
+                    </select> --}}
+                    <select wire:model="assign_to" id="assign_to" class="form-select form-select-sm">
+                        <option value="">None</option>
+                        <option value="{{ $auth }}">
+                            {{ Auth::user()->user_name }}
+                        </option>
+                        @foreach ($employees as $employee)
+                            <option wire:key="{{ $employee['id'] }}" value="{{ $employee['id'] }}">
+                                {{ $employee['name'] }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="mb-3">
@@ -123,8 +134,7 @@
         </div>
     </div>
 
-    <div wire:ignore.self class="offcanvas offcanvas-end w-50" tabindex="-1" id="viewOffCanvas"
-        aria-labelledby="viewOffCanvasLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="viewOffCanvas" aria-labelledby="viewOffCanvasLabel">
         <div class="offcanvas-header">
             <h5 id="viewOffCanvasLabel">View Task</h5>
             <button type="button" class="btn-close text-reset" wire:click='btnClose_Offcanvas'
@@ -231,8 +241,8 @@
                         </tbody>
                     </table>
                 </div>
-            
-            {{-- <div class="p-3">
+
+                {{-- <div class="p-3">
                 <form>
                     @csrf
                     <p class="fw-bold">Comments ({{ $countComment > 0 ? $countComment : 0 }})</p>
@@ -253,7 +263,7 @@
                 </div>
             </div> --}}
             @endif
-            @livewire('projects.tasks.comments')
+            {{-- @livewire('projects.tasks.comments') --}}
         </div>
     </div>
 
@@ -263,10 +273,11 @@
                 {{ $projectDetail->completion }}%, Status Project: {{ $projectDetail->status }}</p>
         </div>
         <div class="col text-end">
-            <button wire:click="$dispatch('show-create-offcanvas')" class="btn btn-success btn-sm col"><i
-                    class="fa-solid fa-plus"></i></button>
+            <button data-bs-toggle="tooltip" title="Create New Task" wire:click="$dispatch('show-create-offcanvas')"
+                class="btn btn-success btn-sm col"><i class="fa-solid fa-plus"></i></button>
             {{-- @dd($projectId); --}}
-            <a href="{{ route('projects.tasks.archived', $projectId) }}" role="button" class="btn btn-danger btn-sm col text-white" wire:navigate> 
+            <a href="{{ route('projects.tasks.archived', $projectId) }}" role="button" data-bs-toggle="tooltip"
+                title="View Archived Tasks" class="btn btn-danger btn-sm col text-white" wire:navigate>
                 <i class="fa-solid fa-box-archive"></i></a>
         </div>
     </div>
@@ -276,7 +287,7 @@
 
         <div class="card-body table-responsive px-0">
             <livewire:projects.tasks.priorities :projectId="$projectId" :auth="$auth" :tasks="$tasks" />
-            <table class="table table-sm table-bordered table-hover text-center" >
+            <table class="table table-sm table-bordered table-hover text-center">
                 <thead>
                     <tr>
                         <th role="button" wire:click="sortBy('score')">Priority
@@ -316,7 +327,8 @@
                             <td>{{ $task->assign_to_name }}</td>
                             <td>{{ $task->category_name }}</td>
                             <td>
-                                <span class="badge
+                                <span
+                                    class="badge
                                     @switch($task->status_name)
                                         @case('New')
                                             text-bg-primary
@@ -365,19 +377,22 @@
                             <td>
                                 <div class="d-flex gap-2 justify-content-center align-items-center">
                                     <!-- View icon -->
-                                    <btn wire:click="$dispatch('showById', {id: {{ $task->id }}})" class="text-primary m-0">
+                                    <btn role="button" data-bs-toggle="tooltip" title="View Task"
+                                        wire:click="$dispatch('showById', {id: {{ $task->id }}})"
+                                        class="text-primary m-0">
                                         <i class="fa-regular fa-eye"></i>
                                     </btn>
-    
+
                                     <!-- Edit icon -->
-                                    <btn role="button" wire:click="$dispatch('edit', {id: {{ $task->id }} })" class="text-warning m-0">
+                                    <btn role="button" data-bs-toggle="tooltip" title="Update Task"
+                                        wire:click="$dispatch('edit', {id: {{ $task->id }} })"
+                                        class="text-warning m-0">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </btn>
-    
+
                                     <!-- Delete icon -->
-                                    <btn role="button" wire:click="alertConfirm({{ $task->id }})"
-    
-                                    {{-- <p role="button" wire:click="$dispatch('alertConfirm', {id: {{ $task->id }}})"  --}}
+                                    <btn role="button" data-bs-toggle="tooltip" title="Archive Task"
+                                        wire:click="alertConfirm({{ $task->id }})" {{-- <p role="button" wire:click="$dispatch('alertConfirm', {id: {{ $task->id }}})"  --}}
                                         class="text-danger m-0">
                                         <i class="fa-solid fa-box-archive"></i>
                                     </btn>
@@ -408,9 +423,70 @@
             </div>
         @endforeach
     </div> --}}
+    {{-- @dd($projectDetail->start_date) --}}
 </div>
 
 @push('scripts')
+    // DATE VALIDATE
+    <script>
+        let projectDate = new Date("{{ \Carbon\Carbon::parse($projectDetail->start_date)->format('Y-m-d') }}");
+        let projectEndDate = new Date("{{ \Carbon\Carbon::parse($projectDetail->due_date_estimation)->format('Y-m-d') }}");
+        $(function() {
+            var dateFormat = "mm/dd/yy",
+                from = $("#from")
+                .datepicker({
+                    defaultDate: "",
+                    changeMonth: true,
+                    numberOfMonths: 2,
+                    minDate: projectDate,
+                    maxDate: projectEndDate,
+                })
+                .on("change", function() {
+                    to.datepicker("option", "minDate", getDate(this));
+                    // $wire.start_date_estimation = $(this).val();
+                }),
+                to = $("#to").datepicker({
+                    defaultDate: "",
+                    changeMonth: true,
+                    numberOfMonths: 2,
+                    maxDate: projectEndDate,
+                    minDate: projectDate,
+                })
+                .on("change", function() {
+                    from.datepicker("option", "maxDate", getDate(this));
+                    // $wire.end_date_estimation = $(this).val();
+                });
+
+            $('form').on('submit', function(e) {
+                let fromVal = $('#from').val();
+                let toVal = $('#to').val();
+
+                // Ubah format mm/dd/yyyy ke yyyy/mm/dd
+                function toYMD(dateStr) {
+                    if (!dateStr) return '';
+                    let parts = dateStr.split('/');
+                    if (parts.length !== 3) return dateStr;
+                    return `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+                }
+
+                @this.set('start_date_estimation', toYMD(fromVal));
+                @this.set('end_date_estimation', toYMD(toVal));
+            });
+
+
+            function getDate(element) {
+                var date;
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch (error) {
+                    date = null;
+                }
+
+                return date;
+            }
+        });
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.2/quill.min.js"></script>
     <script>
         document.addEventListener('livewire:init', () => {

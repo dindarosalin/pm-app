@@ -2,9 +2,12 @@
 
 namespace App\Livewire\WFH;
 
+use App\Models\Master\WfhStatuses;
 use App\Models\WfhSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Monitoring extends Component
@@ -14,14 +17,23 @@ class Monitoring extends Component
 
     public $sessions;
 
+    public $statusList = [];
 
-    public function getListeners()
-    {
-        return ['refreshComponent' => '$refresh'];
-    }
+
+    // protected $listeners = ['getListeners' => 'render'];
+    // public function getListeners()
+    // {
+    //     Log::info('getListeners called in Monitoring component');
+    //     return [
+    //         'refreshMonitoring' => '$refresh',
+    //     ];
+    // }
+
 
     public function mount()
     {
+        $this->statusList = WfhStatuses::getAllStatus()->pluck('status_wfh', 'id');
+        Log::info('Mounting Monitoring component');
         // dd($this->storePeerId());
         // $this->activeSessions = WfhSession::whereNull('end')->get();
     }
@@ -44,14 +56,19 @@ class Monitoring extends Component
         return response()->json(['peer_ids' => $peerIds]);
     }
 
+
     public function render()
     {
 
-        $this->sessions = $this->getSessionsProperty();
+        $this->sessions = $this->getSessionsProperty()->toArray();
+
+        $peerIds = array_column($this->sessions, 'peer_id');
 
 
 
         // $this->activeSessions = WfhSession::whereNull('end')->get();
-        return view('livewire.wfh.monitoring');
+        return view('livewire.wfh.monitoring', [
+            'peerIds' => $peerIds
+        ]);
     }
 }
